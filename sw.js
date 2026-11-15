@@ -5,7 +5,7 @@
 //     as a fallback when offline or when the network is slow.
 // The deploy workflow replaces __BUILD__ with the commit hash; locally it stays "dev".
 
-const BUILD = '__BUILD__';
+const BUILD = '1.0.2';
 const PYODIDE = '314.0.7';
 const STATIC = 'cq-static-' + BUILD;
 const HEAVY = 'cq-heavy-' + PYODIDE;

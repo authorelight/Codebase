@@ -13,6 +13,7 @@ const docCache = new Map();
 let coursesCache = null;
 const courseCache = new Map();
 let bundlePromise = null;
+let mdFallbackActive = false;
 
 function normalizeRelPath(path) {
   return String(path || '').replace(/^\.?\/+/, '');
@@ -43,6 +44,7 @@ export function clearContentCache() {
   docCache.clear();
   coursesCache = null;
   courseCache.clear();
+  mdFallbackActive = false;
 }
 
 export const url = (...parts) => `${SITE.contentRoot}/${parts.join('/')}`;
@@ -51,7 +53,12 @@ export async function fetchText(path) {
   if (textCache.has(path)) return textCache.get(path);
   const rel = normalizeRelPath(path);
   const target = resolveAssetUrl(path);
+  const isMd = /\.md$/i.test(rel);
   const p = (async () => {
+    if (isMd && mdFallbackActive) {
+      const bundled = await loadBundledText(rel);
+      if (typeof bundled === 'string') return bundled;
+    }
     let fetchError = null;
     try {
       const r = await fetch(target);
@@ -68,7 +75,10 @@ export async function fetchText(path) {
       fetchError = err;
     }
     const fallback = await loadBundledText(rel);
-    if (typeof fallback === 'string') return fallback;
+    if (typeof fallback === 'string') {
+      if (isMd) mdFallbackActive = true;
+      return fallback;
+    }
     throw fetchError;
   })();
   textCache.set(path, p);
