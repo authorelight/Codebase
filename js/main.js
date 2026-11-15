@@ -24,6 +24,13 @@ view('/c/:course/:module', 'module', './views/module.js', 'moduleView');
 view('/c/:course/:module/quiz', 'quiz', './views/quiz.js', 'quizView');
 view('/c/:course/:module/game', 'game', './views/game.js', 'gameView');
 view('/c/:course/:module/:lesson', 'lesson', './views/lesson.js', 'lessonView');
+view('/content/:course', 'course', './views/course.js', 'courseView');
+view('/content/:course/:module', 'module', './views/module.js', 'moduleView');
+view('/content/:course/:module/quiz', 'quiz', './views/quiz.js', 'quizView');
+view('/content/:course/:module/quiz.md', 'quiz', './views/quiz.js', 'quizView');
+view('/content/:course/:module/game', 'game', './views/game.js', 'gameView');
+view('/content/:course/:module/game.md', 'game', './views/game.js', 'gameView');
+view('/content/:course/:module/:lesson', 'lesson', './views/lesson.js', 'lessonView');
 view('/play', 'play', './views/play.js', 'playView');
 view('/play/:code', 'play', './views/play.js', 'playView');
 view('/progress', 'progress', './views/progress.js', 'progressView');
@@ -176,7 +183,7 @@ function boot() {
   wireSearchShortcuts();
   start(main);
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.register(new URL('../sw.js', import.meta.url).href).catch(() => {});
   }
   // Start downloading Python quietly once the page is idle on lesson-like pages.
   document.addEventListener('route', (e) => {

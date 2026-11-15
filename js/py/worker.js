@@ -110,11 +110,25 @@ function fatal(reason) {
 self.addEventListener('unhandledrejection', (e) => fatal(e.reason));
 self.addEventListener('error', (e) => fatal(e.error || e.message));
 
+async function loadHostSource() {
+  try {
+    const res = await fetch(new URL('./host.py', import.meta.url));
+    if (res.ok) {
+      const text = await res.text();
+      if (!/^\s*<!doctype\s+html/i.test(text)) return text;
+    }
+  } catch {}
+  const mod = await import('../content-bundle.js');
+  const bundled = mod.CONTENT_BUNDLE && mod.CONTENT_BUNDLE['js/py/host.py'];
+  if (typeof bundled === 'string') return bundled;
+  throw new Error('Could not load Python execution host (js/py/host.py).');
+}
+
 (async () => {
   try {
     await prefetch();
     const pyodide = await loadPyodide({ indexURL: base, stdout: () => {}, stderr: () => {} });
-    const hostSource = await (await fetch(new URL('./host.py', import.meta.url))).text();
+    const hostSource = await loadHostSource();
     host = await createHost(pyodide, hostSource, { emit, requestInput });
     post({ type: 'ready', info: host.info });
   } catch (err) {

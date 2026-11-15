@@ -12,15 +12,65 @@ const textCache = new Map();
 const docCache = new Map();
 let coursesCache = null;
 const courseCache = new Map();
+let bundlePromise = null;
+
+function normalizeRelPath(path) {
+  return String(path || '').replace(/^\.?\/+/, '');
+}
+
+function resolveAssetUrl(path) {
+  if (/^https?:\/\//i.test(path)) return path;
+  const rel = normalizeRelPath(path);
+  try {
+    return new URL('../' + rel, import.meta.url).href;
+  } catch {
+    return rel;
+  }
+}
+
+async function loadBundledText(relPath) {
+  if (!bundlePromise) {
+    bundlePromise = import('./content-bundle.js')
+      .then((mod) => mod.CONTENT_BUNDLE || {})
+      .catch(() => ({}));
+  }
+  const bundle = await bundlePromise;
+  return Object.prototype.hasOwnProperty.call(bundle, relPath) ? bundle[relPath] : null;
+}
+
+export function clearContentCache() {
+  textCache.clear();
+  docCache.clear();
+  coursesCache = null;
+  courseCache.clear();
+}
 
 export const url = (...parts) => `${SITE.contentRoot}/${parts.join('/')}`;
 
 export async function fetchText(path) {
   if (textCache.has(path)) return textCache.get(path);
-  const p = fetch(path).then(async (r) => {
-    if (!r.ok) throw new Error(`${r.status} ${path}`);
-    return r.text();
-  });
+  const rel = normalizeRelPath(path);
+  const target = resolveAssetUrl(path);
+  const p = (async () => {
+    let fetchError = null;
+    try {
+      const r = await fetch(target);
+      if (r.ok) {
+        const ct = (r.headers && r.headers.get && r.headers.get('content-type')) || '';
+        const text = await r.text();
+        const isHtmlFallback = /\.(md|json|py)$/i.test(rel) && (/text\/html/i.test(ct) || /^\s*<!doctype\s+html/i.test(text));
+        if (!isHtmlFallback) return text;
+        fetchError = new Error(`Unexpected HTML response for ${path}`);
+      } else {
+        fetchError = new Error(`${r.status} ${path}`);
+      }
+    } catch (err) {
+      fetchError = err;
+    }
+    const fallback = await loadBundledText(rel);
+    if (typeof fallback === 'string') return fallback;
+    throw fetchError;
+  })();
   textCache.set(path, p);
   p.catch(() => textCache.delete(path));
   return p;

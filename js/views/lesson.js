@@ -20,7 +20,8 @@ export function nextAfterLesson(course, m, lesson) {
 export async function lessonView({ course: cid, module: mid, lesson: lid }) {
   const course = await loadCourse(cid);
   const m = findModule(course, mid);
-  const lesson = m && m.lessons.find((l) => l.id === lid);
+  const cleanLid = String(lid || '').replace(/\.md$/i, '');
+  const lesson = m && m.lessons.find((l) => l.id === cleanLid || l.file === lid);
   if (!m || !lesson) throw Object.assign(new Error('There is no lesson called “' + lid + '” in this module.'), { notFound: true });
   const doc = await loadDoc(cid, mid, lesson.file);
   if (doc.errors.length) console.warn('Lesson has formatting problems:', doc.errors);
