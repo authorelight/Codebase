@@ -105,7 +105,7 @@ export async function render() {
         : errorView(err, () => render())
     );
     mountEl.removeAttribute('aria-busy');
-    document.title = 'Something went wrong';
+    document.title = err && err.notFound ? 'Page Not Found' : 'Something went wrong';
     window.scrollTo(0, 0);
     return;
   }

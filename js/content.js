@@ -67,9 +67,17 @@ export async function fetchText(path) {
         const text = await r.text();
         const isHtmlFallback = /\.(md|json|py)$/i.test(rel) && (/text\/html/i.test(ct) || /^\s*<!doctype\s+html/i.test(text));
         if (!isHtmlFallback) return text;
-        fetchError = new Error(`Unexpected HTML response for ${path}`);
+        fetchError = Object.assign(new Error(`Unexpected HTML response for ${path}`), {
+          status: 404,
+          path: rel,
+          isMarkdown: isMd,
+        });
       } else {
-        fetchError = new Error(`${r.status} ${path}`);
+        fetchError = Object.assign(new Error(`${r.status} ${path}`), {
+          status: r.status,
+          path: rel,
+          isMarkdown: isMd,
+        });
       }
     } catch (err) {
       fetchError = err;
@@ -185,15 +193,21 @@ export function findModule(course, moduleId) {
 
 /** Progress summary of one module from the store state. */
 export function moduleProgress(m, state) {
-  const lessonsDone = m.lessons.filter((l) => state.lessons[l.key]).length;
-  const quiz = state.quizzes[m.key];
-  const game = state.games[m.key];
+  const lessons = state?.lessons || {};
+  const quizzes = state?.quizzes || {};
+  const games = state?.games || {};
+  const modules = state?.modules || {};
+  const lessonsDone = m.lessons.filter((l) => lessons[l.key]).length;
+  const quiz = quizzes[m.key];
+  const game = games[m.key];
   const hasQuiz = !!m.quiz;
   const hasGame = !!m.game;
   const quizDone = !hasQuiz || !!(quiz && quiz.passed);
   const gameDone = !hasGame || !!(game && game.done);
   const parts = m.lessons.length + (hasQuiz ? 1 : 0) + (hasGame ? 1 : 0);
   const done = lessonsDone + (hasQuiz && quizDone ? 1 : 0) + (hasGame && gameDone ? 1 : 0);
+  const markedDone = !!modules[m.key];
+  const complete = markedDone || (parts > 0 && done === parts);
   return {
     lessonsDone,
     lessonsTotal: m.lessons.length,
@@ -203,7 +217,7 @@ export function moduleProgress(m, state) {
     hasGame,
     done,
     parts,
-    pct: parts ? Math.round((done / parts) * 100) : 0,
-    complete: parts > 0 && done === parts,
+    pct: complete ? 100 : parts ? Math.round((done / parts) * 100) : 0,
+    complete,
   };
 }

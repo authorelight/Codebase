@@ -15,9 +15,44 @@ import { startQuotes } from './ui/quote-card.js';
 import { openSearchModal, wireSearchShortcuts } from './ui/search-modal.js';
 import { initTheme, createThemeToggle } from './ui/theme-toggle.js';
 import { createProfileAvatar } from './ui/avatar.js';
+import { isMarkdown404Error, extractMissingMarkdownPath, fallbackDashboardTarget } from './lib/route-fallback.js';
+
+function renderMarkdownNotFound(err, params) {
+  const missingPath = extractMissingMarkdownPath(err);
+  const secondary = fallbackDashboardTarget(params);
+  return h(
+    'section.page.narrow.not-found-fallback',
+    { 'aria-labelledby': 'not-found-heading' },
+    h(
+      'div.not-found-card',
+      h('p.not-found-code', '404 · Content unavailable'),
+      h('h1#not-found-heading', 'Page not found'),
+      h('p.lede', 'We could not load that Markdown lesson. You can return to your dashboard or pick another station in the course.'),
+      missingPath ? h('p.not-found-path', h('code', missingPath)) : null,
+      h(
+        'div.btn-row',
+        h('a.btn.btn-primary', { href: '#/' }, icon('home', 16), 'Go to dashboard'),
+        h('a.btn.btn-secondary', { href: secondary.href }, icon('map', 16), secondary.label)
+      )
+    )
+  );
+}
 
 // ---- routes (views load on demand) ------------------------------------------
-const view = (path, name, file, fn) => route(path, name, async (p, q) => (await import(file))[fn](p, q));
+const view = (path, name, file, fn) =>
+  route(path, name, async (p, q) => {
+    try {
+      return await (await import(file))[fn](p, q);
+    } catch (err) {
+      if (isMarkdown404Error(err)) {
+        return {
+          node: renderMarkdownNotFound(err, p),
+          title: 'Page Not Found',
+        };
+      }
+      throw err;
+    }
+  });
 view('/', 'home', './views/home.js', 'homeView');
 view('/c/:course', 'course', './views/course.js', 'courseView');
 view('/c/:course/:module', 'module', './views/module.js', 'moduleView');

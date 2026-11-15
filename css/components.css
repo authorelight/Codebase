@@ -102,6 +102,7 @@
 .con-status.is-run, .con-status.is-wait, .con-status.is-warn { color: #ffd479; }
 .con .btn-ghost { color: var(--code-dim); }
 .con .btn-ghost:hover:not(:disabled) { background: var(--code-rule); color: #fff; }
+.con-copy { padding: 0.25rem 0.45rem; min-height: 1.85rem; }
 .con-out { margin: 0; padding: 0.7rem 0.9rem; font: 400 0.9rem/1.5 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; overflow: auto; max-height: 22rem; }
 .con-out:empty { display: none; }
 .con-out .o { color: var(--code-ink); }
@@ -170,8 +171,12 @@
 .ex-banner { display: flex; gap: 0.7rem; align-items: flex-start; margin: 0 1.1rem 0.8rem; padding: 0.7rem 0.9rem; border-radius: var(--r-md); font-size: 0.95rem; }
 .ex-banner.is-ok { background: var(--ok-bg); color: var(--ok); }
 .ex-banner.is-bad { background: var(--bad-bg); color: var(--bad); }
-.ex-results { padding: 0 1.1rem 0.6rem; }
-.ex-results h4 { margin: 0.2rem 0 0.4rem; }
+.ex-results { padding: 0 1.1rem 0.7rem; }
+.ex-results-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.45rem 1rem; margin: 0.25rem 0 0.5rem; }
+.ex-results-head h4 { margin: 0; font-variant-numeric: tabular-nums; }
+.ex-check-meter { width: min(12rem, 100%); height: 0.45rem; flex: 1 1 8rem; max-width: 14rem; }
+.ex-check-meter > i { background: var(--bad); transition: width 0.28s ease, background-color 0.28s ease; }
+.ex-check-meter.is-complete > i { background: var(--ok); }
 .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
 .checks li { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.4rem 0.6rem; border-radius: var(--r-sm); font-size: 0.93rem; }
 .checks li.is-ok { background: var(--ok-bg); color: var(--ok); }

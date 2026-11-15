@@ -18,6 +18,7 @@ import { runInto, requestFor, INPUT_RE } from './run.js';
 import { runner } from '../py/runner.js';
 import { store } from '../store.js';
 import { toast } from './toast.js';
+import { confirmAction } from './confirm-modal.js';
 
 export { exerciseSpec };
 
@@ -85,13 +86,22 @@ export function createExercise(node, { key, files: lessonFiles = {} }) {
   }
   let usedSolution = !!store.exercise(sKey).solution;
 
-  function reset() {
-    if (ed.getValue() !== spec.starter && !confirm('Replace your code with the starter code?')) return;
+  async function reset() {
+    if (ed.getValue() !== spec.starter) {
+      const ok = await confirmAction({
+        title: 'Reset exercise code?',
+        message: 'This will replace your current code with the original starter template.',
+        confirmLabel: 'Reset code',
+        tone: 'danger',
+      });
+      if (!ok) return;
+    }
     ed.setValue(spec.starter);
     store.clearDraft(sKey);
     results.hidden = true;
     banner.hidden = true;
     con.reset();
+    ed.focus();
   }
 
   const saveDraft = debounce((v) => {
@@ -123,8 +133,19 @@ export function createExercise(node, { key, files: lessonFiles = {} }) {
     results.hidden = false;
     const tests = res.tests || [];
     const passed = tests.filter((t) => t.ok).length;
+    const pct = tests.length ? Math.round((passed / tests.length) * 100) : 0;
     results.replaceChildren(
-      h('h4', tests.length ? `Checks: ${passed} of ${tests.length} passed` : 'Checks'),
+      h(
+        'div.ex-results-head',
+        h('h4', tests.length ? `Checks: ${passed} of ${tests.length} passed` : 'Checks'),
+        tests.length
+          ? h(
+              'div.progress-bar.ex-check-meter' + (passed === tests.length ? '.is-complete' : ''),
+              { role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': tests.length, 'aria-valuenow': passed, 'aria-label': 'Checks passed' },
+              h('i', { style: { width: `${pct}%` } })
+            )
+          : null
+      ),
       tests.length
         ? h(
             'ul.checks',

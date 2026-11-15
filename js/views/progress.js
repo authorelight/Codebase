@@ -6,6 +6,8 @@ import { allBadgeDefs, EXTRA_BADGES } from '../badges.js';
 import { RANKS } from '../config.js';
 import { toast } from '../ui/toast.js';
 import { computeLineMastery, formatStudyDuration, computeTotalStudyTime } from '../search.js';
+import { GOAL_PRESETS, computeDailyGoalProgress, buildWeeklyActivitySeries, summarizeWeeklyActivity } from '../lib/study-stats.js';
+import { confirmAction } from '../ui/confirm-modal.js';
 import { createProfileAvatar } from '../ui/avatar.js';
 
 export async function progressView() {
@@ -54,6 +56,93 @@ export async function progressView() {
     tile('gamepad', levels, '', 'game levels cleared'),
     tile('star', stars, '', 'game stars'),
     tile('clock', formatStudyDuration(totalSeconds), '', 'time spent')
+  );
+
+  const rhythmGoalBarFill = h('i');
+  const rhythmGoalBar = h(
+    'div.progress-bar.rhythm-goal-bar',
+    { role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': 0, 'aria-label': 'Daily study goal progress' },
+    rhythmGoalBarFill
+  );
+  const rhythmStatus = h('p.rhythm-status');
+  const rhythmSummary = h('p.rhythm-week-sum');
+  const weekGrid = h('ol.week-bars', { 'aria-label': '7-day study activity' });
+  const presetBtns = h(
+    'div.seg-group.goal-presets',
+    { role: 'group', 'aria-label': 'Daily study goal minutes' },
+    GOAL_PRESETS.map((min) =>
+      h(
+        'button.seg-btn',
+        {
+          type: 'button',
+          dataset: { goalMin: String(min) },
+          onclick: () => {
+            store.setDailyGoalMinutes(min);
+            toast(`Daily goal set to ${min} minutes`, { icon: 'check' });
+          },
+        },
+        `${min}m`
+      )
+    )
+  );
+
+  function paintRhythm() {
+    const curState = store.state;
+    const goal = computeDailyGoalProgress(curState);
+    const series = buildWeeklyActivitySeries(curState);
+    const weekSum = summarizeWeeklyActivity(series);
+
+    presetBtns.querySelectorAll('.seg-btn').forEach((btn) => {
+      const on = Number(btn.dataset.goalMin) === goal.goalMinutes;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+
+    const studiedLabel = goal.studiedSeconds > 0 ? formatStudyDuration(goal.studiedSeconds) : '0m';
+    const remMin = Math.ceil(goal.remainingSeconds / 60);
+    rhythmStatus.replaceChildren(
+      h('strong', goal.reached ? `Goal reached (${studiedLabel})` : `${studiedLabel} of ${goal.goalMinutes}m today`),
+      h('span.muted', goal.reached ? ` · ${goal.lessonsToday} lessons · ${goal.exercisesToday} exercises today` : ` · ${remMin}m remaining · ${goal.pct}%`)
+    );
+    rhythmGoalBar.setAttribute('aria-valuenow', String(goal.pct));
+    rhythmGoalBar.classList.toggle('is-reached', goal.reached);
+    rhythmGoalBarFill.style.width = `${goal.pct}%`;
+
+    weekGrid.replaceChildren(
+      ...series.map((d) => {
+        const dur = d.seconds > 0 ? formatStudyDuration(d.seconds) : '0m';
+        const tip = `${d.dateKey}: ${dur}, ${plural(d.lessons, 'lesson')}, ${plural(d.exercises, 'exercise')}`;
+        return h(
+          'li.week-bar-col' + (d.isToday ? '.is-today' : '') + (d.goalReached ? '.is-goal' : ''),
+          { title: tip },
+          h('span.week-bar-val', d.seconds > 0 ? dur : ''),
+          h(
+            'div.week-bar-track',
+            { 'aria-label': tip },
+            h('i.week-bar-fill', { style: { height: `${Math.max(d.seconds > 0 ? 8 : 0, d.heightPct)}%` } })
+          ),
+          h('span.week-bar-day', d.weekdayLabel)
+        );
+      })
+    );
+
+    const weekDur = weekSum.totalSeconds > 0 ? formatStudyDuration(weekSum.totalSeconds) : '0m';
+    rhythmSummary.textContent = `Last 7 days: ${weekDur} total · ${plural(weekSum.activeDays, 'active day')} · ${plural(weekSum.lessons, 'lesson')} · ${plural(weekSum.exercises, 'exercise')}`;
+  }
+  paintRhythm();
+  const unsubscribeRhythm = store.subscribe(paintRhythm);
+
+  const rhythmSection = h(
+    'section.study-rhythm-card',
+    { 'aria-label': 'Daily study goal and weekly activity' },
+    h(
+      'div.rhythm-head',
+      h('div', h('h2', 'Daily study goal'), rhythmStatus),
+      h('div.rhythm-controls', h('span.rhythm-label', 'Target'), presetBtns)
+    ),
+    rhythmGoalBar,
+    h('div.rhythm-week-head', h('h3', 'Last 7 days'), rhythmSummary),
+    weekGrid
   );
 
   const mastery = courses[0] ? computeLineMastery(courses[0], s) : { lines: [], nextStation: null };
@@ -162,8 +251,14 @@ export async function progressView() {
         'button.btn.btn-ghost.btn-danger-text',
         {
           type: 'button',
-          onclick: () => {
-            if (confirm('Erase all progress, badges and saved code in this browser? This cannot be undone.')) {
+          onclick: async () => {
+            const ok = await confirmAction({
+              title: 'Erase all saved progress?',
+              message: 'This will remove all completed lessons, XP, badges, study history, and saved code in this browser. This cannot be undone.',
+              confirmLabel: 'Erase everything',
+              tone: 'danger',
+            });
+            if (ok) {
               store.reset();
               toast('Progress erased');
               location.hash = '#/';
@@ -177,8 +272,14 @@ export async function progressView() {
     )
   );
 
-  const node = h('section.page.progress-page', h('h1', 'Your progress'), rankCard, nextCard, tiles, linesSection, modulesSection, badgesSection, certSection, dataSection, h('details.rank-ladder', h('summary', 'All ranks'), h('ol', RANKS.map((r) => h('li' + (r.name === rank.name ? '.is-current' : ''), h('strong', r.name), h('span', `${r.xp.toLocaleString()} XP`))))));
-  return { node, title: 'Progress' };
+  const node = h('section.page.progress-page', h('h1', 'Your progress'), rankCard, nextCard, tiles, rhythmSection, linesSection, modulesSection, badgesSection, certSection, dataSection, h('details.rank-ladder', h('summary', 'All ranks'), h('ol', RANKS.map((r) => h('li' + (r.name === rank.name ? '.is-current' : ''), h('strong', r.name), h('span', `${r.xp.toLocaleString()} XP`))))));
+  return {
+    node,
+    title: 'Progress',
+    cleanup() {
+      unsubscribeRhythm();
+    },
+  };
 }
 
 function tile(ic, n, of, label) {

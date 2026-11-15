@@ -10,6 +10,7 @@ import { toast } from '../ui/toast.js';
 import { EXAMPLES } from '../examples.js';
 import { encodeShare, decodeShare } from '../lib/share.js';
 import { openReferenceModal } from '../ui/cheatsheet-modal.js';
+import { confirmAction } from '../ui/confirm-modal.js';
 
 export async function playView({ code: shared }) {
   let initial = store.getDraft('playground');
@@ -31,6 +32,12 @@ export async function playView({ code: shared }) {
   const stdinHelp = h('span.muted');
   const stdinBox = h('div.stdin', { hidden: true }, h('label', 'Program input'), stdinHelp, stdin);
 
+  const codeStatsEl = h('span.play-meta-pill', { 'aria-live': 'off' });
+  const syncCodeStats = () => {
+    const val = ed.getValue();
+    const lines = val ? val.split('\n').length : 0;
+    codeStatsEl.textContent = `${lines} ${lines === 1 ? 'line' : 'lines'} · ${val.length} chars`;
+  };
   const save = debounce((v) => !shared && store.setDraft('playground', v), 600);
   const syncInput = () => {
     const needs = INPUT_RE.test(ed.getValue());
@@ -40,13 +47,15 @@ export async function playView({ code: shared }) {
   ed.onChange((v) => {
     save(v);
     syncInput();
+    syncCodeStats();
   });
   syncInput();
+  syncCodeStats();
 
   let running = false;
   const runTimeEl = h('span.play-runtime.muted', { 'aria-live': 'polite' });
-  const runBtn = h('button.btn.btn-primary', { type: 'button', onclick: () => run(), onpointerenter: () => runner.warm() }, icon('play', 16), 'Run');
-  const stopBtn = h('button.btn.btn-danger', { type: 'button', hidden: true, onclick: () => runner.stop() }, icon('stop', 14), 'Stop');
+  const runBtn = h('button.btn.btn-primary.btn-sm', { type: 'button', onclick: () => run(), onpointerenter: () => runner.warm() }, icon('play', 15), 'Run');
+  const stopBtn = h('button.btn.btn-danger.btn-sm', { type: 'button', hidden: true, onclick: () => runner.stop() }, icon('stop', 14), 'Stop');
   async function run() {
     if (running) return;
     running = true;
@@ -68,9 +77,9 @@ export async function playView({ code: shared }) {
   // Step through: runs the program once under the tracer, then shows it line by line (the same viewer as the lessons)
   const traceHost = h('section.play-trace', { hidden: true, 'aria-label': 'Step through your program' });
   const traceBtn = h(
-    'button.btn.btn-secondary',
+    'button.btn.btn-secondary.btn-sm',
     { type: 'button', title: 'Run the program once, then move through it one line at a time and watch the variables', onclick: () => stepThrough() },
-    icon('eye', 16),
+    icon('eye', 15),
     'Step through'
   );
   function stepThrough() {
@@ -150,7 +159,7 @@ export async function playView({ code: shared }) {
     h('button.btn.btn-ghost.btn-sm', { type: 'button', onclick: () => (saveForm.hidden = true) }, 'Cancel')
   );
   const saveToggleBtn = h(
-    'button.btn.btn-secondary',
+    'button.btn.btn-secondary.btn-sm',
     {
       type: 'button',
       onclick: () => {
@@ -158,7 +167,7 @@ export async function playView({ code: shared }) {
         if (!saveForm.hidden) snipNameInput.focus();
       },
     },
-    icon('edit', 15),
+    icon('edit', 14),
     'Save snippet'
   );
   const snipBar = h('div.snip-bar', { hidden: true });
@@ -210,11 +219,12 @@ export async function playView({ code: shared }) {
   }
   renderSnippets();
 
-  const refBtn = h('button.btn.btn-secondary', { type: 'button', onclick: () => openReferenceModal() }, icon('book', 15), 'Reference');
+  const refBtn = h('button.btn.btn-secondary.btn-sm', { type: 'button', onclick: () => openReferenceModal() }, icon('book', 14), 'Reference');
   const shareBtn = h(
-    'button.btn.btn-secondary',
+    'button.btn.btn-secondary.btn-sm',
     {
       type: 'button',
+      title: 'Copy share link',
       onclick: async () => {
         const token = await encodeShare(ed.getValue());
         const link = `${location.origin}${location.pathname}#/play/${token}`;
@@ -225,16 +235,36 @@ export async function playView({ code: shared }) {
         } else toast('Could not copy the link', { kind: 'error' });
       },
     },
-    icon('link', 16),
-    'Copy share link'
+    icon('link', 14),
+    'Share link'
   );
-  const dlBtn = h('button.btn.btn-secondary', { type: 'button', onclick: () => download('program.py', ed.getValue().replace(/\s*$/, '\n'), 'text/x-python') }, icon('download', 16), 'Download .py');
-  const clearBtn = h(
-    'button.btn.btn-ghost',
+  const copyCodeBtn = h(
+    'button.btn.btn-secondary.btn-sm',
     {
       type: 'button',
-      onclick: () => {
-        if (ed.getValue().trim() && !confirm('Clear the editor? This cannot be undone.')) return;
+      onclick: async () => {
+        if (await copyText(ed.getValue())) toast('Code copied', { icon: 'check' });
+        else toast('Could not copy the code', { kind: 'error' });
+      },
+    },
+    icon('copy', 14),
+    'Copy'
+  );
+  const dlBtn = h('button.btn.btn-secondary.btn-sm', { type: 'button', onclick: () => download('program.py', ed.getValue().replace(/\s*$/, '\n'), 'text/x-python') }, icon('download', 15), 'Download .py');
+  const clearBtn = h(
+    'button.btn.btn-ghost.btn-sm',
+    {
+      type: 'button',
+      onclick: async () => {
+        if (ed.getValue().trim()) {
+          const ok = await confirmAction({
+            title: 'Clear the playground?',
+            message: 'All code currently in the editor will be cleared. Saved snippets stay untouched.',
+            confirmLabel: 'Clear editor',
+            tone: 'danger',
+          });
+          if (!ok) return;
+        }
         ed.setValue('');
         con.reset();
         ed.focus();
@@ -244,14 +274,16 @@ export async function playView({ code: shared }) {
     'Clear'
   );
 
+  const editorFoot = h('div.play-ed-foot', h('span.play-ed-hint', 'Ctrl+Enter to run · Tab to indent'), codeStatsEl);
+
   const node = h(
     'section.page.play-page',
     h('header.play-head', h('h1', 'Playground'), h('p.lede', 'A blank page for any Python you like. It runs in your browser, so the standard library is available but there is no internet access.')),
     notice ? h('p.notice', icon('info', 16), notice) : null,
-    h('div.toolbar', runBtn, stopBtn, traceBtn, select, saveToggleBtn, refBtn, runTimeEl, h('span.toolbar-gap'), shareBtn, dlBtn, clearBtn),
+    h('div.toolbar', runBtn, stopBtn, traceBtn, select, saveToggleBtn, refBtn, runTimeEl, h('span.toolbar-gap'), copyCodeBtn, shareBtn, dlBtn, clearBtn),
     saveForm,
     snipBar,
-    h('div.play-grid', h('div.play-editor', ed.el), h('div.play-side', stdinBox, con.el)),
+    h('div.play-grid', h('div.play-editor', ed.el, editorFoot), h('div.play-side', stdinBox, con.el)),
     traceHost
   );
   return { node, title: 'Playground' };

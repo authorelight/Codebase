@@ -549,6 +549,30 @@ kbd { font-size: 0.82em; padding: 0.12em 0.45em; border: 1px solid var(--rule); 
   animation: dialog-in 0.16s cubic-bezier(0.16, 1, 0.3, 1);
 }
 @keyframes dialog-in {
-  from { opacity: 0; transform: translateY(6px) scale(0.99); }
-  to { opacity: 1; transform: none; }
+  from { transform: translateY(5px) scale(0.99); }
+  to { transform: none; }
 }
+
+/* ---- accessible confirmation modal ----------------------------------------------------- */
+.cq-confirm-dialog { width: min(29rem, calc(100vw - 1.5rem)); }
+.cq-confirm-panel { padding: 1.15rem 1.25rem 1.25rem; gap: 0.85rem; }
+.cq-confirm-head { display: flex; align-items: center; gap: 0.7rem; }
+.cq-confirm-head h2 { flex: 1; margin: 0; font-size: 1.3rem; line-height: 1.15; }
+.cq-confirm-badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 50%;
+  background: var(--info-bg);
+  color: var(--info);
+}
+.cq-confirm-badge.is-danger { background: var(--bad-bg); color: var(--bad); }
+.cq-confirm-msg { margin: 0; font-size: 0.95rem; line-height: 1.55; color: var(--ink-2); }
+.cq-confirm-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.55rem; padding-top: 0.25rem; }
+@media (max-width: 420px) {
+  .cq-confirm-actions { flex-direction: column-reverse; }
+  .cq-confirm-actions .btn { width: 100%; }
+}
+

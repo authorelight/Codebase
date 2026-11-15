@@ -22,12 +22,21 @@ export async function moduleView({ course: cid, module: mid }) {
     modBarFill
   );
   const timeMetaEl = h('span.with-icon.mod-time-meta', { hidden: true });
+  const modDoneBtn = h('button.chip.mod-complete-btn', {
+    type: 'button',
+    onclick: () => store.toggleModule(m.key),
+  });
 
   function paintStations() {
     const s = store.state;
     const prog = moduleProgress(m, s);
     modBar.setAttribute('aria-valuenow', String(prog.pct));
     modBarFill.style.width = prog.pct + '%';
+    const modDone = !!prog.complete;
+    modDoneBtn.className = 'chip mod-complete-btn' + (modDone ? ' chip-done is-done' : '');
+    modDoneBtn.setAttribute('aria-pressed', modDone ? 'true' : 'false');
+    modDoneBtn.title = modDone ? 'Module completed (click to mark incomplete)' : 'Mark module completed';
+    modDoneBtn.replaceChildren(icon('check', 13), modDone ? 'Completed' : 'Mark module complete');
     const modSec = store.moduleSeconds(m.key);
     if (modSec > 0) {
       timeMetaEl.hidden = false;
@@ -97,7 +106,7 @@ export async function moduleView({ course: cid, module: mid }) {
         'div',
         h('h1', m.title),
         h('p.lede', m.summary),
-        h('div.mod-meta', h('span.chip.chip-level', LEVEL[m.level] || m.level || ''), h('span', plural(m.lessons.length, 'lesson')), m.minutes ? h('span', minutesLabel(m.minutes)) : null, m.game ? h('span.with-icon', icon('gamepad', 14), 'Ends with a game') : null, timeMetaEl)
+        h('div.mod-meta', h('span.chip.chip-level', LEVEL[m.level] || m.level || ''), h('span', plural(m.lessons.length, 'lesson')), m.minutes ? h('span', minutesLabel(m.minutes)) : null, m.game ? h('span.with-icon', icon('gamepad', 14), 'Ends with a game') : null, timeMetaEl, modDoneBtn)
       )
     ),
     modBar,

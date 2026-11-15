@@ -4,6 +4,8 @@
 
 import { RANKS, XP } from './config.js';
 import { dayKey, daysBetween } from './lib/util.js';
+import { DEFAULT_GOAL_MINUTES, normalizeGoalMinutes, sanitizeDayRecord } from './lib/study-stats.js';
+import { moduleKeyFromKey } from './lib/module-completion.js';
 
 const KEY = 'cq:v1';
 const DRAFT = 'cq:v1:draft:';
@@ -17,12 +19,15 @@ const fresh = () => ({
   streak: { last: '', count: 0, best: 0 },
   lessons: {},
   lessonXp: {},
+  modules: {},
   exercises: {},
   checks: {},
   quizzes: {},
   games: {},
   badges: {},
   moduleTime: {},
+  dailyGoalMinutes: DEFAULT_GOAL_MINUTES,
+  dailyActivity: {},
   stats: { runs: 0, errors: 0, fixes: 0, cleanSolves: 0, playgroundRuns: 0, shares: 0 },
   snippets: [],
   last: null,
@@ -58,7 +63,10 @@ function load() {
         return {
           ...fresh(),
           ...s,
+          modules: { ...(s.modules || {}) },
           moduleTime: { ...(s.moduleTime || {}) },
+          dailyGoalMinutes: normalizeGoalMinutes(s.dailyGoalMinutes),
+          dailyActivity: { ...(s.dailyActivity || {}) },
           stats: { ...fresh().stats, ...(s.stats || {}) },
         };
       }
@@ -97,6 +105,21 @@ function touchStreak() {
   s.best = Math.max(s.best, s.count);
 }
 
+function recordDayDelta({ seconds = 0, lessons = 0, exercises = 0 } = {}) {
+  const today = dayKey();
+  if (!state.dailyActivity || typeof state.dailyActivity !== 'object') state.dailyActivity = {};
+  const cur = sanitizeDayRecord(state.dailyActivity[today]);
+  state.dailyActivity[today] = {
+    seconds: cur.seconds + Math.max(0, Math.floor(seconds)),
+    lessons: cur.lessons + Math.max(0, Math.floor(lessons)),
+    exercises: cur.exercises + Math.max(0, Math.floor(exercises)),
+  };
+  const keys = Object.keys(state.dailyActivity).sort();
+  while (keys.length > 90) {
+    delete state.dailyActivity[keys.shift()];
+  }
+}
+
 export function rankFor(xp) {
   let i = 0;
   for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k].xp) i = k;
@@ -129,15 +152,49 @@ export const store = {
     state.last = { route, title, ts: Date.now() };
     save();
   },
-  // --- lessons -----------------------------------------------------------------
+  // --- lessons & modules ------------------------------------------------------
   isLessonDone: (key) => !!state.lessons[key],
-  completeLesson(key) {
+  isModuleDone: (key) => !!(state.modules && state.modules[key]),
+  completeModule(key) {
+    if (!key) return false;
+    if (!state.modules || typeof state.modules !== 'object') state.modules = {};
+    if (state.modules[key]) return false;
+    state.modules[key] = Date.now();
     touchStreak();
-    if (state.lessons[key]) {
-      save();
+    save();
+    return true;
+  },
+  uncompleteModule(key) {
+    if (!key || !state.modules || !state.modules[key]) return false;
+    delete state.modules[key];
+    save();
+    return true;
+  },
+  toggleModule(key) {
+    if (this.isModuleDone(key)) {
+      this.uncompleteModule(key);
       return false;
     }
+    this.completeModule(key);
+    return true;
+  },
+  completeLesson(key) {
+    touchStreak();
+    const modKey = moduleKeyFromKey(key);
+    let modMarked = false;
+    if (modKey) {
+      if (!state.modules || typeof state.modules !== 'object') state.modules = {};
+      if (!state.modules[modKey]) {
+        state.modules[modKey] = Date.now();
+        modMarked = true;
+      }
+    }
+    if (state.lessons[key]) {
+      save();
+      return modMarked;
+    }
     state.lessons[key] = Date.now();
+    recordDayDelta({ lessons: 1 });
     if (!state.lessonXp) state.lessonXp = {};
     if (!state.lessonXp[key]) {
       state.lessonXp[key] = true;
@@ -170,12 +227,20 @@ export const store = {
     e.hints = Math.max(e.hints, hints);
     e.solution = e.solution || solution;
     let gained = 0;
-    if (passed && !e.done) {
-      e.done = Date.now();
-      gained = solution ? XP.exerciseAfterSolution : XP.exercise;
-      award(gained, 'Exercise solved');
-      if (failedBefore) state.stats.fixes += 1;
-      if (!hints && !solution) state.stats.cleanSolves += 1;
+    if (passed) {
+      const modKey = moduleKeyFromKey(key);
+      if (modKey) {
+        if (!state.modules || typeof state.modules !== 'object') state.modules = {};
+        if (!state.modules[modKey]) state.modules[modKey] = Date.now();
+      }
+      if (!e.done) {
+        e.done = Date.now();
+        recordDayDelta({ exercises: 1 });
+        gained = solution ? XP.exerciseAfterSolution : XP.exercise;
+        award(gained, 'Exercise solved');
+        if (failedBefore) state.stats.fixes += 1;
+        if (!hints && !solution) state.stats.cleanSolves += 1;
+      }
     }
     save();
     return gained;
@@ -267,8 +332,17 @@ export const store = {
     if (!state.moduleTime || typeof state.moduleTime !== 'object') state.moduleTime = {};
     const prev = this.moduleSeconds(key);
     state.moduleTime[key] = prev + safeDelta;
+    recordDayDelta({ seconds: safeDelta });
     save();
     return state.moduleTime[key];
+  },
+  dailyGoalMinutes() {
+    return normalizeGoalMinutes(state.dailyGoalMinutes);
+  },
+  setDailyGoalMinutes(minutes) {
+    state.dailyGoalMinutes = normalizeGoalMinutes(minutes);
+    save();
+    return state.dailyGoalMinutes;
   },
   totalStudySeconds() {
     if (!state.moduleTime || typeof state.moduleTime !== 'object') return 0;
@@ -326,7 +400,10 @@ export const store = {
     state = {
       ...fresh(),
       ...data.state,
+      modules: { ...(data.state.modules || {}) },
       moduleTime: { ...(data.state.moduleTime || {}) },
+      dailyGoalMinutes: normalizeGoalMinutes(data.state.dailyGoalMinutes),
+      dailyActivity: { ...(data.state.dailyActivity || {}) },
       stats: { ...fresh().stats, ...(data.state.stats || {}) },
     };
     for (const [k, v] of Object.entries(data.drafts || {})) safeSet(DRAFT + k, v);

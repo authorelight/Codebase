@@ -7,6 +7,7 @@ import { renderRouteMap } from '../ui/route-map.js';
 import { openSearchModal } from '../ui/search-modal.js';
 import { openReferenceModal } from '../ui/cheatsheet-modal.js';
 import { computeDashboardProgress, computeTotalStudyTime, formatStudyDuration } from '../search.js';
+import { computeDailyGoalProgress } from '../lib/study-stats.js';
 import { createNeuralBackdrop } from '../ui/neural-bg.js';
 
 const DEMO = `name = "Ada"
@@ -41,16 +42,33 @@ export async function homeView() {
     { role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': 0, 'aria-label': 'Lesson completion progress' },
     dashBarFill
   );
+  const dashGoalBarFill = h('i');
+  const dashGoalBar = h(
+    'div.progress-bar.dash-goal-bar',
+    { role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': 0, 'aria-label': 'Daily study goal progress' },
+    dashGoalBarFill
+  );
+  const dashGoalText = h('span.dash-goal-text');
   const dashActionEl = h('a.btn.btn-secondary.btn-sm');
 
   function paintDashProgress() {
     const dp = computeDashboardProgress(course, store.state);
     const totalSec = computeTotalStudyTime(store.state);
+    const goal = computeDailyGoalProgress(store.state);
     const timeText = totalSec > 0 ? ` · ${formatStudyDuration(totalSec)} studied` : '';
     dashPctEl.textContent = `${dp.lessonsPct}%`;
     dashStatsEl.textContent = `${dp.lessonsDone} of ${dp.lessonsTotal} lessons completed · ${dp.modulesDone} of ${dp.modulesTotal} modules${timeText}`;
     dashBar.setAttribute('aria-valuenow', String(dp.lessonsPct));
     dashBarFill.style.width = `${dp.lessonsPct}%`;
+
+    const studiedLabel = goal.studiedSeconds > 0 ? formatStudyDuration(goal.studiedSeconds) : '0m';
+    dashGoalText.textContent = goal.reached
+      ? `Today: ${studiedLabel} / ${goal.goalMinutes}m goal reached`
+      : `Today: ${studiedLabel} of ${goal.goalMinutes}m daily goal (${goal.pct}%)`;
+    dashGoalBar.setAttribute('aria-valuenow', String(goal.pct));
+    dashGoalBar.classList.toggle('is-reached', goal.reached);
+    dashGoalBarFill.style.width = `${goal.pct}%`;
+
     if (dp.nextStation) {
       dashActionEl.href = dp.nextStation.href;
       dashActionEl.replaceChildren(icon('play', 14), dp.lessonsDone ? `Continue: ${dp.nextStation.title}` : `Start: ${dp.nextStation.title}`);
@@ -72,7 +90,13 @@ export async function homeView() {
         h('div.dash-progress-copy', h('h2', 'Course progress'), h('p.dash-progress-meta', dashPctEl, h('span', { 'aria-hidden': 'true' }, ' · '), dashStatsEl)),
         h('div.dash-progress-actions', dashActionEl, h('a.btn.btn-ghost.btn-sm', { href: '#/progress' }, 'Details'))
       ),
-      dashBar
+      dashBar,
+      h(
+        'div.dash-goal-row',
+        h('span.with-icon.dash-goal-label', icon('clock', 14), dashGoalText),
+        dashGoalBar,
+        h('a.dash-goal-link', { href: '#/progress' }, 'Adjust goal')
+      )
     )
   );
 

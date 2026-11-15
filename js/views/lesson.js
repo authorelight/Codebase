@@ -5,6 +5,7 @@ import { store } from '../store.js';
 import { renderDoc } from '../ui/doc-render.js';
 import { openReferenceModal } from '../ui/cheatsheet-modal.js';
 import { formatElapsedClock } from '../search.js';
+import { isReadingComplete } from '../lib/module-completion.js';
 
 /** Where "next" leads from a lesson: next lesson, the quiz, the game, or the next module. */
 export function nextAfterLesson(course, m, lesson) {
@@ -110,9 +111,11 @@ export async function lessonView({ course: cid, module: mid, lesson: lid }) {
 
   renderTimer();
 
+  const modStatusPill = h('span.chip.chip-done.lesson-mod-done', { hidden: !store.isModuleDone(m.key) }, icon('check', 13), 'Module completed');
+
   const meta = h(
     'div.lesson-meta-row',
-    h('p.lesson-meta', lesson.minutes ? h('span.with-icon', icon('book', 15), minutesLabel(lesson.minutes)) : null, exMetaSpan, timerWrap),
+    h('p.lesson-meta', lesson.minutes ? h('span.with-icon', icon('book', 15), minutesLabel(lesson.minutes)) : null, exMetaSpan, timerWrap, modStatusPill),
     h('div.lesson-tools', jumpExBtn, refBtn)
   );
 
@@ -151,6 +154,8 @@ export async function lessonView({ course: cid, module: mid, lesson: lid }) {
     });
 
     const done = store.isLessonDone(lesson.key);
+    const modDone = store.isModuleDone(m.key);
+    modStatusPill.hidden = !modDone;
     if (steps.children[i]) steps.children[i].classList.toggle('is-done', done);
     finishBtn.className = 'btn btn-lg ' + (done ? 'btn-done' : 'btn-primary');
     finishBtn.replaceChildren(icon('check', 18), done ? 'Lesson finished' : 'Finish lesson');
@@ -161,32 +166,106 @@ export async function lessonView({ course: cid, module: mid, lesson: lid }) {
     else finishNote.textContent = '';
   }
 
+  let autoReadSuppressed = false;
   function finish() {
     store.completeLesson(lesson.key);
+    store.completeModule(m.key);
     refreshProgress();
     nextLink.focus();
   }
   function unfinish() {
+    autoReadSuppressed = true;
     store.uncompleteLesson(lesson.key);
     refreshProgress();
     finishBtn.focus();
   }
   refreshProgress();
-  el.addEventListener('exercise-solved', refreshProgress);
+  el.addEventListener('exercise-solved', () => {
+    store.completeModule(m.key);
+    refreshProgress();
+  });
+
+  const readBarFill = h('i');
+  const readBar = h('div.lesson-read-track', { 'aria-hidden': 'true' }, readBarFill);
+  const backTopBtn = h(
+    'button.btn.btn-ghost.btn-sm.lesson-top-btn',
+    {
+      type: 'button',
+      onclick: () => window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }),
+    },
+    icon('arrow-up', 14),
+    'Back to top'
+  );
+
+  const footEl = h(
+    'footer.lesson-foot',
+    h('div.finish-row', finishBtn, nextLink, unfinishBtn, backTopBtn),
+    finishNote,
+    prev ? h('nav.pager', { 'aria-label': 'Lesson navigation' }, h('a.pager-link', { href: `#/c/${cid}/${mid}/${prev.id}` }, icon('arrow-left', 16), h('span', h('small', 'Previous lesson'), prev.title)), h('span')) : null
+  );
 
   const node = h(
     'article.page.lesson-page',
     { dataset: { line: m.line.id } },
+    readBar,
     h('p.crumbs', h('a', { href: `#/c/${cid}` }, course.title), h('span', ' / '), h('a', { href: `#/c/${cid}/${mid}` }, m.title)),
     h('header.lesson-head', m.lessons.length > 1 ? steps : null, h('h1', lesson.title), meta),
     h('div.lesson-layout', h('div.lesson-body', el), tocEl),
-    h(
-      'footer.lesson-foot',
-      h('div.finish-row', finishBtn, nextLink, unfinishBtn),
-      finishNote,
-      prev ? h('nav.pager', { 'aria-label': 'Lesson navigation' }, h('a.pager-link', { href: `#/c/${cid}/${mid}/${prev.id}` }, icon('arrow-left', 16), h('span', h('small', 'Previous lesson'), prev.title)), h('span')) : null
-    )
+    footEl
   );
+
+  let rafScroll = 0;
+  let hasScrolled = false;
+  let footerVisible = false;
+  const mountedAt = Date.now();
+  let footObserver = null;
+  let unsubStore = null;
+  let shortDwellTimer = null;
+
+  function maybeAutoCompleteReading(pct) {
+    if (autoReadSuppressed || document.visibilityState === 'hidden') return;
+    if (store.isLessonDone(lesson.key) && store.isModuleDone(m.key)) return;
+    const needsScroll = node.scrollHeight > window.innerHeight * 1.08;
+    const completed = isReadingComplete({
+      scrollPct: pct,
+      footerVisible,
+      hasScrolled,
+      needsScroll,
+      dwellMs: Date.now() - mountedAt,
+    });
+    if (completed) {
+      store.completeLesson(lesson.key);
+      store.completeModule(m.key);
+      refreshProgress();
+    }
+  }
+
+  function paintReadProgress() {
+    rafScroll = 0;
+    if (window.scrollY > 12) hasScrolled = true;
+    const rect = node.getBoundingClientRect();
+    const top = rect.top + window.scrollY;
+    const maxScroll = Math.max(1, top + node.scrollHeight - window.innerHeight);
+    const pct = Math.min(100, Math.max(0, Math.round((window.scrollY / maxScroll) * 100)));
+    readBarFill.style.width = pct + '%';
+    maybeAutoCompleteReading(pct);
+  }
+  function onScroll() {
+    if (window.scrollY > 12) hasScrolled = true;
+    if (!rafScroll) rafScroll = requestAnimationFrame(paintReadProgress);
+  }
+  function onKeyNav(e) {
+    if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    const t = e.target;
+    if (t && (t.tagName === 'TEXTAREA' || t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.isContentEditable)) return;
+    if (e.key === 'ArrowLeft' && prev) {
+      e.preventDefault();
+      location.hash = `#/c/${cid}/${mid}/${prev.id}`;
+    } else if (e.key === 'ArrowRight' && next?.href) {
+      e.preventDefault();
+      location.hash = next.href;
+    }
+  }
 
   return {
     node,
@@ -206,19 +285,48 @@ export async function lessonView({ course: cid, module: mid, lesson: lid }) {
         );
         toc.forEach((t) => observer.observe(t.el));
       }
+      if ('IntersectionObserver' in window) {
+        footObserver = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              footerVisible = e.isIntersecting;
+              if (footerVisible) {
+                if (window.scrollY > 12) hasScrolled = true;
+                paintReadProgress();
+              }
+            }
+          },
+          { threshold: 0.05 }
+        );
+        footObserver.observe(footEl);
+      }
+      unsubStore = store.subscribe(refreshProgress);
+      shortDwellTimer = window.setTimeout(() => paintReadProgress(), 1300);
       renderTimer();
       timerId = window.setInterval(onTick, 1000);
       document.addEventListener('visibilitychange', onVisibilityChange);
       window.addEventListener('pagehide', onPageHide);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('keydown', onKeyNav);
+      paintReadProgress();
     },
     cleanup() {
       if (observer) observer.disconnect();
+      if (footObserver) footObserver.disconnect();
+      if (unsubStore) {
+        unsubStore();
+        unsubStore = null;
+      }
+      if (shortDwellTimer !== null) clearTimeout(shortDwellTimer);
       if (timerId !== null) {
         clearInterval(timerId);
         timerId = null;
       }
+      if (rafScroll) cancelAnimationFrame(rafScroll);
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('pagehide', onPageHide);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('keydown', onKeyNav);
       flushTime();
     },
   };

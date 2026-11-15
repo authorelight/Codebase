@@ -2,7 +2,7 @@
 // shows download progress for the Python engine, hosts inline input() prompts and
 // explains errors in plain language.
 
-import { h, clear } from '../lib/util.js';
+import { h, clear, copyText } from '../lib/util.js';
 import { icon } from '../lib/icons.js';
 import { explainError } from '../lib/errors.js';
 import { runner } from '../py/runner.js';
@@ -11,8 +11,32 @@ const MAX_CHARS = 300000;
 
 export function createConsole({ title = 'Output', placeholder = 'Output appears here when you run the code.', emptyNote = 'The program finished without printing anything. Use print() to show something here.' } = {}) {
   const status = h('span.con-status');
+  let copyTimer = null;
+  const copyBtn = h(
+    'button.btn.btn-ghost.btn-sm.con-copy',
+    {
+      type: 'button',
+      title: 'Copy output',
+      'aria-label': 'Copy output',
+      disabled: true,
+      onclick: async () => {
+        const text = out.textContent || '';
+        if (!text) return;
+        const ok = await copyText(text);
+        if (!ok) return;
+        copyBtn.replaceChildren(icon('check', 15));
+        copyBtn.title = 'Copied output';
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => {
+          copyBtn.replaceChildren(icon('copy', 15));
+          copyBtn.title = 'Copy output';
+        }, 1400);
+      },
+    },
+    icon('copy', 15)
+  );
   const clearBtn = h('button.btn.btn-ghost.btn-sm', { type: 'button', title: 'Clear output', 'aria-label': 'Clear output', onclick: () => api.reset() }, icon('trash', 15));
-  const head = h('div.con-head', h('span.con-title', title), status, clearBtn);
+  const head = h('div.con-head', h('span.con-title', title), status, copyBtn, clearBtn);
   const bar = h('i');
   const loadText = h('span');
   const loading = h('div.con-loading', { hidden: true }, h('div.con-bar', { role: 'progressbar', 'aria-label': 'Downloading Python' }, bar), loadText);
@@ -72,6 +96,7 @@ export function createConsole({ title = 'Output', placeholder = 'Output appears 
       clear(out);
       last = null;
       chars = 0;
+      copyBtn.disabled = true;
       errBox.hidden = true;
       clear(errBox);
       hint.hidden = false;
@@ -89,6 +114,7 @@ export function createConsole({ title = 'Output', placeholder = 'Output appears 
     write(kind, text) {
       if (!text) return;
       hint.hidden = true;
+      copyBtn.disabled = false;
       const stick = nearBottom();
       const cls = kind === 'stderr' ? 'e' : kind === 'echo' ? 'echo' : 'o';
       if (last && last.kind === cls && last.node.isConnected) {

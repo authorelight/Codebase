@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node tools/serve.mjs 3000",
-    "build": "node tools/build-content.mjs && node tools/validate.mjs --structure --strict && node --test js/search.test.js js/lib/theme.test.js js/content.test.js",
+    "build": "node tools/build-content.mjs && node tools/validate.mjs --structure --strict && node --test js/search.test.js js/lib/theme.test.js js/content.test.js js/lib/route-fallback.test.js js/lib/study-stats.test.js js/lib/module-completion.test.js",
     "lint": "find js tools -type f \\( -name '*.js' -o -name '*.mjs' \\) ! -name '*.test.js' -print0 | xargs -0 -n1 node --check && node --check sw.js",
     "start": "node tools/serve.mjs 3000"
   }
