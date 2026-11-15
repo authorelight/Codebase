@@ -1,10 +1,13 @@
 import { h, plural } from '../lib/util.js';
 import { icon } from '../lib/icons.js';
-import { loadCourseList, loadCourse } from '../content.js';
+import { loadCourseList, loadCourse, moduleProgress } from '../content.js';
 import { store } from '../store.js';
-import { SITE } from '../config.js';
 import { createRunBlock } from '../ui/runblock.js';
 import { renderRouteMap } from '../ui/route-map.js';
+import { openSearchModal } from '../ui/search-modal.js';
+import { openReferenceModal } from '../ui/cheatsheet-modal.js';
+import { computeDashboardProgress, computeTotalStudyTime, formatStudyDuration } from '../search.js';
+import { createNeuralBackdrop } from '../ui/neural-bg.js';
 
 const DEMO = `name = "Ada"
 for step in range(1, 4):
@@ -18,6 +21,7 @@ export async function homeView() {
   const real = course.modules.filter((m) => !m.missing);
   const lessonCount = real.reduce((n, m) => n + m.lessons.length, 0);
   const gameCount = real.filter((m) => m.game).length;
+  const doneModules = real.filter((m) => moduleProgress(m, state).complete).length;
   const first = real[0];
 
   const last = state.last && state.last.route && state.last.route.startsWith('/c/') ? state.last : null;
@@ -28,8 +32,53 @@ export async function homeView() {
   con.write('stdout', 'Step 1: hello, Ada!\nStep 2: hello, Ada!\nStep 3: hello, Ada!\n');
   con.el.classList.add('is-ghost');
 
+  // ---- dashboard progress bar (persisted via localStorage) ----
+  const dashPctEl = h('strong.dash-pct');
+  const dashStatsEl = h('span.dash-stats');
+  const dashBarFill = h('i');
+  const dashBar = h(
+    'div.progress-bar.dash-progress-bar',
+    { role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': 0, 'aria-label': 'Lesson completion progress' },
+    dashBarFill
+  );
+  const dashActionEl = h('a.btn.btn-secondary.btn-sm');
+
+  function paintDashProgress() {
+    const dp = computeDashboardProgress(course, store.state);
+    const totalSec = computeTotalStudyTime(store.state);
+    const timeText = totalSec > 0 ? ` · ${formatStudyDuration(totalSec)} studied` : '';
+    dashPctEl.textContent = `${dp.lessonsPct}%`;
+    dashStatsEl.textContent = `${dp.lessonsDone} of ${dp.lessonsTotal} lessons completed · ${dp.modulesDone} of ${dp.modulesTotal} modules${timeText}`;
+    dashBar.setAttribute('aria-valuenow', String(dp.lessonsPct));
+    dashBarFill.style.width = `${dp.lessonsPct}%`;
+    if (dp.nextStation) {
+      dashActionEl.href = dp.nextStation.href;
+      dashActionEl.replaceChildren(icon('play', 14), dp.lessonsDone ? `Continue: ${dp.nextStation.title}` : `Start: ${dp.nextStation.title}`);
+    } else {
+      dashActionEl.href = '#/progress';
+      dashActionEl.replaceChildren(icon('trophy', 14), 'View certificate');
+    }
+  }
+  paintDashProgress();
+  const unsubscribe = store.subscribe(paintDashProgress);
+
+  const dashSection = h(
+    'section.dash-progress',
+    { 'aria-label': 'Dashboard progress' },
+    h(
+      'div.dash-progress-card',
+      h(
+        'div.dash-progress-head',
+        h('div.dash-progress-copy', h('h2', 'Course progress'), h('p.dash-progress-meta', dashPctEl, h('span', { 'aria-hidden': 'true' }, ' · '), dashStatsEl)),
+        h('div.dash-progress-actions', dashActionEl, h('a.btn.btn-ghost.btn-sm', { href: '#/progress' }, 'Details'))
+      ),
+      dashBar
+    )
+  );
+
   const node = h(
     'div.home',
+    createNeuralBackdrop({ variant: 'hero' }),
     h(
       'section.hero',
       h(
@@ -41,13 +90,24 @@ export async function homeView() {
           h('a.btn.btn-primary.btn-lg', { href: startHref }, icon('play', 18), last ? 'Continue learning' : 'Start with module 1'),
           h('a.btn.btn-secondary.btn-lg', { href: '#/play' }, icon('terminal', 18), 'Open the playground')
         ),
-        last ? h('p.hero-last', 'Last visit: ', h('a', { href: '#' + last.route }, last.title || 'your last lesson')) : h('p.hero-last.muted', 'Free. No account. Your progress stays in this browser.')
+        last
+          ? h('p.hero-last', 'Last visit: ', h('a', { href: '#' + last.route }, last.title || 'your last lesson'), doneModules ? ` · ${doneModules} of ${real.length} modules complete` : '')
+          : h('p.hero-last.muted', 'Free · Runs locally in WebAssembly · Your progress stays in this browser.')
       ),
       h('div.hero-demo', h('p.demo-label', 'Try it now. Change the code and press Run.'), demo)
     ),
+    dashSection,
     h(
       'section.route-section',
-      h('div.section-head', h('h2', 'The route'), h('p', `${plural(lessonCount, 'lesson')}, ${plural(gameCount, 'game')}, five lines. Take them in order, or jump to any station.`)),
+      h(
+        'div.section-head.route-head-row',
+        h('div', h('h2', 'The route'), h('p', `${plural(lessonCount, 'lesson')}, ${plural(gameCount, 'game')}, five lines. Take them in order, or jump to any station.`)),
+        h(
+          'div.route-actions',
+          h('button.btn.btn-secondary.btn-sm', { type: 'button', onclick: () => openSearchModal() }, icon('search', 15), 'Search topics'),
+          h('button.btn.btn-secondary.btn-sm', { type: 'button', onclick: () => openReferenceModal({ courseId: course.id }) }, icon('book', 15), 'Cheat sheets')
+        )
+      ),
       renderRouteMap(course, state, { compact: true }),
       h('p.route-more', h('a.btn.btn-secondary', { href: `#/c/${course.id}` }, icon('map', 16), 'See the full course map'))
     ),
@@ -63,7 +123,13 @@ export async function homeView() {
       )
     )
   );
-  return { node, title: 'Learn Python' };
+  return {
+    node,
+    title: 'Learn Python',
+    cleanup() {
+      unsubscribe();
+    },
+  };
 }
 
 function part(ic, title, text) {

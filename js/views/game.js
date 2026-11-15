@@ -14,6 +14,7 @@ import { runInto, requestFor, engineProblem } from '../ui/run.js';
 import { runner } from '../py/runner.js';
 import { parseGame, pythonLevel, harnessSource, firstInput, levelFiles, ENGINES } from '../games/levels.js';
 import { createStage, engineInfo } from '../games/engines.js';
+import { openReferenceModal } from '../ui/cheatsheet-modal.js';
 
 const words = (v) => String(v ?? '').replace(/,/g, ' ').split(/\s+/).filter(Boolean);
 
@@ -92,7 +93,8 @@ export async function gameView({ course: cid, module: mid }, query) {
   const hintBtn = h('button.btn.btn-ghost', { type: 'button', onclick: () => showHint() }, icon('bulb', 16), h('span', 'Hint'));
   const solBtn = h('button.btn.btn-ghost', { type: 'button', hidden: true, onclick: () => showSolution() }, icon('eye', 16), 'Show a solution');
   const resetBtn = h('button.btn.btn-ghost', { type: 'button', title: 'Put the starter code back', onclick: () => resetCode() }, icon('reset', 15), 'Start over');
-  const bar = h('div.ex-bar.game-bar', runBtn, stopBtn, hintBtn, solBtn, resetBtn);
+  const refBtn = m.cheatsheet ? h('button.btn.btn-ghost', { type: 'button', title: 'Open this module’s cheat sheet', onclick: () => openReferenceModal({ courseId: cid, moduleId: mid }) }, icon('book', 15), 'Reference') : null;
+  const bar = h('div.ex-bar.game-bar', runBtn, stopBtn, hintBtn, solBtn, resetBtn, refBtn);
 
   const codeArea = h('section.game-code', { 'aria-label': 'Your program' }, h('div.game-ed', ed.el), bar, hintsEl, solutionEl, con.el);
   const side = h('aside.game-side', { 'aria-label': 'Board' }, stage.el, resultEl);

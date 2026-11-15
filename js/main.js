@@ -3,7 +3,7 @@
 import { h } from './lib/util.js';
 import { icon } from './lib/icons.js';
 import { SITE } from './config.js';
-import { prefs, store, rankFor } from './store.js';
+import { store, rankFor } from './store.js';
 import { route, start } from './router.js';
 import { toast } from './ui/toast.js';
 import { evaluateBadges } from './badges.js';
@@ -12,6 +12,9 @@ import { runner } from './py/runner.js';
 import { gateOn, isUnlocked, lock } from './auth.js';
 import { brandMark } from './ui/brand.js';
 import { startQuotes } from './ui/quote-card.js';
+import { openSearchModal, wireSearchShortcuts } from './ui/search-modal.js';
+import { initTheme, createThemeToggle } from './ui/theme-toggle.js';
+import { createProfileAvatar } from './ui/avatar.js';
 
 // ---- routes (views load on demand) ------------------------------------------
 const view = (path, name, file, fn) => route(path, name, async (p, q) => (await import(file))[fn](p, q));
@@ -27,14 +30,6 @@ view('/progress', 'progress', './views/progress.js', 'progressView');
 view('/certificate/:course', 'certificate', './views/certificate.js', 'certificateView');
 view('/help', 'help', './views/help.js', 'helpView');
 
-// ---- theme --------------------------------------------------------------------
-function applyTheme(mode) {
-  const root = document.documentElement;
-  if (mode === 'light' || mode === 'dark') root.dataset.theme = mode;
-  else delete root.dataset.theme;
-}
-const effectiveTheme = () => document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
 // ---- header / footer ------------------------------------------------------------
 const NAV = [
   { id: 'course', href: '#/c/python', label: 'Course', icon: 'map' },
@@ -45,10 +40,11 @@ const NAV = [
 const ROUTE_NAV = { course: 'course', module: 'course', lesson: 'course', quiz: 'course', game: 'course', play: 'play', progress: 'progress', certificate: 'progress', help: 'help' };
 
 function buildHeader() {
+  const avatar = createProfileAvatar({ size: 'sm', label: 'Profile' });
   const rankName = h('span.xp-rank');
   const xpText = h('span.xp-num');
   const streak = h('span.xp-streak', { hidden: true });
-  const chip = h('a.xp-chip', { href: '#/progress', title: 'Your progress' }, icon('zap', 15), rankName, xpText, streak);
+  const chip = h('a.xp-chip', { href: '#/progress', title: 'Your profile & progress' }, avatar, rankName, xpText, streak);
   const refresh = () => {
     const s = store.state;
     const r = rankFor(s.xp);
@@ -61,20 +57,7 @@ function buildHeader() {
   refresh();
   store.subscribe(refresh);
 
-  const themeBtn = h('button.btn.btn-ghost.btn-icon.theme-btn', { type: 'button', 'aria-label': 'Switch between light and dark theme', onclick: toggleTheme });
-  function paintThemeBtn() {
-    const dark = effectiveTheme() === 'dark';
-    themeBtn.replaceChildren(icon(dark ? 'sun' : 'moon', 19));
-    themeBtn.title = dark ? 'Switch to the light theme' : 'Switch to the dark theme';
-  }
-  function toggleTheme() {
-    const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
-    prefs.set('theme', next);
-    applyTheme(next);
-    paintThemeBtn();
-  }
-  paintThemeBtn();
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paintThemeBtn);
+  const themeToggle = createThemeToggle();
 
   const nav = h(
     'nav.site-nav',
@@ -95,7 +78,15 @@ function buildHeader() {
     });
   });
 
-  const head = h('header.site-head', h('a.brand', { href: '#/', 'aria-label': `${SITE.name} home` }, brandMark(), h('span.brand-name', SITE.short)), nav, h('div.head-tools', offline, chip, themeBtn));
+  const searchBtn = h(
+    'button.btn.btn-ghost.btn-sm.head-search',
+    { type: 'button', title: 'Search lessons, modules, and games (Ctrl+K)', 'aria-label': 'Search lessons, modules, and games', onclick: () => openSearchModal() },
+    icon('search', 16),
+    h('span.head-search-label', 'Search'),
+    h('kbd.head-search-kbd', 'Ctrl K')
+  );
+
+  const head = h('header.site-head', h('a.brand', { href: '#/', 'aria-label': `${SITE.name} home` }, brandMark(), h('span.brand-name', SITE.short)), nav, h('div.head-tools', offline, searchBtn, chip, themeToggle));
   fitHeader(head);
   return head;
 }
@@ -182,6 +173,7 @@ function boot() {
   document.body.append(buildFooter());
   wireRewards();
   startQuotes();
+  wireSearchShortcuts();
   start(main);
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
@@ -201,7 +193,7 @@ function boot() {
 // first and the rest of the site is only built after the right password was typed. The address (#/c/python/...)
 // is left alone meanwhile, so a link to a lesson still opens that lesson afterwards.
 async function startup() {
-  applyTheme(prefs.get('theme', 'auto'));
+  initTheme();
   if (gateOn() && !isUnlocked()) {
     const { showLogin } = await import('./views/login.js');
     await showLogin(document.getElementById('app'));

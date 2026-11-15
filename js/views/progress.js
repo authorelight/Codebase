@@ -5,6 +5,8 @@ import { store, rankFor } from '../store.js';
 import { allBadgeDefs, EXTRA_BADGES } from '../badges.js';
 import { RANKS } from '../config.js';
 import { toast } from '../ui/toast.js';
+import { computeLineMastery, formatStudyDuration, computeTotalStudyTime } from '../search.js';
+import { createProfileAvatar } from '../ui/avatar.js';
 
 export async function progressView() {
   const list = await loadCourseList();
@@ -18,10 +20,24 @@ export async function progressView() {
   const levels = Object.values(s.games).reduce((n, g) => n + Object.keys(g.levels).length, 0);
   const stars = Object.values(s.games).reduce((n, g) => n + Object.values(g.levels).reduce((k, l) => k + l.stars, 0), 0);
   const totalLessons = courses.reduce((n, c) => n + c.modules.reduce((k, m) => k + m.lessons.length, 0), 0);
+  const totalSeconds = computeTotalStudyTime(s);
 
   const rankCard = h(
     'section.rank-card',
-    h('div.rank-main', h('p.rank-level', `Rank ${rank.level}`), h('h2', rank.name), h('p.rank-xp', h('strong', s.xp.toLocaleString()), ' XP')),
+    h(
+      'div.rank-identity',
+      createProfileAvatar({
+        size: 'lg',
+        breathing: true,
+        label: s.name ? `${s.name} profile photo` : 'Learner profile photo',
+      }),
+      h(
+        'div.rank-main',
+        h('p.rank-level', s.name ? `${s.name} · Rank ${rank.level}` : `Rank ${rank.level}`),
+        h('h2', rank.name),
+        h('p.rank-xp', h('strong', s.xp.toLocaleString()), ' XP')
+      )
+    ),
     h(
       'div.rank-next',
       rank.next ? h('p', `${(rank.next.xp - s.xp).toLocaleString()} XP to ${rank.next.name}`) : h('p', 'You have reached the top rank.'),
@@ -36,8 +52,42 @@ export async function progressView() {
     tile('terminal', exercisesDone, '', 'exercises solved'),
     tile('list', quizzesPassed, '', 'quizzes passed'),
     tile('gamepad', levels, '', 'game levels cleared'),
-    tile('star', stars, '', 'game stars')
+    tile('star', stars, '', 'game stars'),
+    tile('clock', formatStudyDuration(totalSeconds), '', 'time spent')
   );
+
+  const mastery = courses[0] ? computeLineMastery(courses[0], s) : { lines: [], nextStation: null };
+  const nextCard = mastery.nextStation
+    ? h(
+        'section.next-station-card',
+        { dataset: { line: mastery.nextStation.lineId } },
+        h(
+          'div',
+          h('p.next-station-kicker', `${mastery.nextStation.lineTitle} line · ${mastery.nextStation.moduleTitle}`),
+          h('h2', `Next up: ${mastery.nextStation.title}`)
+        ),
+        h('a.btn.btn-primary', { href: mastery.nextStation.href }, icon('play', 16), 'Continue')
+      )
+    : null;
+
+  const linesSection = mastery.lines.length
+    ? h(
+        'section.line-mastery',
+        h('h2', 'Learning lines'),
+        h(
+          'ul.line-mastery-grid',
+          mastery.lines.map((ln) =>
+            h(
+              'li.line-mastery-card',
+              { dataset: { line: ln.id } },
+              h('div.lm-head', h('strong', ln.title), h('span.lm-pct', `${ln.pct}%`)),
+              h('div.progress-bar', { 'aria-hidden': 'true' }, h('i', { style: { width: ln.pct + '%' } })),
+              h('p.lm-meta', `${ln.modulesComplete}/${ln.modulesTotal} modules · ${ln.lessonsDone}/${ln.lessonsTotal} lessons · ${ln.gamesDone}/${ln.gamesTotal} games`)
+            )
+          )
+        )
+      )
+    : null;
 
   const modulesSection = h(
     'section.prog-modules',
@@ -49,7 +99,10 @@ export async function progressView() {
           .filter((m) => !m.missing)
           .map((m) => {
             const p = moduleProgress(m, s);
-            return h('li', { dataset: { line: m.line.id } }, h('a', { href: `#/c/${c.id}/${m.id}` }, h('span.mb-title', `${m.index + 1}. ${m.title}`), h('span.mb-pct', p.complete ? 'Complete' : p.pct + '%')), h('div.progress-bar', { 'aria-hidden': 'true' }, h('i', { style: { width: p.pct + '%' } })));
+            const modSec = store.moduleSeconds(m.key);
+            const statusText = p.complete ? 'Complete' : p.pct + '%';
+            const label = modSec > 0 ? `${formatStudyDuration(modSec)} · ${statusText}` : statusText;
+            return h('li', { dataset: { line: m.line.id } }, h('a', { href: `#/c/${c.id}/${m.id}` }, h('span.mb-title', `${m.index + 1}. ${m.title}`), h('span.mb-pct', label)), h('div.progress-bar', { 'aria-hidden': 'true' }, h('i', { style: { width: p.pct + '%' } })));
           })
       )
     )
@@ -124,7 +177,7 @@ export async function progressView() {
     )
   );
 
-  const node = h('section.page.progress-page', h('h1', 'Your progress'), rankCard, tiles, modulesSection, badgesSection, certSection, dataSection, h('details.rank-ladder', h('summary', 'All ranks'), h('ol', RANKS.map((r) => h('li' + (r.name === rank.name ? '.is-current' : ''), h('strong', r.name), h('span', `${r.xp.toLocaleString()} XP`))))));
+  const node = h('section.page.progress-page', h('h1', 'Your progress'), rankCard, nextCard, tiles, linesSection, modulesSection, badgesSection, certSection, dataSection, h('details.rank-ladder', h('summary', 'All ranks'), h('ol', RANKS.map((r) => h('li' + (r.name === rank.name ? '.is-current' : ''), h('strong', r.name), h('span', `${r.xp.toLocaleString()} XP`))))));
   return { node, title: 'Progress' };
 }
 

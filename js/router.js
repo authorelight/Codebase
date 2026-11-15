@@ -111,6 +111,7 @@ export async function render() {
   }
   if (my !== token) return; // a newer navigation won
   clear(mountEl);
+  out.node.classList.add('view-enter');
   mountEl.appendChild(out.node);
   mountEl.removeAttribute('aria-busy');
   cleanup = out.cleanup || null;

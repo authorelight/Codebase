@@ -12,7 +12,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /** What the site is made of. This is the list the deploy workflow copies, minus the files the browser fetches by itself. */
-export const SHIPPED = ['index.html', 'manifest.webmanifest', 'css', 'js', 'content', 'vendor', 'fonts', 'icons', 'games'];
+export const SHIPPED = ['index.html', 'manifest.webmanifest', 'css', 'js', 'content', 'vendor', 'fonts', 'icons', 'games', 'public'];
 export const MANIFEST_NAME = 'asset-manifest.json';
 
 /** { version, bytes, files: [{ path, size }] } for the site in `dir`, in a stable order. */

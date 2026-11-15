@@ -3,7 +3,7 @@ import { icon } from '../lib/icons.js';
 import { loadCourse, findModule, moduleProgress, loadOptionalDoc } from '../content.js';
 import { store } from '../store.js';
 import { renderMarkdown } from '../lib/markdown.js';
-import { stripMarkdown } from '../lib/markdown.js';
+import { formatStudyDuration } from '../search.js';
 
 const LEVEL = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' };
 
@@ -14,34 +14,61 @@ export async function moduleView({ course: cid, module: mid }) {
   const state = store.state;
   const p = moduleProgress(m, state);
 
-  // find the "next up" station
-  let nextKey = null;
-  for (const l of m.lessons) if (!state.lessons[l.key]) { nextKey = l.key; break; }
-  if (!nextKey && m.quiz && !p.quizDone) nextKey = 'quiz';
-  if (!nextKey && m.game && !p.gameDone) nextKey = 'game';
+  const stationsList = h('ol.mod-stations');
+  const modBarFill = h('i');
+  const modBar = h(
+    'div.progress-bar',
+    { role: 'progressbar', 'aria-valuenow': 0, 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-label': 'Module progress' },
+    modBarFill
+  );
+  const timeMetaEl = h('span.with-icon.mod-time-meta', { hidden: true });
 
-  const rows = m.lessons.map((l, i) => {
-    const done = !!state.lessons[l.key];
-    return stationRow({
-      href: `#/c/${cid}/${mid}/${l.id}`,
-      kind: 'lesson',
-      label: String(i + 1),
-      title: l.title,
-      text: l.summary,
-      meta: l.minutes ? minutesLabel(l.minutes) : '',
-      done,
-      next: nextKey === l.key,
+  function paintStations() {
+    const s = store.state;
+    const prog = moduleProgress(m, s);
+    modBar.setAttribute('aria-valuenow', String(prog.pct));
+    modBarFill.style.width = prog.pct + '%';
+    const modSec = store.moduleSeconds(m.key);
+    if (modSec > 0) {
+      timeMetaEl.hidden = false;
+      timeMetaEl.replaceChildren(icon('clock', 14), `${formatStudyDuration(modSec)} spent`);
+    } else {
+      timeMetaEl.hidden = true;
+      timeMetaEl.textContent = '';
+    }
+
+    let nextKey = null;
+    for (const l of m.lessons) if (!s.lessons[l.key]) { nextKey = l.key; break; }
+    if (!nextKey && m.quiz && !prog.quizDone) nextKey = 'quiz';
+    if (!nextKey && m.game && !prog.gameDone) nextKey = 'game';
+
+    const rows = m.lessons.map((l, i) => {
+      const done = !!s.lessons[l.key];
+      return stationRow({
+        href: `#/c/${cid}/${mid}/${l.id}`,
+        kind: 'lesson',
+        label: String(i + 1),
+        title: l.title,
+        text: l.summary,
+        meta: l.minutes ? minutesLabel(l.minutes) : '',
+        done,
+        next: nextKey === l.key,
+        onToggle: () => store.toggleLesson(l.key),
+      });
     });
-  });
-  if (m.quiz) {
-    const q = store.quiz(m.key);
-    rows.push(stationRow({ href: `#/c/${cid}/${mid}/quiz`, kind: 'quiz', icon: 'list', title: 'Module quiz', text: 'Check what you remember. 70% passes.', meta: q ? `Best ${q.best}/${q.total}` : '', done: p.quizDone, next: nextKey === 'quiz' }));
+    if (m.quiz) {
+      const q = store.quiz(m.key);
+      rows.push(stationRow({ href: `#/c/${cid}/${mid}/quiz`, kind: 'quiz', icon: 'list', title: 'Module quiz', text: 'Check what you remember. 70% passes.', meta: q ? `Best ${q.best}/${q.total}` : '', done: prog.quizDone, next: nextKey === 'quiz' }));
+    }
+    if (m.game) {
+      const g = store.game(m.key);
+      const levels = Object.keys(g.levels).length;
+      rows.push(stationRow({ href: `#/c/${cid}/${mid}/game`, kind: 'game', icon: 'gamepad', title: m.gameTitle || 'Module game', text: m.gameSummary || 'Play with the module’s ideas by writing Python.', meta: levels ? `${levels} level${levels === 1 ? '' : 's'} cleared` : '', done: prog.gameDone, next: nextKey === 'game' }));
+    }
+    stationsList.replaceChildren(...rows);
   }
-  if (m.game) {
-    const g = store.game(m.key);
-    const levels = Object.keys(g.levels).length;
-    rows.push(stationRow({ href: `#/c/${cid}/${mid}/game`, kind: 'game', icon: 'gamepad', title: m.gameTitle || 'Module game', text: m.gameSummary || 'Play with the module’s ideas by writing Python.', meta: levels ? `${levels} level${levels === 1 ? '' : 's'} cleared` : '', done: p.gameDone, next: nextKey === 'game' }));
-  }
+  paintStations();
+  const unsubscribe = store.subscribe(paintStations);
 
   const idx = course.modules.indexOf(m);
   const prevM = course.modules.slice(0, idx).reverse().find((x) => !x.missing);
@@ -70,12 +97,12 @@ export async function moduleView({ course: cid, module: mid }) {
         'div',
         h('h1', m.title),
         h('p.lede', m.summary),
-        h('div.mod-meta', h('span.chip.chip-level', LEVEL[m.level] || m.level || ''), h('span', plural(m.lessons.length, 'lesson')), m.minutes ? h('span', minutesLabel(m.minutes)) : null, m.game ? h('span.with-icon', icon('gamepad', 14), 'Ends with a game') : null)
+        h('div.mod-meta', h('span.chip.chip-level', LEVEL[m.level] || m.level || ''), h('span', plural(m.lessons.length, 'lesson')), m.minutes ? h('span', minutesLabel(m.minutes)) : null, m.game ? h('span.with-icon', icon('gamepad', 14), 'Ends with a game') : null, timeMetaEl)
       )
     ),
-    h('div.progress-bar', { role: 'progressbar', 'aria-valuenow': p.pct, 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-label': 'Module progress' }, h('i', { style: { width: p.pct + '%' } })),
+    modBar,
     m.outcomes && m.outcomes.length ? h('section.outcomes', h('h2', 'By the end you can'), h('ul', m.outcomes.map((o) => h('li', o)))) : null,
-    h('section.mod-route', h('h2.sr-only', 'Stations'), h('ol.mod-stations', rows)),
+    h('section.mod-route', h('h2.sr-only', 'Stations'), stationsList),
     cheat,
     h(
       'nav.pager',
@@ -84,10 +111,16 @@ export async function moduleView({ course: cid, module: mid }) {
       nextM ? h('a.pager-link.is-next', { href: `#/c/${cid}/${nextM.id}` }, h('span', h('small', 'Next module'), nextM.title), icon('arrow-right', 16)) : h('span')
     )
   );
-  return { node, title: m.title };
+  return {
+    node,
+    title: m.title,
+    cleanup() {
+      unsubscribe();
+    },
+  };
 }
 
-function stationRow({ href, kind, label, icon: ic, title, text, meta, done, next }) {
+function stationRow({ href, kind, label, icon: ic, title, text, meta, done, next, onToggle }) {
   return h(
     'li.mstation.is-' + kind + (done ? '.is-done' : '') + (next ? '.is-next' : ''),
     h(
@@ -96,6 +129,19 @@ function stationRow({ href, kind, label, icon: ic, title, text, meta, done, next
       h('span.mdot', done ? icon('check', 16) : ic ? icon(ic, 16) : label),
       h('span.mstation-main', h('span.mstation-title', title), text ? h('span.mstation-text', text) : null),
       h('span.mstation-side', meta ? h('span.mstation-meta', meta) : null, next ? h('span.chip.chip-next', 'Next up') : done ? h('span.chip.chip-done', 'Done') : null)
-    )
+    ),
+    onToggle
+      ? h(
+          'button.mstation-toggle' + (done ? '.is-done' : ''),
+          {
+            type: 'button',
+            'aria-pressed': done ? 'true' : 'false',
+            'aria-label': done ? `Mark "${title}" as incomplete` : `Mark "${title}" as complete`,
+            title: done ? 'Completed (click to mark incomplete)' : 'Mark lesson complete',
+            onclick: onToggle,
+          },
+          icon('check', 16)
+        )
+      : null
   );
 }

@@ -9,6 +9,7 @@ import { store } from '../store.js';
 import { toast } from '../ui/toast.js';
 import { EXAMPLES } from '../examples.js';
 import { encodeShare, decodeShare } from '../lib/share.js';
+import { openReferenceModal } from '../ui/cheatsheet-modal.js';
 
 export async function playView({ code: shared }) {
   let initial = store.getDraft('playground');
@@ -43,6 +44,7 @@ export async function playView({ code: shared }) {
   syncInput();
 
   let running = false;
+  const runTimeEl = h('span.play-runtime.muted', { 'aria-live': 'polite' });
   const runBtn = h('button.btn.btn-primary', { type: 'button', onclick: () => run(), onpointerenter: () => runner.warm() }, icon('play', 16), 'Run');
   const stopBtn = h('button.btn.btn-danger', { type: 'button', hidden: true, onclick: () => runner.stop() }, icon('stop', 14), 'Stop');
   async function run() {
@@ -50,10 +52,12 @@ export async function playView({ code: shared }) {
     running = true;
     runBtn.disabled = true;
     stopBtn.hidden = false;
+    runTimeEl.textContent = '';
     try {
       const res = await runInto({ con, editor: ed, request: requestFor({ code: ed.getValue(), stdin: stdin.value }), countAs: 'playground' });
       const problem = engineProblem(res);
       if (problem) toast(problem, { kind: 'error', ms: 9000 });
+      else if (res && typeof res.ms === 'number') runTimeEl.textContent = `${res.ms} ms`;
     } finally {
       running = false;
       runBtn.disabled = false;
@@ -114,6 +118,99 @@ export async function playView({ code: shared }) {
     EXAMPLES.map((x) => h('option', { value: x.id }, x.title))
   );
 
+  // ---- saved snippets (localStorage) ----
+  const snipNameInput = h('input.input.snip-name-input', {
+    type: 'text',
+    maxlength: 48,
+    placeholder: 'Snippet name (e.g. Fibonacci helper)',
+    'aria-label': 'Snippet name',
+  });
+  const saveForm = h(
+    'form.snip-save-form',
+    {
+      hidden: true,
+      onsubmit: (e) => {
+        e.preventDefault();
+        const name = snipNameInput.value.trim();
+        if (!name) {
+          snipNameInput.focus();
+          return toast('Give the snippet a name first', { kind: 'error' });
+        }
+        const saved = store.saveSnippet(name, ed.getValue());
+        if (saved) {
+          snipNameInput.value = '';
+          saveForm.hidden = true;
+          renderSnippets();
+          toast(`Saved “${saved.name}”`, { icon: 'check' });
+        }
+      },
+    },
+    snipNameInput,
+    h('button.btn.btn-primary.btn-sm', { type: 'submit' }, 'Save'),
+    h('button.btn.btn-ghost.btn-sm', { type: 'button', onclick: () => (saveForm.hidden = true) }, 'Cancel')
+  );
+  const saveToggleBtn = h(
+    'button.btn.btn-secondary',
+    {
+      type: 'button',
+      onclick: () => {
+        saveForm.hidden = !saveForm.hidden;
+        if (!saveForm.hidden) snipNameInput.focus();
+      },
+    },
+    icon('edit', 15),
+    'Save snippet'
+  );
+  const snipBar = h('div.snip-bar', { hidden: true });
+  function renderSnippets() {
+    const list = store.snippets();
+    snipBar.hidden = !list.length;
+    if (!list.length) {
+      snipBar.replaceChildren();
+      return;
+    }
+    snipBar.replaceChildren(
+      h('span.snip-label', 'Saved snippets'),
+      h(
+        'ul.snip-list',
+        list.map((item) =>
+          h(
+            'li.snip-item',
+            h(
+              'button.snip-load',
+              {
+                type: 'button',
+                title: `Load ${item.name}`,
+                onclick: () => {
+                  ed.setValue(item.code);
+                  con.reset();
+                  if (!shared) store.setDraft('playground', item.code);
+                  toast(`Loaded “${item.name}”`, { icon: 'check' });
+                },
+              },
+              item.name
+            ),
+            h(
+              'button.snip-del',
+              {
+                type: 'button',
+                'aria-label': `Delete snippet ${item.name}`,
+                title: `Delete ${item.name}`,
+                onclick: () => {
+                  store.deleteSnippet(item.id);
+                  renderSnippets();
+                },
+              },
+              icon('x', 13)
+            )
+          )
+        )
+      )
+    );
+  }
+  renderSnippets();
+
+  const refBtn = h('button.btn.btn-secondary', { type: 'button', onclick: () => openReferenceModal() }, icon('book', 15), 'Reference');
   const shareBtn = h(
     'button.btn.btn-secondary',
     {
@@ -151,7 +248,9 @@ export async function playView({ code: shared }) {
     'section.page.play-page',
     h('header.play-head', h('h1', 'Playground'), h('p.lede', 'A blank page for any Python you like. It runs in your browser, so the standard library is available but there is no internet access.')),
     notice ? h('p.notice', icon('info', 16), notice) : null,
-    h('div.toolbar', runBtn, stopBtn, traceBtn, select, h('span.toolbar-gap'), shareBtn, dlBtn, clearBtn),
+    h('div.toolbar', runBtn, stopBtn, traceBtn, select, saveToggleBtn, refBtn, runTimeEl, h('span.toolbar-gap'), shareBtn, dlBtn, clearBtn),
+    saveForm,
+    snipBar,
     h('div.play-grid', h('div.play-editor', ed.el), h('div.play-side', stdinBox, con.el)),
     traceHost
   );

@@ -7,6 +7,7 @@ export const SITE = {
   repoUrl: '',
   // Courses are listed in content/courses.json. The first one opens from the home page.
   contentRoot: 'content',
+  profileAvatar: 'public/assets/aistudio/WhatsApp_Image_2026-11-09_at_10.15.39_AM_f02c0f6c.jpeg',
   // Bump this when you change content in a way learners should pick up immediately.
   version: '1.0.0',
 };

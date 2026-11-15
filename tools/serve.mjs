@@ -25,6 +25,8 @@ const types = {
   '.zip': 'application/zip',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
+  '.jpeg': 'image/jpeg',
+  '.jpg': 'image/jpeg',
   '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
   '.txt': 'text/plain; charset=utf-8',
@@ -72,7 +74,7 @@ export function createServer(rootDir = root, prefix = '') {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const sub = process.argv.find((a) => a.startsWith('--subpath'));
   const prefix = sub ? (sub.split('=')[1] || '/codequest-academy/') : '';
-  createServer(root, prefix).listen(port, () => {
-    console.log(`CodeQuest Academy is running at http://localhost:${port}${prefix || '/'}`);
+  createServer(root, prefix).listen(port, '0.0.0.0', () => {
+    console.log(`CodeQuest Academy is running at http://0.0.0.0:${port}${prefix || '/'}`);
   });
 }

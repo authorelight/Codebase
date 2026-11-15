@@ -45,9 +45,33 @@ function station(course, m, p, { compact, current }) {
   );
 }
 
-export function renderRouteMap(course, state, { compact = false } = {}) {
+export function renderRouteMap(course, state, { compact = false, filteredLines = null } = {}) {
   const wrap = h('div.route' + (compact ? '.is-compact' : ''));
   let currentAssigned = false;
+
+  if (filteredLines) {
+    for (const entry of filteredLines) {
+      const { line, modules } = entry;
+      if (!modules.length) continue;
+      const fill = Math.round(modules.reduce((n, x) => n + x.progress.pct, 0) / modules.length);
+      const rail = h('ol.rail');
+      modules.forEach(({ module: m, progress: p }) => {
+        const isCurrent = !currentAssigned && !m.missing && !p.complete;
+        if (isCurrent) currentAssigned = true;
+        rail.appendChild(station(course, m, p, { compact, current: isCurrent }));
+      });
+      wrap.appendChild(
+        h(
+          'section.rline',
+          { dataset: { line: line.id }, style: { '--fill': fill + '%' } },
+          h('header.rline-head', h('h3', line.title), !compact && line.summary ? h('p', line.summary) : null),
+          rail
+        )
+      );
+    }
+    return wrap;
+  }
+
   for (const line of course.lineList) {
     const mods = line.modules;
     if (!mods.length) continue;

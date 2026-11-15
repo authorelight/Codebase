@@ -1,19 +1,32 @@
-// The password screen. It is shown instead of the site until the right password has been typed
-// (js/main.js decides when; js/auth.js does the checking).
-import { h } from '../lib/util.js';
+// The password screen. Integrates the learner profile portrait, neural-synaptic resonance field,
+// and smooth cognitive unlock transition before booting the workspace.
+import { h, prefersReducedMotion } from '../lib/util.js';
 import { icon } from '../lib/icons.js';
 import { brandMark } from '../ui/brand.js';
+import { createProfileAvatar } from '../ui/avatar.js';
+import { createNeuralBackdrop } from '../ui/neural-bg.js';
+import { createThemeToggle } from '../ui/theme-toggle.js';
 import { SITE } from '../config.js';
 import { canCheck, checkPassword, unlock } from '../auth.js';
 
-// The same words for every wrong guess. They say nothing about what the password looks like.
 const WRONG = 'That password is not right. Passwords are case-sensitive, so check the capital letters.';
 
-/** Shows the screen inside `app` and resolves once the right password has been typed (and has been remembered). */
+function savedLearnerName() {
+  try {
+    const raw = localStorage.getItem('cq:v1');
+    const parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed.name === 'string' ? parsed.name.trim() : '';
+  } catch {
+    return '';
+  }
+}
+
+/** Shows the screen inside `app` and resolves once the right password has been typed. */
 export function showLogin(app) {
   document.title = `Log in · ${SITE.name}`;
   return new Promise((resolve) => {
     const secure = canCheck();
+    const learnerName = savedLearnerName();
 
     const pw = h('input.input#login-pw', {
       type: 'password',
@@ -28,27 +41,62 @@ export function showLogin(app) {
       'aria-describedby': 'login-caps login-msg',
     });
     const show = h('button.btn.btn-secondary.login-show', { type: 'button', 'aria-controls': 'login-pw', 'aria-label': 'Show password', disabled: !secure }, 'Show');
-    // Both messages are always in the page (empty at first), so a screen reader announces them when text appears.
     const caps = h('p.login-caps#login-caps', { 'aria-live': 'polite' });
     const msg = h('p.login-msg#login-msg', { role: 'alert' });
     const remember = h('input', { type: 'checkbox', id: 'login-remember', checked: true });
     const idle = () => [icon('lock', 18), 'Log in'];
     const go = h('button.btn.btn-primary.btn-lg.login-go', { type: 'submit', disabled: !secure }, ...idle());
 
+    const avatar = createProfileAvatar({
+      size: 'xl',
+      breathing: true,
+      label: learnerName ? `${learnerName} profile photo` : 'Learner profile photo',
+    });
+
     const form = h(
       'form.login-card',
       { novalidate: true, onsubmit: submit },
-      h('div.login-brand', brandMark(), h('span', SITE.name)),
-      h('h1', 'Log in to continue'),
-      h('p.login-lede', 'Type the password to open the course.'),
-      secure ? null : h('div.notice.is-warn', { role: 'alert' }, icon('warn', 18), h('span', 'This address is not secure, so the browser cannot check the password. Open the site from its https:// address (the GitHub Pages link), or from http://localhost.')),
+      h(
+        'div.login-profile-hero',
+        avatar,
+        h(
+          'div.login-profile-copy',
+          h('p.login-kicker', SITE.name),
+          h('h1', learnerName ? `Welcome back, ${learnerName}` : 'Log in to continue'),
+          h('p.login-lede', 'Enter your password to resume your Python journey.')
+        )
+      ),
+      secure ? null : h('div.notice.is-warn', { role: 'alert' }, icon('warn', 18), h('span', 'This address is not secure, so the browser cannot check the password. Open the site from its https:// address, or from http://localhost.')),
       h('label.login-label', { for: 'login-pw' }, 'Password'),
       h('div.login-field', pw, show),
       caps,
       msg,
       h('label.login-remember', { for: 'login-remember' }, remember, h('span', 'Keep me logged in on this device')),
       go,
-      h('p.login-note.muted', 'Lost the password? Ask the person who gave you the link. Your progress is saved on this device only.')
+      h('p.login-note.muted', 'Lost the password? Ask the person who gave you the link. Your progress stays in this browser only.')
+    );
+
+    const showcase = h(
+      'section.login-showcase',
+      { 'aria-label': 'Learning approach' },
+      h('div.login-brand', brandMark(), h('span', SITE.name)),
+      h('h2.login-showcase-title', 'Train your programming intuition'),
+      h('p.login-showcase-lede', 'Designed around how the brain encodes procedural fluency: short active recall cycles, step-through memory visualization, and calm rhythm.'),
+      h(
+        'dl.login-pillars',
+        h('div.login-pillar', h('dt', '01. Active recall'), h('dd', 'Write and verify real Python directly inside every reading with instant diagnostics.')),
+        h('div.login-pillar', h('dt', '02. Visible state'), h('dd', 'Step line-by-line through variables and call frames so mental models click fast.')),
+        h('div.login-pillar', h('dt', '03. Focused pacing'), h('dd', 'Fifteen modular stations with a non-intrusive study timer and zero setup.')),
+      )
+    );
+
+    const topTools = h('div.login-topbar', createThemeToggle());
+    const page = h(
+      'main.login-page#main',
+      { tabindex: '-1' },
+      createNeuralBackdrop({ variant: 'portal' }),
+      topTools,
+      h('div.login-shell', showcase, form)
     );
 
     show.addEventListener('click', () => {
@@ -59,7 +107,6 @@ export function showLogin(app) {
       pw.focus();
     });
 
-    // The password is case-sensitive, so a Caps Lock that was left on deserves a word.
     const watchCaps = (e) => {
       if (e.getModifierState) caps.textContent = e.getModifierState('CapsLock') ? 'Caps Lock is on.' : '';
     };
@@ -72,7 +119,6 @@ export function showLogin(app) {
     });
 
     function fail(text) {
-      // clear first, so that the same sentence is announced again after a second wrong guess
       msg.textContent = '';
       setTimeout(() => (msg.textContent = text), 40);
       pw.setAttribute('aria-invalid', 'true');
@@ -102,8 +148,12 @@ export function showLogin(app) {
       }
       if (ok) {
         unlock(remember.checked);
-        app.replaceChildren();
-        resolve();
+        page.classList.add('is-unlocking');
+        const delay = prefersReducedMotion() ? 0 : 220;
+        setTimeout(() => {
+          app.replaceChildren();
+          resolve();
+        }, delay);
         return;
       }
       busy = false;
@@ -113,7 +163,7 @@ export function showLogin(app) {
       pw.select();
     }
 
-    app.replaceChildren(h('main.login-page#main', { tabindex: '-1' }, form));
+    app.replaceChildren(page);
     if (secure) pw.focus();
   });
 }

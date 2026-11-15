@@ -16,12 +16,15 @@ const fresh = () => ({
   xp: 0,
   streak: { last: '', count: 0, best: 0 },
   lessons: {},
+  lessonXp: {},
   exercises: {},
   checks: {},
   quizzes: {},
   games: {},
   badges: {},
+  moduleTime: {},
   stats: { runs: 0, errors: 0, fixes: 0, cleanSolves: 0, playgroundRuns: 0, shares: 0 },
+  snippets: [],
   last: null,
 });
 
@@ -51,7 +54,14 @@ function load() {
     const raw = safeGet(KEY);
     if (raw) {
       const s = JSON.parse(raw);
-      if (s && s.v === 1) return { ...fresh(), ...s, stats: { ...fresh().stats, ...(s.stats || {}) } };
+      if (s && s.v === 1) {
+        return {
+          ...fresh(),
+          ...s,
+          moduleTime: { ...(s.moduleTime || {}) },
+          stats: { ...fresh().stats, ...(s.stats || {}) },
+        };
+      }
     }
   } catch {}
   return fresh();
@@ -128,8 +138,26 @@ export const store = {
       return false;
     }
     state.lessons[key] = Date.now();
-    award(XP.lesson, 'Lesson finished');
+    if (!state.lessonXp) state.lessonXp = {};
+    if (!state.lessonXp[key]) {
+      state.lessonXp[key] = true;
+      award(XP.lesson, 'Lesson finished');
+    }
     save();
+    return true;
+  },
+  uncompleteLesson(key) {
+    if (!state.lessons[key]) return false;
+    delete state.lessons[key];
+    save();
+    return true;
+  },
+  toggleLesson(key) {
+    if (state.lessons[key]) {
+      this.uncompleteLesson(key);
+      return false;
+    }
+    this.completeLesson(key);
     return true;
   },
   // --- exercises ---------------------------------------------------------------
@@ -226,10 +254,60 @@ export const store = {
     touchStreak();
     save();
   },
+  // --- module study time -----------------------------------------------------------------
+  moduleSeconds(key) {
+    const n = Math.floor(Number(state.moduleTime?.[key]) || 0);
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  },
+  addModuleTime(key, seconds) {
+    if (!key) return 0;
+    const raw = Math.floor(Number(seconds));
+    if (!Number.isFinite(raw) || raw <= 0) return this.moduleSeconds(key);
+    const safeDelta = Math.min(raw, 3600);
+    if (!state.moduleTime || typeof state.moduleTime !== 'object') state.moduleTime = {};
+    const prev = this.moduleSeconds(key);
+    state.moduleTime[key] = prev + safeDelta;
+    save();
+    return state.moduleTime[key];
+  },
+  totalStudySeconds() {
+    if (!state.moduleTime || typeof state.moduleTime !== 'object') return 0;
+    let total = 0;
+    for (const val of Object.values(state.moduleTime)) {
+      const n = Math.floor(Number(val));
+      if (Number.isFinite(n) && n > 0) total += n;
+    }
+    return total;
+  },
   // --- code drafts (kept out of the main record so it stays small) -------------------------
   getDraft: (key) => safeGet(DRAFT + key),
   setDraft: (key, code) => safeSet(DRAFT + key, code),
   clearDraft: (key) => safeDel(DRAFT + key),
+
+  // --- playground saved snippets -----------------------------------------------------------
+  snippets: () => (Array.isArray(state.snippets) ? state.snippets : []),
+  saveSnippet(name, code) {
+    const cleanName = String(name || '').trim().slice(0, 48);
+    if (!cleanName) return null;
+    if (!Array.isArray(state.snippets)) state.snippets = [];
+    const existing = state.snippets.find((s) => s.name.toLowerCase() === cleanName.toLowerCase());
+    if (existing) {
+      existing.code = String(code || '');
+      existing.updated = Date.now();
+      save();
+      return existing;
+    }
+    const item = { id: 'snip_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: cleanName, code: String(code || ''), updated: Date.now() };
+    state.snippets.unshift(item);
+    if (state.snippets.length > 24) state.snippets.length = 24;
+    save();
+    return item;
+  },
+  deleteSnippet(id) {
+    if (!Array.isArray(state.snippets)) return;
+    state.snippets = state.snippets.filter((s) => s.id !== id);
+    save();
+  },
 
   // --- backup & reset ---------------------------------------------------------------------
   exportJson() {
@@ -245,7 +323,12 @@ export const store = {
   importJson(text) {
     const data = JSON.parse(text);
     if (!data || data.app !== 'codequest' || !data.state || data.state.v !== 1) throw new Error('This file is not a CodeQuest backup.');
-    state = { ...fresh(), ...data.state, stats: { ...fresh().stats, ...(data.state.stats || {}) } };
+    state = {
+      ...fresh(),
+      ...data.state,
+      moduleTime: { ...(data.state.moduleTime || {}) },
+      stats: { ...fresh().stats, ...(data.state.stats || {}) },
+    };
     for (const [k, v] of Object.entries(data.drafts || {})) safeSet(DRAFT + k, v);
     save();
   },
