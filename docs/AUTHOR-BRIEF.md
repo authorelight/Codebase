@@ -21,7 +21,7 @@ Order of writing: lessons 1 to 4, then the quiz, then the cheat sheet, then the 
 
 ## 3. Quality bar
 
-**Teach, do not list.** Each section introduces one idea: why it exists, the smallest example, the learner runs it, you explain what happened, they change it and run it again, then a name for the idea. A lesson that reads like a reference page has failed. Imagine an intelligent 12-year-old, or an adult with no technical background, sitting next to you.
+**Teach, do not list.** Each section introduces one idea: why it exists, the smallest example, the learner runs it, you explain what happened, they change it and run it again, then a name for the idea. A lesson that reads like a reference page has failed. Imagine an intelligent 12-year-old, or an adult with no technical background, sitting next to you. Start difficult or abstract ideas with a familiar situation when it will help: a recipe, shopping list, bus journey, school result, bank account, household task or another relevant example. Connect the analogy directly to the Python idea, then explain where the comparison stops being accurate. Never let an analogy replace the correct technical definition or the real code. Keep the tone respectful and adult-friendly; accessible language is not childish language.
 
 **Examples.** Concrete, small, varied: shops, football, buses, cooking, music, space missions, school marks. Names from many backgrounds (Ada, Tunde, Amara, Chidi, Priya, Wei, Sam, Zainab, Emeka). Use `python trace` where watching variables, loops or calls change helps (at least one per module where it fits). Show a mistake on purpose (`python run error`) when it teaches something.
 
