@@ -12,7 +12,7 @@ How to play:
 - Fewer lines earn more stars. Stuck? Tap **Hint**, one hint at a time.
 
 %% level l1 | The first door
-The first door opens when you read the welcome message behind it. Read the **name of a file**, open it, and print everything that it contains. The files `door1.txt`, `door2.txt` and so on are in your folder. Use a `with` block.
+The first door opens when you read the welcome message behind it. Read the **name of a file**, open it, and print everything that it contains. The files `door1.txt`, `door2.txt` and so on are in your folder. Use a `with` block. Think of the file name as a label on a folder: it tells Python which record to open. A `with` block groups the work with the open file and closes it automatically when the block ends.
 
 ```text
 door1.txt gives
@@ -65,7 +65,7 @@ with open(name) as f:
 %% end
 
 %% level l2 | Count the scrolls
-The scrolls are text files. Read the name of a file, and print how many lines it has and how many words, in this form. A blank line counts as a line, and it holds no words.
+The scrolls are text files. Read the name of a file, and print how many lines it has and how many words, in this form. A blank line counts as a line, and it holds no words. A line count and a word count answer different questions. For each line, add one to the first count and add the number of words on that line to the second. An empty line still exists, even though it adds zero words.
 
 ```text
 scroll1.txt gives
@@ -126,7 +126,7 @@ Loop with `for line in f:`. Add 1 to the line counter in every round.
 %% end
 
 %% level l3 | The longest line
-The keeper wants the longest line of a file. Read the name of a file. Print the longest line without its line break, and then its length. When two lines are equally long, the first one wins.
+The keeper wants the longest line of a file. Read the name of a file. Print the longest line without its line break, and then its length. When two lines are equally long, the first one wins. Compare each line with the longest one you have seen so far. Replace your saved line only when the new line is longer. This keeps the first line when two lines have equal length, as requested.
 
 ```text
 quote2.txt gives
