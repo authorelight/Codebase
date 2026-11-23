@@ -207,7 +207,7 @@ export function createReadAloud({ content, title = 'Lesson' }) {
     currentSection,
     controls,
     settings,
-    h('p.lesson-audio-help', 'Available English voices depend on your browser and device. Code examples stay on screen for you to follow.'),
+    h('p.lesson-audio-help', 'Available English voices depend on your browser and device. Some voices may need an internet connection; offline playback depends on the voice installed on your device. Code examples stay on screen for you to follow.'),
     status
   );
 
