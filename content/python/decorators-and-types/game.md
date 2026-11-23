@@ -21,7 +21,7 @@ south = make_ticket_machine("S")
 south() returns "S-1"
 ```
 
-Keep the count **inside a closure**. This order does not allow a class or a global variable.
+Keep the count **inside a closure**. This order does not allow a class or a global variable. Start a second machine and its first ticket must still be number 1; each machine needs to remember its own count separately.
 %% config
 mode: script
 function: make_ticket_machine
