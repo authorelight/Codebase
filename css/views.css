@@ -858,3 +858,81 @@ details > summary { cursor: pointer; }
   .not-found-card { padding: 1.4rem 1.15rem; }
 }
 
+
+
+/* ---- lesson Read Aloud ---------------------------------------------------------------------- */
+.lesson-audio {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0 0 1.35rem;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 5px solid var(--line-rail, var(--l-flow));
+  border-radius: var(--r-lg);
+}
+.lesson-audio-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+}
+.lesson-audio-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font: 700 1.15rem/1.2 var(--font-cond);
+}
+.lesson-audio-title .icon { color: var(--line-ink, var(--ink-2)); }
+.lesson-audio-note, .lesson-audio-help, .lesson-audio-status, .lesson-audio-section {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+.lesson-audio-section { font-weight: 600; color: var(--line-ink, var(--ink-2)); }
+.lesson-audio-controls, .lesson-audio-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+.lesson-audio-controls .btn { min-height: 2.65rem; }
+.lesson-audio-settings { align-items: flex-end; gap: 0.7rem 1rem; }
+.lesson-audio-field {
+  display: grid;
+  flex: 1 1 10rem;
+  min-width: min(10rem, 100%);
+  gap: 0.3rem;
+  color: var(--ink-2);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.lesson-audio-select {
+  width: 100%;
+  min-height: 2.65rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--ink);
+  font: inherit;
+}
+.lesson-audio-select:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.lesson-audio button:disabled, .lesson-audio select:disabled { opacity: 0.55; cursor: not-allowed; }
+.lesson-body .is-read-aloud-current {
+  border-radius: var(--r-sm);
+  outline: 2px solid color-mix(in srgb, var(--line-rail, var(--l-flow)) 48%, transparent);
+  outline-offset: 3px;
+}
+@media (max-width: 560px) {
+  .lesson-audio { padding: 0.9rem; }
+  .lesson-audio-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lesson-audio-controls .btn { justify-content: center; width: 100%; }
+  .lesson-audio-settings { display: grid; grid-template-columns: minmax(0, 1fr); }
+}
