@@ -19,7 +19,7 @@ Three crew members report for duty, **one name per line**. Read the three names 
 Ada, Grace and Linus give Grace
 ```
 
-Remember that the first item of a list has index 0.
+Remember that the first item of a list has index 0. Think of a duty roster: the order of the names matters, and you need the person in the second position, not the second letter. Python starts counting positions at 0, so the second item uses index 1.
 %% config
 mode: io
 par: 2
@@ -54,7 +54,7 @@ The second name has index 1, so print `crew[1]`.
 %% end
 
 %% level l2 | Last aboard
-One line holds the names of the whole crew, separated by spaces. Print the **last** name on the first line, and the **number of names** on the second line.
+One line holds the names of the whole crew, separated by spaces. Print the **last** name on the first line, and the **number of names** on the second line. This is like checking a register: you need both the final name and the size of the group. `split()` turns the line into separate names, so your program can inspect the last item and count all the items.
 
 ```text
 Ada Grace Linus
@@ -98,7 +98,7 @@ The index -1 is always the last item, and `len()` counts the items.
 %% end
 
 %% level l3 | Alphabetical order
-The captain wants the roster in **alphabetical order**. Read a line of names and print them sorted, separated by single spaces. Every name starts with a capital letter, so the normal sort order is correct.
+The captain wants the roster in **alphabetical order**. Read a line of names and print them sorted, separated by single spaces. Every name starts with a capital letter, so the normal sort order is correct. This is useful when a roster needs a consistent order, even if the names arrive in a different order each time. Ordinary alphabetical sorting gives the required result for these names.
 
 ```text
 Linus Ada Grace
@@ -133,7 +133,7 @@ print(" ".join(sorted(crew)))
 %% end
 
 %% level l4 | Numbered roster
-Print the roster as a numbered list. Read a line of names, and print each name on its own line, with its number **starting from 1**, a full stop and a space:
+Print the roster as a numbered list. Read a line of names, and print each name on its own line, with its number **starting from 1**, a full stop and a space. Numbered lists are useful for duty assignments or attendance sheets because every name gets a clear position. The number shown to the reader starts at 1 even though Python list positions start at 0:
 
 ```text
 1. Ada
@@ -174,7 +174,7 @@ for number, name in enumerate(crew, start=1):
 %% end
 
 %% level l5 | Payroll
-The first line holds the daily pay of each crew member, as whole numbers separated by spaces. Print the **total** on the first line and the **highest** pay on the second line, like this:
+The first line holds the daily pay of each crew member, as whole numbers separated by spaces. Print the **total** on the first line and the **highest** pay on the second line, like this. This is a small payroll summary: the total shows the amount to pay everyone, while the highest value identifies the largest individual payment. Convert the input text into whole numbers before calculating:
 
 ```text
 Total: 450
