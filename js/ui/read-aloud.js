@@ -8,7 +8,7 @@ import { h } from '../lib/util.js';
 import { icon } from '../lib/icons.js';
 
 const SPEEDS = [0.75, 1, 1.25, 1.5];
-const READABLE_SELECTOR = '.prose, .q-text, .q-hint, .ex-hint, .q-explain';
+const READABLE_SELECTOR = '.prose, .q-text, .q-hint, .ex-hint, .q-explain, .callout-title, .ex-head h3';
 const OMIT_FROM_CLONE = [
   'pre',
   'figure',
