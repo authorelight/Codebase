@@ -1,7 +1,7 @@
 ---
 title: Parameters in depth
 ---
-In the last lesson every parameter had to be filled, in the right order, by every call. Real functions are more flexible. Some values have a sensible default, some calls name their arguments, and some functions accept any number of arguments. You have met all of these already: `print("a", "b", sep="-")` passes a **keyword argument**, and `print("a", "b", "c")` takes as many arguments as you give it. In this lesson you learn to build functions with the same flexibility.
+In the last lesson every parameter had to be filled, in the right order, by every call. Real functions are more flexible. Some values have a sensible default, some calls name their arguments, and some functions accept any number of arguments. You have met all of these already: `print("a", "b", sep="-")` passes a **keyword argument**, and `print("a", "b", "c")` takes as many arguments as you give it. In this lesson you learn to build functions with the same flexibility. Think of filling in a form. The printed labels, such as **name**, **age** and **city**, tell you what belongs in each space. Those labels are like parameters. The actual details you write in the spaces are like arguments. You can sometimes supply details by their position, or use the labels to make each value clear. The form is only an illustration: Python follows exact matching rules, which you will practise below.
 
 ## Positional and keyword arguments
 
