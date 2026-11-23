@@ -1,7 +1,7 @@
 ---
 title: Lists
 ---
-Until now every variable has held one value: a name, a number, a `True` or `False`. Real programs deal with **collections**: the players in a team, the marks of a class, the items in a shopping basket. Python's answer is the **list**, a single value that holds many values in order. You can add to a list, remove from it, sort it, search it and loop over it.
+Until now every variable has held one value: a name, a number, a `True` or `False`. Real programs deal with **collections**: the players in a team, the marks of a class, the items in a shopping basket. Python's answer is the **list**, a single value that holds many values in order. You can add to a list, remove from it, sort it, search it and loop over it. Think of a shopping list written in order. You can add another item, cross one out, or move things around, and the position of each item matters while you work through the list. A Python list behaves in a similar way: it keeps items in order and lets your program change the collection.
 
 This lesson shows you how to create lists, how to read and change their items, and the methods that you will use every day. The next lesson shows how to loop over them.
 
