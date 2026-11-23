@@ -48,7 +48,7 @@ Then print the greeting. You can join the pieces with `+`, or use an f-string: `
 %% end
 
 %% level l2 | Crate count
-Two cargo bays each report how many crates they hold. Read both numbers (one per line) and print the **total** number of crates. This is like adding the stock from two storage rooms. The reports are numbers, so convert the input text before adding; otherwise Python joins the two pieces of text instead of calculating a total.
+Two cargo bays each report how many crates they hold. Read both numbers (one per line) and print the **total** number of crates. This is like adding the stock from two storage rooms. The reports are numbers, so convert the input text before adding; otherwise Python joins the two pieces of text instead of calculating a total. This checks that your program distinguishes a number from text that happens to contain digits.
 
 ```text
 12 and 30 give 42
@@ -91,7 +91,7 @@ A tanker takes on fuel. Read the number of **litres** and the **price per litre*
 Total: 45.50
 ```
 
-An f-string can format a number. Writing `{cost:.2f}` shows `cost` with two digits after the decimal point.
+An f-string can format a number. Writing `{cost:.2f}` shows `cost` with two digits after the decimal point. Think of a fuel bill at a service station: the litres multiplied by the price per litre gives the amount due. Showing two decimal places keeps the money amount consistent.
 %% config
 mode: io
 par: 4
@@ -129,7 +129,7 @@ Print with an f-string and a format: `print(f"Total: {cost:.2f}")`.
 %% level l4 | Fuel gauge
 The tank starts full. A pilot then reports three burns, one after another. After **each** burn, print how much fuel is left.
 
-The first line of input is the fuel at the start. The next three lines are the three burns.
+The first line of input is the fuel at the start. The next three lines are the three burns. The gauge should show the remaining fuel after each update, not only after all three burns. Treat each burn as a separate event and keep the order of the reports.
 %% config
 mode: io
 par: 7
@@ -188,7 +188,7 @@ Ada Lovelace
 12
 ```
 
-String methods such as `.strip()` and `.title()` return a changed copy of the text. `len()` counts characters.
+String methods such as `.strip()` and `.title()` return a changed copy of the text. `len()` counts characters. This is like preparing a name badge from a form: tidy the text first, then count the characters in the cleaned name.
 %% config
 mode: io
 par: 3
