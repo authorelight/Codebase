@@ -13,7 +13,7 @@ How to play:
 - Fewer lines earn more stars. Stuck? Tap **Hint**, one hint at a time.
 
 %% level l1 | Morse look-up
-A letter arrives from the antenna. The dictionary `code` in your starter holds the Morse code of eight letters. Read one letter and print its code. A letter that is not in the table prints `?`.
+A letter arrives from the antenna. The dictionary `code` in your starter holds the Morse code of eight letters. Read one letter and print its code. A letter that is not in the table prints `?`. Treat the dictionary as a lookup table: the letter is the key, and the Morse pattern is its value. A missing letter needs a fallback rather than an error, because the table holds only eight letters.
 
 ```text
 S gives ...
@@ -55,7 +55,7 @@ Read the letter with `input()` and keep it in a variable.
 %% end
 
 %% level l2 | Decode a word
-Now the antenna sends a whole word, written as Morse codes separated by spaces. The dictionary `letters` in your starter turns a code into a letter. Decode the word. A code that is not in the table becomes `?`.
+Now the antenna sends a whole word, written as Morse codes separated by spaces. The dictionary `letters` in your starter turns a code into a letter. Decode the word. A code that is not in the table becomes `?`. This is the same lookup in the opposite direction. Each Morse pattern is now the key, and its matching letter is the value. Build the decoded word by handling each code in its original order.
 
 ```text
 ... --- ... gives SOS
@@ -98,7 +98,7 @@ Start with an empty text, `word = ""`, and add one letter in every round of the 
 %% end
 
 %% level l3 | Signal census
-Signals arrive one per line until a line says `end`. Count how often each signal appears. Then print the census in alphabetical order, one signal per line, in the form `alpha 3`.
+Signals arrive one per line until a line says `end`. Count how often each signal appears. Then print the census in alphabetical order, one signal per line, in the form `alpha 3`. Think of a signal operator's tally sheet. Each different signal gets its own entry, and every arrival increases that signal's count. Sorting the keys at the end makes the printed report predictable.
 
 ```text
 beta, alpha, beta, end give
