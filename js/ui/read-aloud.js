@@ -74,13 +74,6 @@ export function splitSpeechText(value, maxLength = 520) {
         chunks.push(piece);
         piece = word;
       }
-      // A single unusually long token should not create an unbounded utterance.
-      if (piece.length > maxLength) {
-        for (let i = 0; i < piece.length; i += maxLength) {
-          chunks.push(piece.slice(i, i + maxLength));
-        }
-        piece = '';
-      }
     }
     if (piece) return piece;
     return '';
