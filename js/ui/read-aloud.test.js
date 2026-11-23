@@ -2,11 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { splitSpeechText } from './read-aloud.js';
 
-const normalize = (value) => value.replace(/\\s+/g, ' ').trim();
+const normalize = (value) => value.replace(/\s+/g, ' ').trim();
 
 test('splitSpeechText returns no chunks for empty or whitespace-only content', () => {
   assert.deepEqual(splitSpeechText(''), []);
-  assert.deepEqual(splitSpeechText('   \\n  '), []);
+  assert.deepEqual(splitSpeechText('   \n  '), []);
 });
 
 test('splitSpeechText preserves every word and punctuation mark', () => {
