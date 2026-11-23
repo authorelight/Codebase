@@ -15,6 +15,18 @@ test('splitSpeechText preserves every word and punctuation mark', () => {
   assert.equal(normalize(chunks.join(' ')), normalize(original));
 });
 
+test('splitSpeechText fallback preserves sentence-ending punctuation', () => {
+  const original = Intl.Segmenter;
+  try {
+    Intl.Segmenter = undefined;
+    const text = 'First sentence. "Second sentence!" Is this the third? Yes.';
+    const chunks = splitSpeechText(text);
+    assert.equal(chunks.join(' '), text);
+  } finally {
+    Intl.Segmenter = original;
+  }
+});
+
 test('splitSpeechText divides long prose into manageable chunks', () => {
   const sentence = 'A learner should understand the reason for an instruction before ' +
     'seeing the code. This familiar example explains the purpose of repeating work. ';
