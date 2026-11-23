@@ -201,7 +201,7 @@ export function createReadAloud({ content, title = 'Lesson' }) {
     { 'aria-label': 'Listen to this lesson' },
     h(
       'div.lesson-audio-heading',
-      h('h2.lesson-audio-title', icon('volume-2', 19), 'Listen to this lesson'),
+      h('h2.lesson-audio-title', icon('volume', 19), 'Listen to this lesson'),
       h('p.lesson-audio-note', 'Listen while you follow the lesson on screen.')
     ),
     currentSection,
