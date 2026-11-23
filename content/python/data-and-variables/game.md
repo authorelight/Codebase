@@ -19,7 +19,7 @@ A passenger steps off a ship. Read their **name**, then print a greeting in exac
 Welcome aboard, Ada!
 ```
 
-Store what `input()` returns in a variable. Then put that variable into your greeting.
+Store what `input()` returns in a variable. Then put that variable into your greeting. Think of a reception desk: the greeting stays the same, but the visitor's name changes. Your program must put the name it actually reads into the message, rather than using a fixed name from the example.
 %% config
 mode: io
 par: 2
@@ -48,7 +48,7 @@ Then print the greeting. You can join the pieces with `+`, or use an f-string: `
 %% end
 
 %% level l2 | Crate count
-Two cargo bays each report how many crates they hold. Read both numbers (one per line) and print the **total** number of crates.
+Two cargo bays each report how many crates they hold. Read both numbers (one per line) and print the **total** number of crates. This is like adding the stock from two storage rooms. The reports are numbers, so convert the input text before adding; otherwise Python joins the two pieces of text instead of calculating a total.
 
 ```text
 12 and 30 give 42
