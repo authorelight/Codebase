@@ -1,7 +1,7 @@
 ---
 title: Defining functions
 ---
-You have used functions since your first program. `print` shows text, `len` counts items, `input` reads a line and `sorted` puts a list in order. Each of them has a **name**, takes some **inputs**, does one **job**, and sometimes gives a **result** back. In this lesson you build functions of your own. A function gives a name to a few lines of code, so that you can run them whenever you like, with different inputs each time, without copying them again.
+You have used functions since your first program. `print` shows text, `len` counts items, `input` reads a line and `sorted` puts a list in order. Each of them has a **name**, takes some **inputs**, does one **job**, and sometimes gives a **result** back. In this lesson you build functions of your own. A function gives a name to a few lines of code, so that you can run them whenever you like, with different inputs each time, without copying them again. A useful comparison is a recipe: you write the steps once, then follow the same recipe whenever you want the same dish. You might change the quantity of ingredients each time. A function works in a similar way: its instructions are written once, and different inputs can be supplied each time it is called. The comparison has limits: a function does not have to make something, and it may return information instead of displaying anything.
 
 ## The trouble with repeated code
 
