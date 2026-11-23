@@ -196,7 +196,7 @@ bread,2,4
 milk,1,1.2
 ```
 
-For `ledger1.txt`-style files like this one, the report is `Total: 16.70`. The CSV reader respects quotation marks, so an item name such as `Lamp, brass` stays in one field instead of being split at its comma.
+For `ledger1.csv`-style files like this one, the report is `Total: 16.70`. The CSV reader respects quotation marks, so an item name such as `Lamp, brass` stays in one field instead of being split at its comma.
 %% config
 mode: io
 par: 7
