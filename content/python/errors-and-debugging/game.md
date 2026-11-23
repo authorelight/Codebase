@@ -283,7 +283,7 @@ Write two `if` statements, one for each rule, and keep the `return` as the last 
 %% level l5 | Cargo hold
 The cargo hold keeps its weights in a list. `remove_heavy(weights, limit)` must **remove every weight above the limit from the list itself** and return that same list. A weight equal to the limit stays.
 
-The starter skips some of the heavy items. Find out why, and repair it.
+The starter skips some of the heavy items. Find out why, and repair it. Imagine checking items as they leave a storeroom: when a heavy item is removed, the next item can move into its place. Make sure your loop still checks that new item instead of moving past it.
 %% config
 mode: script
 function: remove_heavy
