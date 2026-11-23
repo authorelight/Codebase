@@ -127,7 +127,7 @@ Read the number with `int(input())`, and loop with `for _ in range(n):` to call 
 %% end
 
 %% level l3 | Any size
-A function can take inputs. Define `square(size)` that prints a square with `size` rows of `size` characters `#`, followed by an empty line. Read one line of sizes separated by spaces, and paint one square for each size. You must use `def`.
+A function can take inputs. Define `square(size)` that prints a square with `size` rows of `size` characters `#`, followed by an empty line. Read one line of sizes separated by spaces, and paint one square for each size. You must use `def`. Think of `square(size)` as a reusable drawing instruction: once it is defined, the program can ask it to draw a small square or a larger one by supplying a different size. The function keeps the drawing steps in one place.
 
 ```text
 2 3 gives
