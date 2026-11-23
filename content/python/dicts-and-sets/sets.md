@@ -1,7 +1,7 @@
 ---
 title: Sets
 ---
-Sometimes you do not care **where** an item is, or how many times it appears. You only care whether it is **there**. Did this visitor come yesterday? Which hobbies do two friends share? How many different words are in this text? A **set** is the container for these questions. It holds each item at most once, it keeps no order, and it answers "is this item in the set?" almost at once, even when the set is very big.
+Sometimes you do not care **where** an item is, or how many times it appears. You only care whether it is **there**. Did this visitor come yesterday? Which hobbies do two friends share? How many different words are in this text? A **set** is the container for these questions. It holds each item at most once, it keeps no order, and it answers "is this item in the set?" almost at once, even when the set is very big. Imagine the guest list for an event. You need to know whether a person's name is on the list, and you do not want the same person listed twice. You do not need to know whether the name was written first or fifth. A Python set is useful for that kind of membership check. The comparison stops there: unlike a paper guest list, a set has no fixed order, so you must not use it when the position of an item matters.
 
 Sets also come with the operations that you may know from school mathematics: union, intersection and difference. With them, comparing two groups takes one line instead of a loop.
 
