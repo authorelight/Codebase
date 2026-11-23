@@ -56,7 +56,7 @@ export function splitSpeechText(value, maxLength = 520) {
       if (part.segment.trim()) sentences.push(part.segment.trim());
     }
   } else {
-    const parts = text.match(/[^.!?]+(?:[.!?]+[”’"')\\]]*)?|[^.!?]+$/g);
+    const parts = text.match(/[^.!?]+[.!?]+["')\\]”’]*|[^.!?]+$/g);
     sentences.push(...(parts || [text]).map((part) => part.trim()).filter(Boolean));
   }
 
