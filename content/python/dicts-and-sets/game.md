@@ -156,7 +156,7 @@ After the loop, `for name in sorted(counts):` visits the keys in alphabetical or
 %% end
 
 %% level l4 | Channel groups
-Messages arrive as `channel word`, for example `3 hello`, until a line says `end`. Group the words by channel. Print one line for each channel, with the smallest channel number first, in the form `3: hello world`. The words of a channel keep the order in which they arrived. Remember that channel 2 comes before channel 10.
+Messages arrive as `channel word`, for example `3 hello`, until a line says `end`. Group the words by channel. Print one line for each channel, with the smallest channel number first, in the form `3: hello world`. The words of a channel keep the order in which they arrived. Remember that channel 2 comes before channel 10. Think of sorting incoming messages into labelled pigeonholes: each channel has its own group, and the channel number determines the order in which the groups are reported.
 
 ```text
 3 hello, 1 ping, 3 world, end give
@@ -216,7 +216,7 @@ After the loop, loop over `sorted(groups)` and join each list of words with `" "
 %% end
 
 %% level l5 | Reverse directory
-The station keeps a directory of `name code` lines, for example `alpha 17`, until a line says `end`. Every name has its own code, and no two names share a code. After that come lines that hold only a **code**, until a line says `stop`. For each code, print the name that owns it, or `unknown` if no name has that code.
+The station keeps a directory of `name code` lines, for example `alpha 17`, until a line says `end`. Every name has its own code, and no two names share a code. After that come lines that hold only a **code**, until a line says `stop`. For each code, print the name that owns it, or `unknown` if no name has that code. This is a reverse lookup: instead of asking for a person's code by name, you are using the code to find the person. Keep the code as the dictionary key so that the lookup matches the question.
 
 ```text
 alpha 17, beta 4, end, then 4, 17, 99, stop give
