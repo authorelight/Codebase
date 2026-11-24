@@ -2,7 +2,7 @@
 title: Loops: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: for loops, while loops, nested loops and the loop recipes. Work through each program step by step before you choose an answer, and read the explanations, because they show the reasoning.
+A family gathering has a growing guest list, a queue to serve and a few repeated jobs to complete. These questions check whether you can choose between `for` and `while`, follow nested loops and recognise common loop patterns. Work through the first and last round before you decide what a loop will do.
 
 %% question q1 | choice
 Which numbers does `range(3, 8)` produce?
