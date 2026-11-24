@@ -2,7 +2,7 @@
 title: Data and variables: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: variables, the kinds of data, reading input and working with text. Take your time, and run any snippet in your head before you answer.
+Tunde is preparing a sales report and needs to keep prices, quantities, customer names and totals straight. These questions check whether you can store values, recognise their types, collect input and work with text. Predict the result before checking your answer.
 
 %% question q1 | choice
 What does the line `x = x + 1` do when `x` currently holds 5?
