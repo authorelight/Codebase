@@ -1,6 +1,6 @@
 {
   "title": "Lists",
-  "summary": "Keep many values together in lists and tuples, change them, and loop over them.",
+  "summary": "Keep collections in order, update their items and process them to build useful programs.",
   "line": "flow",
   "level": "beginner",
   "outcomes": [
