@@ -1,6 +1,8 @@
 ---
 title: Functional tools and pattern matching
 ---
+Amara is preparing a report from a set of student records. She needs to transform some values, keep only entries that meet a condition and sort the results by a chosen field. Functions that work with other functions help her express those steps clearly.
+
 In Python, a function is a value like any other. You can store it in a variable, pass it to another function, and get it back from a call. This lesson shows the everyday tools that make use of that idea (`map`, `filter`, `any`, `all`, `zip` and the `key=` argument), and then two newer parts of the language that make code shorter and clearer: **unpacking** with the star, and **pattern matching** with `match` and `case`. Think of sorting a stack of completed forms at an office. One step might convert each form into a standard record; another might keep only the forms that meet a rule. Functions such as `map` and `filter` do similar jobs with data: one applies a function to each item, and the other keeps items that pass a test. The comparison is only a guide; Python applies these operations to values in the order shown in the examples.
 
 ## map and filter
