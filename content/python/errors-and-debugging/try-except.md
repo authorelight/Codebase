@@ -10,6 +10,8 @@ error
 24.1
 %% end
 
+Chidi's quiz program asks players to enter their age, but one player types `tomorrow` instead of a number. The program should not collapse because of one unexpected answer. It needs a way to recognise a problem and decide what to do next.
+
 Sooner or later, every program meets something that it did not expect: a person types `abc` where a number belongs, a file is missing, a list is shorter than the code assumed. When Python meets a problem that it cannot solve, it stops the program and reports an **exception**. In module 1 you saw your first error messages. This lesson teaches you to read them completely, shows how the main kinds of exception are related, and, most important, shows how to **handle** an exception, so that one mistake does not end the whole program.
 
 %% note A calm way to think about errors
