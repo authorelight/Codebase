@@ -1,6 +1,8 @@
 ---
 title: Clean, readable Python
 ---
+Emeka has returned to a project he wrote several months ago. The program still works, but names such as `x`, `thing` and `temp` make it hard to remember what each part does. Clear structure and meaningful names make code easier for another person, including your future self, to maintain.
+
 A program is written once and read many times: by your teammates, and by you, six months from now, when you have forgotten how it works. Code that is **readable** is code that is safe to change and hard to break. Python has a long tradition of readable style, and this lesson collects its habits: the naming and layout rules of the official style guide, docstrings, small functions, named constants, the idioms that Python programmers expect, the `with` statement that you can now write yourself, and a refactoring that turns a messy program into a clean one.
 
 ## The style guide: PEP 8
