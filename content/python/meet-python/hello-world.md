@@ -1,6 +1,8 @@
 ---
 title: Your first program
 ---
+Chidi wants the scoreboard at his student gaming event to display a welcome message before the first match begins. The display will show only what the program tells it to show, so his first task is to write a clear instruction that Python can follow.
+
 A **program** is a list of instructions for a computer. The computer follows them one at a time, in order, exactly as you wrote them. It never gets bored, it never gets tired, and it never guesses what you meant. That last part is the tricky part, and it is also why programming teaches you to think clearly.
 
 **Python** is a language for writing those instructions. It reads a lot like plain English, which makes it a friendly first language. It is also the language behind data science, web servers, automation scripts and much of today's AI work, so what you learn here keeps paying off.
