@@ -1,6 +1,6 @@
 {
   "title": "The standard library",
-  "summary": "Meet the batteries that come with Python: modules, maths, dates, collections and more.",
+  "summary": "Extend your programs with Python's built-in tools for dates, collections, numbers, modules and everyday tasks.",
   "line": "objects",
   "level": "intermediate",
   "outcomes": [
