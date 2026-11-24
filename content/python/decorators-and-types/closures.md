@@ -1,6 +1,8 @@
 ---
 title: Closures and higher-order functions
 ---
+Amara is building a discount calculator for several student clubs. Each club has its own discount rate, and the calculator must remember the right rate after it has been set up. This is a useful way into functions that carry information with them.
+
 In Python a function is a **value**, like a number or a string. You can store it in a variable, put it in a list, pass it to another function, and return it from a function. This one fact is behind many of the most powerful tools in the language. In this lesson you will pass functions around, build functions that **build other functions**, and write functions that **remember** values from the place where they were created. These ideas, called higher-order functions and closures, are the foundation of the decorators in the next lesson. Here is a way to picture the remembering part. Imagine a small delivery service that gives each driver a route card. Even after the dispatcher has finished the briefing, the driver still has the card and can use the saved route later. A closure is similar: the inner function keeps access to values from the place where it was created, even after the outer function has finished. The card is only an analogy; Python remembers variables through its scope rules, not by putting paper inside a function.
 
 ## Functions are values
