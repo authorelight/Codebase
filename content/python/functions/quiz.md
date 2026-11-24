@@ -2,7 +2,7 @@
 title: Functions: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: defining functions, parameters, scope, functions as values and recursion. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+Tunde's shop has several calculations to perform, and he wants each job to be reusable rather than copied throughout the program. These questions check how functions are defined, how arguments are passed, where names are visible and how recursion works. Trace the calls before you answer.
 
 %% question q1 | predict
 What does this program print?
