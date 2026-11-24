@@ -1,6 +1,6 @@
 {
   "title": "Meet Python",
-  "summary": "Run your first program, learn how Python reads your code line by line, and meet your first error messages.",
+  "summary": "Meet Python through short programs, useful calculations, clear instruction order and the errors every programmer learns to read.",
   "line": "foundations",
   "level": "beginner",
   "outcomes": [
@@ -11,10 +11,30 @@
     "Read an error message and fix the mistake it points to"
   ],
   "lessons": [
-    { "id": "hello-world", "title": "Your first program", "summary": "Run Python, print text and learn what strings are.", "minutes": 12 },
-    { "id": "calculator", "title": "Python as a calculator", "summary": "Do arithmetic with Python's operators and learn the order it works things out in.", "minutes": 18 },
-    { "id": "how-python-reads", "title": "Comments and how Python reads code", "summary": "Watch Python run a program line by line, leave comments, and control how print() ends a line.", "minutes": 18 },
-    { "id": "reading-errors", "title": "Reading error messages", "summary": "Meet the five most common errors, read a message from the bottom up, and fix bugs calmly.", "minutes": 20 }
+    {
+      "id": "hello-world",
+      "title": "Your first program",
+      "summary": "Run Python, print text and learn what strings are.",
+      "minutes": 12
+    },
+    {
+      "id": "calculator",
+      "title": "Python as a calculator",
+      "summary": "Do arithmetic with Python's operators and learn the order it works things out in.",
+      "minutes": 18
+    },
+    {
+      "id": "how-python-reads",
+      "title": "Comments and how Python reads code",
+      "summary": "Watch Python run a program line by line, leave comments, and control how print() ends a line.",
+      "minutes": 18
+    },
+    {
+      "id": "reading-errors",
+      "title": "Reading error messages",
+      "summary": "Meet the five most common errors, read a message from the bottom up, and fix bugs calmly.",
+      "minutes": 20
+    }
   ],
   "quiz": "quiz.md",
   "game": "game.md",
