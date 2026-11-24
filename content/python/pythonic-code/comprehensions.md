@@ -1,6 +1,8 @@
 ---
 title: Comprehensions
 ---
+Zainab has a long list of event registrations and needs a new list containing only confirmed guests, with each name displayed in capital letters. A loop can do the job, but Python has a compact way to build a collection from another collection.
+
 You have written many loops that build a list: start with an empty list, loop over something, and `append` to the list. The pattern is so common that Python has a shorter way to say it, the **comprehension**. A comprehension builds a list, a dictionary or a set from another sequence in one expression. Think about making a shopping list from a supermarket receipt. You might read each receipt item, keep only the items you want, and write a new list containing their names or prices. A comprehension does a similar job in code: it visits existing items, can choose which ones to keep, and can turn each kept item into something new. It is not a different kind of loop; it is a compact way to express a loop that builds a collection. Used well, it is shorter **and** clearer than the loop. Used badly, it is a puzzle. This lesson teaches both halves: how to write comprehensions, and when to stop.
 
 ## From a loop to a list comprehension
