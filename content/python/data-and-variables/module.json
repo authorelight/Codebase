@@ -1,6 +1,6 @@
 {
   "title": "Data and variables",
-  "summary": "Store information in variables, learn the basic kinds of data, and write programs that talk to the user.",
+  "summary": "Store and work with information, from a shop's prices to a customer's answer, using variables, data types and input.",
   "line": "foundations",
   "level": "beginner",
   "outcomes": [
