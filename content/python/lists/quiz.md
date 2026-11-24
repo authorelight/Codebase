@@ -2,7 +2,7 @@
 title: Lists: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: lists, loops over lists, tuples, copies and the list recipes. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+A football coach is working with a squad of players, scores and match records. These questions check how lists store and change items, how loops process them, and when tuples or copies are useful. Follow each index and each change in order.
 
 %% question q1 | choice
 Which expression gives the last item of any list `items` that is not empty?
