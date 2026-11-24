@@ -1,6 +1,8 @@
 ---
 title: Raising exceptions
 ---
+Tunde's order program should never accept a negative quantity or a payment larger than the amount due. When a caller gives impossible information, the function needs to stop with a clear explanation rather than allowing an incorrect order to move further through the system.
+
 In the last lesson Python raised the exceptions and you handled them. Now you take the other side: **you** raise an exception when your own function receives something that it cannot accept. A function that stops loudly, with a clear message, is far better than one that carries on with nonsense and breaks something somewhere else, much later.
 
 ## The raise statement
