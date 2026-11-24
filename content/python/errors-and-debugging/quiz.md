@@ -2,7 +2,7 @@
 title: Errors and debugging: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: reading errors, handling them with `try`, raising your own, debugging with a method, and testing. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+You are helping with a program that sometimes receives unexpected input and sometimes gives the wrong result. These questions check whether you can read errors, handle and raise exceptions, debug systematically and test behaviour. Treat each explanation as another step in your troubleshooting toolkit.
 
 %% question q1 | choice
 What does the call `int("abc")` raise?
