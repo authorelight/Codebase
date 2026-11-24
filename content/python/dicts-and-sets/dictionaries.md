@@ -1,8 +1,6 @@
 ---
 title: Dictionaries
 ---
-Amara is collecting contact details for a student project. When she needs a person's number, searching by the person's name is more useful than remembering where the number sits in a long list. A dictionary is designed for exactly this kind of named lookup.
-
 A list finds an item by its **position**: the third name, the first score. Many problems are not about positions. You want the phone number **of Ada**, the price **of tea**, the capital **of Kenya**. A **dictionary** stores values under names that you choose, called **keys**, and it finds a value from its key at once. It works like a phone book: look up the name, and read the number.
 
 In this lesson you learn how to create dictionaries, read and change them, loop over them, and combine them. Dictionaries are used in almost every real Python program, so it is worth learning them well.
