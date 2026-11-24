@@ -2,7 +2,7 @@
 title: The standard library: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: importing and writing modules, the number tools, dates, the collections and itertools containers, and the other batteries. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+The Data Detective Agency has a new set of cases, and each one needs a tool from Python's standard library. These questions check whether you can import modules and choose useful tools for numbers, dates, collections and other everyday tasks. The explanations point out when each tool is useful.
 
 %% question q1 | choice
 A module ends with the lines `if __name__ == "__main__":` and `main()`. What is the purpose of that `if` line?
