@@ -1,6 +1,8 @@
 ---
 title: Looping over lists
 ---
+A football coach has a squad list and wants to greet every player, calculate the team's total goals and identify the scores above a target. Rather than handling each player separately, a loop can visit every item and apply the same rule.
+
 A list is only as useful as the things you can do with all of its items: greet every player, add up every price, find every score above 50. Loops are the tool for that. In this lesson you combine the `for` loop from the last module with lists. You will visit every item, number the items, walk through two lists together and build new lists as you go.
 
 ## Visiting every item
