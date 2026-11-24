@@ -126,7 +126,7 @@ A backslash can do other jobs too. In a string, `\n` means "start a new line" an
 ## Your turn
 
 %% exercise first-print | Print a greeting
-Write a program that prints exactly this line:
+Chidi is preparing the welcome screen for his university gaming club. It needs to greet each new participant with the exact message below. Write a program that prints this line:
 
 ```output
 Hello from my first program!
