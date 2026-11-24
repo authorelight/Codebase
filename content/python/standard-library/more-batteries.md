@@ -1,6 +1,8 @@
 ---
 title: More batteries
 ---
+Tunde's shop software is growing. It now needs to organise invoice paths, format reports, measure elapsed time and create reliable identifiers. Before he writes a new tool from scratch, he can check whether Python's standard library already provides one.
+
 The standard library has hundreds of modules, and nobody remembers them all. What matters is to know that a tool **exists**, so that you search for it before you write it yourself. This lesson visits seven more modules that earn a place in everyday programs: `pathlib` for files and folders, `functools` and `operator` for working with functions, `textwrap` and `string` for text, `time` for measuring, and `hashlib` with `uuid` and `secrets` for fingerprints and identifiers. The last part shows how to **learn any module on your own**, which is the skill that makes all the others possible.
 
 ## pathlib: files and folders
