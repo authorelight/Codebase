@@ -1,6 +1,8 @@
 ---
 title: Testing your code
 ---
+Amara has written a function that calculates a student's average mark. It gives the right answer for one student, but she wants confidence that it also handles high marks, low marks and boundary cases. A small set of repeatable checks can provide that confidence.
+
 How do you know that a function works? Most beginners run it a few times, look at the answers and decide that it is fine. That is **testing by hand**, and it has three weaknesses: it is slow, you forget some of the cases, and you must repeat it all after every change. An **automated test** is a small program that checks your program, and reports the result in a fraction of a second, every time you ask. Think of checking a meal before serving it. You taste a small sample and compare it with what you expected. A software test does a similar check: it gives the program a known input and compares the result with the expected answer. One successful taste does not prove that every plate is perfect, and one passing test does not prove that a program has no bugs. Good tests check several important situations, including unusual ones.
 
 ## Why write tests
