@@ -1,7 +1,7 @@
 ---
 title: Loop patterns
 ---
-undefined
+A market trader wants to total the day's sales, find the most expensive item and remove products that are out of stock. Each job uses a familiar loop pattern, so recognising the pattern can make a new problem feel much less unfamiliar.
 
 You now know both kinds of loops. The next step is to notice that most loops in real programs follow a handful of **recipes**. Learn each recipe once, and you will recognise it everywhere: in a shopping basket, in a game score, in a search box. This lesson collects the recipes you will use most, and it ends with a complete guessing game.
 
