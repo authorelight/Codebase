@@ -2,7 +2,7 @@
 title: Algorithms: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: measuring efficiency, searching and sorting, recursion and dynamic programming, and the classic data structures. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+The event team has a crowded registration list, a growing queue and a route to plan. These questions ask you to choose sensible ways to organise data, measure the work a method performs and recognise the algorithms behind efficient solutions. Work through each program carefully, then use the explanations to sharpen your reasoning.
 
 %% question q1 | predict
 What does this program print?
