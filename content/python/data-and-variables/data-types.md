@@ -1,6 +1,8 @@
 ---
 title: Kinds of data
 ---
+At a small shop, a receipt may show the quantity `3`, the price `500.0` and the customer's name as text. They look like pieces of information, but a program needs to know which ones are numbers and which ones are words before it can work with them correctly.
+
 The numbers `7` and `7.0` and the text `"7"` look almost the same on the page. To Python they are three different kinds of thing, and they behave differently. Add two of the first kind and you get 14. Add two of the last kind and you get 77.
 
 Python calls these kinds **data types**, or **types** for short. Knowing which type you have, and how to turn one into another, saves you from a whole family of confusing mistakes. In this lesson you will meet the four basic types, learn to ask Python which one you are holding, and learn to convert between them.
