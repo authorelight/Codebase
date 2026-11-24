@@ -1,6 +1,8 @@
 ---
 title: Tuples, copies and nested lists
 ---
+Amara records the fixed coordinates of a meeting point and shares a list of project tasks with a classmate. She wants the coordinates to stay together, but she must also understand what happens when two people edit the same list. Tuples and copying help with those different needs.
+
 Lists can change, and that is wonderful until it surprises you. This lesson covers three ideas that come from that fact. A **tuple** is a list-like value that cannot change, which makes it ideal for a group of values that belong together, such as a point on a map. Think of the coordinates of a fixed meeting point on a map. The location is recorded as one pair of values, and you normally want to keep that pair together rather than change one coordinate by accident. A tuple is useful for values that belong together and should not be changed after creation. This is an illustration, not a ban on every possible change of meaning: Python tuples can contain mutable objects, but the tuple's own item positions cannot be reassigned. **Aliasing** is what happens when two names refer to one list, and it explains the strangest bugs that beginners meet. And a list can hold other lists, which gives you tables and grids.
 
 ## Tuples
