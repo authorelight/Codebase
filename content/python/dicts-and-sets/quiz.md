@@ -2,7 +2,7 @@
 title: Dictionaries and sets: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: dictionaries, the counting and grouping recipes, sets and the choice between containers. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+Zainab is managing registrations for an event and needs to look up details, count items and avoid duplicate names. These questions check whether you can choose the right container and use dictionaries and sets to organise information. Look for what each task needs before choosing a tool.
 
 %% question q1 | choice
 The dictionary `prices` has no key `"eggs"`. Which expression gives `0` instead of an error?
