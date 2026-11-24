@@ -1,6 +1,8 @@
 ---
 title: and, or, not
 ---
+Zainab is checking guests into a university event. A guest should enter only when their name is on the registration list and their ticket is valid; a volunteer may need to reject a guest when either check fails. Combining these conditions is where logical operators become useful.
+
 Real questions are rarely single. "Can this person enter the cinema?" depends on their age and on whether they have a ticket. "Is it a day off?" depends on whether it is Saturday or Sunday. "Should the heating be on?" depends on the room not being warm.
 
 Python lets you combine questions with three small words: `and`, `or` and `not`. They are called **logical operators**. In this lesson you learn how each one works, the order in which Python applies them, and a few surprises that catch nearly every beginner.
