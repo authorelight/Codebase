@@ -26,6 +26,8 @@ Ada,London
 }
 %% end
 
+Tunde exports his shop's daily sales from a POS system. The spreadsheet is useful for rows and columns, but another program may need the same information in a structured format with customer details and lists of purchased items. CSV and JSON are two common ways to exchange that data.
+
 Real data rarely arrives as a neat Python list. It arrives as a **file in a standard format**, and two formats cover most of what you will meet. **CSV** holds tables, such as an export from a spreadsheet. **JSON** holds structured data with lists inside dictionaries, such as the answers of a web service or the settings of an application. Python can read and write both with modules from its standard library, which you load with `import`.
 
 ## CSV: a table as text
