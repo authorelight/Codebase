@@ -366,3 +366,53 @@ The validator proves the code is right. It cannot tell whether the writing is go
 - Would I still be interested at the end of the quiz?
 
 Fix what fails. Then run the validator one last time.
+
+
+## 7. Storytelling, cultural relevance and Read Aloud
+
+### Story before terminology
+
+Where a practical situation helps, open a lesson with a brief scene that gives the learner a reason to care. Introduce a person, a goal and a problem in two to five sentences. Connect the problem directly to the concept, then teach the correct technical term and show Python code. A useful sequence is: situation, problem, connection, explanation, demonstration, output, a changed situation and learner practice. Use only as many stages as the topic needs.
+
+Do not put a long fictional story before the teaching. Continue a scenario in later sections only when it helps explain a new part of the same concept. The learner should meet the real explanation and code early, not wait for a story to finish.
+
+### Nigerian settings and inclusive examples
+
+Use Nigerian settings naturally when they improve understanding: small businesses, markets, POS transactions, bank transfers, airtime, data subscriptions, WhatsApp groups, transport fares, family gatherings, cooking, football, campus life, event planning and personal budgets. Use naira for suitable financial examples. Do not force local references into every lesson, and briefly explain references that may be unfamiliar to an international learner.
+
+A small recurring cast may help learners recognise people across the course:
+
+- **Tunde** runs a small business and can appear in examples about prices, stock, records and calculations.
+- **Amara** is a university student and can appear in examples about study, schedules and practical problem-solving.
+- **Chidi** enjoys technology, games and debugging.
+- **Zainab** organises events and projects.
+
+Use these characters occasionally and vary the names, settings and roles. They are teaching devices, not a cast that must appear in every lesson.
+
+### Humour and tone
+
+Use light, intelligent, situational humour when it supports the idea. One or two brief moments in a lesson are enough. A joke about a guest list that keeps growing can support a lesson on loops; a joke that interrupts the explanation or makes a learner feel foolish cannot. Avoid offensive jokes, stereotypes, mockery of poverty or difficult circumstances, sensitive identity topics and excessive Nigerian Pidgin. Keep standard English as the main teaching language.
+
+The course is for university students, working adults, young people and complete beginners. Accessible writing must remain intellectually respectful. Do not use childish narration, exaggerated dialogue or artificial suspense.
+
+### Analogy and technical accuracy
+
+An analogy must lead into the real concept, not replace it. Name and define the Python feature accurately, use correct and executable code, explain important lines and show the output. Point out where the everyday comparison stops matching Python. Never use a story to introduce a feature before the curriculum has taught its prerequisites. Preserve IDs, learning objectives, tests and expected outputs.
+
+### Read Aloud
+
+Write as though a good instructor will speak the lesson aloud:
+
+- Prefer natural sentences and paragraphs of two to four sentences.
+- Break up long sentences and use punctuation to create natural pauses.
+- Identify speakers clearly in dialogue, for example, **Tunde:** and **Amara:**.
+- Explain what code does in words. Do not rely on reading punctuation or syntax aloud.
+- Introduce tables and lists with a spoken explanation of what they contain.
+- Do not make meaning depend on a diagram, colour, image or visual layout.
+- Keep code examples visible and preserve the existing Read Aloud implementation.
+
+### Exercises, questions, quizzes, games and reference material
+
+A scenario may give an exercise, question or game a clear purpose, but the instruction must remain exact: what the learner should write, what input to use, what the program must print or return, and any required technique. Hints should guide reasoning in stages. Question explanations should teach the concept, not merely announce the correct option. Quiz and game briefings may use the recurring cast or a local setting where it fits.
+
+Do not turn a cheat sheet or other reference material into a story. Keep reference material concise, scannable and technically precise. Engagement should improve understanding, not add decoration.
