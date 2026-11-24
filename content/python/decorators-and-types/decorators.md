@@ -494,7 +494,7 @@ The name `greet` now points at the function `wrapper` that `plain` returned, and
 ## Your turn
 
 %% exercise call-counter | Call counter
-Write a decorator `count_calls` that counts how many times the decorated function is called. The count is kept in an attribute `calls` of the decorated function, and it starts at 0. The decorated function must keep its own name (use `functools.wraps`). The program below must print:
+Tunde is testing a greeting tool used by his small business and wants to know how often it is called. Write a decorator `count_calls` that counts how many times the decorated function is called. The count is kept in an attribute `calls` of the decorated function, and it starts at 0. The decorated function must keep its own name (use `functools.wraps`). The program below must print:
 
 ```output
 0
