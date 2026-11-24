@@ -1,6 +1,6 @@
 {
   "title": "Inheritance",
-  "summary": "Reuse and extend classes with inheritance, polymorphism and composition.",
+  "summary": "Build related classes, reuse shared behaviour and let different objects respond to the same instruction in their own way.",
   "line": "objects",
   "level": "intermediate",
   "outcomes": [
