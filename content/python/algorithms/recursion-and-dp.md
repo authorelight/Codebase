@@ -1,6 +1,8 @@
 ---
 title: Recursion, memoisation and dynamic programming
 ---
+Chidi is writing a route planner that keeps solving the same smaller journey while working out a longer one. The answers are correct, but repeated work is wasting time. He needs a way to remember a result and reuse it.
+
 In Module 4 you wrote functions that call themselves, and you saw the price of a careless one: the recursive Fibonacci function repeats the same work again and again. This lesson turns that observation into a **toolkit** for solving big problems by solving small ones **once**. You will draw the tree of calls to see where the work is wasted, then fix it with **memoisation** (remember answers) and **dynamic programming** (fill a table from the smallest problem up). Imagine working through a long set of calculations and finding that the same smaller sum appears on several pages. You could calculate it again each time, or write the answer in a notebook and look it up when it appears again. **Memoisation** follows the second approach: it remembers a result so the program can reuse it instead of repeating the same work. Dynamic programming uses the same habit more systematically, by working through smaller answers and storing them for later. You will solve the classic problems of coin change, longest common subsequence and knapsack, and you will meet **backtracking**, the technique for listing and searching through all the possibilities. The lesson ends with **divide and conquer**, which you already used in merge sort and binary search.
 
 ## Seeing the waste: the recursion tree
