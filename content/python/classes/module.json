@@ -1,6 +1,6 @@
 {
   "title": "Classes",
-  "summary": "Model things with classes: bundle data and behaviour into objects.",
+  "summary": "Model familiar things with classes, give objects their own data and behaviour, and design the parts of a program to work together.",
   "line": "objects",
   "level": "intermediate",
   "outcomes": [
