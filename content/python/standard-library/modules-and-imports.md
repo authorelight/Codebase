@@ -43,6 +43,8 @@ def describe(results):
     return " + ".join(parts) + " = " + str(sum(results))
 %% end
 
+Chidi has written a useful greeting function for one project and now needs the same tool in another. Copying the code into every file would create several versions to maintain. A module lets him keep reusable tools in one place and import them when needed.
+
 Python is often described as "batteries included". When you install it, you also get hundreds of **modules**: ready-made code for maths, dates, files, text, data formats and much more. You have already used a few of them, such as `random`, `json`, `csv` and `re`. This module of the course makes you at home in the **standard library**. This first lesson is about the machinery that all the modules share: how `import` works, how to find out what a module offers, and how to write a module of your own. Think of the standard library as a large workshop with labelled tool cabinets. You do not need to build every tool yourself: you find the cabinet for the job and take out the tool you need. A Python module is like one labelled cabinet of related code, and `import` makes that module available to your program. The comparison is only a guide: a module is a Python file or package, not a physical container.
 
 ## What is a module?
