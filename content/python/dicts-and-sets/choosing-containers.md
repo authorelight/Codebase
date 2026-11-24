@@ -1,6 +1,8 @@
 ---
 title: Choosing the right container
 ---
+Zainab is planning an event and needs several kinds of records: an ordered programme, fixed room details, contact information and a list of unique ticket codes. One container cannot serve every job equally well, so she must choose based on what each collection needs to do.
+
 You now know four containers: the list, the tuple, the dictionary and the set. They all hold several values, but each one holds them in its own way. The right choice often makes a program shorter, clearer and faster, and the wrong choice can make a simple job awkward. In this lesson you learn how to choose, how to combine containers to describe real data, and how to copy nested data safely. At the end you build a small contact book, and then an inventory of your own.
 
 ## The four containers side by side
