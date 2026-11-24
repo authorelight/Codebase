@@ -1,6 +1,8 @@
 ---
 title: List recipes
 ---
+Zainab's event checklist keeps changing as suppliers confirm, tasks are completed and new requests arrive. She needs patterns for filtering, searching, removing duplicates and organising the work. These are common jobs that can be built from a small set of list techniques.
+
 Most list programs are made from a small set of recipes: filtering, removing repeats, using a list as a stack or as a queue, searching, rotating and sorting records. You have met some of the pieces already. This lesson puts them together into patterns that you can reuse, and it ends with a complete program that works as a to-do list.
 
 ## Recipe: filtering
