@@ -1,6 +1,8 @@
 ---
 title: while loops
 ---
+undefined
+
 A `for` loop is perfect when you know how many rounds you need. Often you do not. A game keeps running until the player quits. A login screen keeps asking until the password is right. A savings plan keeps going until the money reaches a target. For jobs like these Python has the `while` loop, which repeats **as long as a condition is true**.
 
 In this lesson you learn how a `while` loop works, how to avoid loops that never end, how to leave a loop early with `break` and `continue`, and how to read input until it is valid.
