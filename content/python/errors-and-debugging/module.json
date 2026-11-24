@@ -1,6 +1,6 @@
 {
   "title": "Errors and debugging",
-  "summary": "Handle errors gracefully, find bugs methodically, and test your code.",
+  "summary": "Find, handle and test problems calmly, from unexpected input to a function that returns the wrong result.",
   "line": "functions",
   "level": "intermediate",
   "outcomes": [
