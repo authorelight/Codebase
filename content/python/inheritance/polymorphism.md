@@ -1,6 +1,8 @@
 ---
 title: Polymorphism and duck typing
 ---
+Amara's student society sends reminders by email and text message. The delivery methods differ, but the event organiser wants to give each notification the same instruction: send it. Polymorphism lets different objects respond to a shared operation in their own way.
+
 The last lesson ended with a loop that treated a circle, a rectangle and a square in the same way: `shape.area()` worked for each of them, and each object did its own calculation. That idea has a name. **Polymorphism** is Greek for "many forms": one message, such as `area()`, and many different behaviours, depending on the object that receives it. It is the reason that inheritance and classes make large programs smaller, and this lesson shows how to use it, how Python goes a step further with **duck typing**, and how to write down a contract with **abstract base classes**.
 
 ## One message, many forms
