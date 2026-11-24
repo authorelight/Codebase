@@ -1,8 +1,6 @@
 ---
 title: Methods and state
 ---
-Amara is building a small game in which a player's score and remaining lives change after every round. The program must keep track of what is true now, not only what was true when the player started. That changing information is the object's state.
-
 An object is more than a bundle of values. It **remembers**, and it **changes** as the program runs. A bank account has a balance that goes up and down, a player in a game loses health, a counter counts. The values that an object holds at a moment are called its **state**, and methods are the way in which the state is read and changed. This lesson shows you how to write objects that behave well over time, how to print them, and how they travel through lists, dictionaries and functions.
 
 ## Methods that change state
