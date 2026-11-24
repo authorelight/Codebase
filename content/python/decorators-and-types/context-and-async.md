@@ -1,8 +1,6 @@
 ---
 title: Context managers and async
 ---
-A busy food counter has two jobs happening at once: staff must clean up a workspace after each order, and they must keep serving customers while another meal is being prepared. Python has tools for managing both resources and waiting without wasting the time in between.
-
 This lesson is about two kinds of **tidiness** in a program. The first is tidiness in **resources**: a file that must be closed, a setting that must be put back, a lock that must be released, even when something goes wrong in the middle. That is the job of the `with` statement and the **context managers** behind it. The second is tidiness in **time**: a program that waits for a slow answer (a web page, a database, a timer) should not sit idle while it could do something else. That is the job of **async** code, with `async`, `await` and the module `asyncio`. Both ideas build on the decorators and generators that you already know. For the time part, imagine a waiter who sends an order to the kitchen and, while the food is being prepared, serves another table instead of standing idle. Asynchronous code follows a similar idea: when one task is waiting for a slow operation, the program can give another ready task a turn. This does not mean the slow operation finishes sooner, and it does not automatically mean two pieces of code run at the exact same instant. The example helps explain waiting and taking turns; Python's event loop controls the details.
 
 ## Context managers again
