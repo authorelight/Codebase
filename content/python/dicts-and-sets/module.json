@@ -1,6 +1,6 @@
 {
   "title": "Dictionaries and sets",
-  "summary": "Look things up by name with dictionaries, and handle unique values with sets.",
+  "summary": "Choose the right container for each job, look up records, count items and keep duplicate values out of your data.",
   "line": "flow",
   "level": "intermediate",
   "outcomes": [
