@@ -1,6 +1,8 @@
 ---
 title: Composition, mixins and the MRO
 ---
+Zainab is building an event-planning app. An event has a venue, a schedule, a ticket system and a payment service. Those parts work together, but an event is not a special kind of venue or ticket. Choosing how objects relate is the heart of composition and inheritance.
+
 Inheritance is a strong way to reuse code, and it is often **not** the best way. A class that inherits from another is tied to it for life: it gets every method of the parent, wanted or not, and every change to the parent reaches it. This lesson compares inheritance with **composition**, which is often the better choice. Then it looks at what happens when a class has **several** parents, which Python calls multiple inheritance, and at the **mixin**, the safe and useful form of it. A useful everyday comparison is a car. A car **has an** engine, brakes and seats; it is not a special kind of engine or a special kind of seat. Composition models this kind of relationship by keeping other objects inside an object. Inheritance is better reserved for a genuine "is a kind of" relationship. The car is only an illustration; the code examples will show how to choose between the two designs.
 
 ## Is-a or has-a?
