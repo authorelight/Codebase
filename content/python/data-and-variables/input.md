@@ -1,6 +1,8 @@
 ---
 title: Talking to the user
 ---
+Tunde adds a simple checkout screen to his shop's computer. The program must ask how many items a customer wants, accept the answer and calculate the bill. The important change is that the program no longer knows every value in advance; it has to ask.
+
 So far every program you wrote knew all its facts before it started. Real programs ask. A ticket machine asks how many tickets you want, a quiz asks for your answer, and a converter asks for the temperature you are curious about.
 
 In this lesson your programs learn to listen. You will read what a person types, turn it into the right type of data, and build small programs that behave differently for every user. Everything from the first two lessons comes back, because a program that talks needs variables and types all the time.

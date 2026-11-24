@@ -62,6 +62,7 @@ A Python error is caught and shown in plain words by `js/lib/errors.js`. A few t
 ## Exercises, questions and quizzes
 
 - **Exercises** (`js/ui/exercise.js`): an editor with the starter code, **Run**, **Check**, three progressive hints and a solution. Check sends the code and the `%% tests` text to the host in `test` mode and shows each test result. Hidden tests show only that they failed.
+- **Lesson Read Aloud** (`js/ui/read-aloud.js`): uses the browser's Web Speech API to read visible teaching text, callout and exercise headings, question choices and explanations. It excludes code editors and code blocks, supports available device voices and adjustable speed, highlights the current teaching block, and cancels speech when the lesson is left.
 - **Questions** (`js/ui/question.js`): `choice`, `multi`, `predict`, `fill` and `order`. The prediction and fill questions run the real code to compare. An `order` question can include distractor lines.
 - **Quizzes** (`js/views/quiz.js`): twelve mixed questions with a pass mark, a review of wrong answers and XP.
 

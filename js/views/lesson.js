@@ -3,6 +3,7 @@ import { icon } from '../lib/icons.js';
 import { loadCourse, findModule, loadDoc } from '../content.js';
 import { store } from '../store.js';
 import { renderDoc } from '../ui/doc-render.js';
+import { createReadAloud } from '../ui/read-aloud.js';
 import { openReferenceModal } from '../ui/cheatsheet-modal.js';
 import { formatElapsedClock } from '../search.js';
 import { isReadingComplete } from '../lib/module-completion.js';
@@ -27,6 +28,7 @@ export async function lessonView({ course: cid, module: mid, lesson: lid }) {
   const doc = await loadDoc(cid, mid, lesson.file);
   if (doc.errors.length) console.warn('Lesson has formatting problems:', doc.errors);
   const { el, toc, exercises } = renderDoc(doc, { key: lesson.key });
+  const readAloud = createReadAloud({ content: el, title: lesson.title });
   const route = `/c/${cid}/${mid}/${lid}`;
   store.setLast(route, `${m.title}: ${lesson.title}`);
 
@@ -210,7 +212,7 @@ export async function lessonView({ course: cid, module: mid, lesson: lid }) {
     readBar,
     h('p.crumbs', h('a', { href: `#/c/${cid}` }, course.title), h('span', ' / '), h('a', { href: `#/c/${cid}/${mid}` }, m.title)),
     h('header.lesson-head', m.lessons.length > 1 ? steps : null, h('h1', lesson.title), meta),
-    h('div.lesson-layout', h('div.lesson-body', el), tocEl),
+    h('div.lesson-layout', h('div.lesson-body', readAloud.el, el), tocEl),
     footEl
   );
 
@@ -311,6 +313,7 @@ export async function lessonView({ course: cid, module: mid, lesson: lid }) {
       paintReadProgress();
     },
     cleanup() {
+      readAloud.cleanup();
       if (observer) observer.disconnect();
       if (footObserver) footObserver.disconnect();
       if (unsubStore) {

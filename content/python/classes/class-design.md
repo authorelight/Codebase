@@ -1,6 +1,8 @@
 ---
 title: Designing with classes
 ---
+Tunde's food business has grown from one person taking orders to a small team handling customers, meals and deliveries. He wants the program to reflect how the business works, rather than placing every detail in one enormous function. That starts with deciding what deserves to be an object.
+
 Writing a class takes only a few lines. Deciding **which** classes a program should have is the harder question, and it comes first. A good design makes the program feel natural: each class stands for a thing from the problem, it knows its own rules, and the pieces fit together without tangles. A poor design makes every change painful. In this lesson you learn a simple way to turn a problem into classes, how objects can contain other objects, how `dataclass` removes repetitive code, and how to rewrite older code in an object style.
 
 ## From a problem to classes

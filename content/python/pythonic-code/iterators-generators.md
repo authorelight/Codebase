@@ -1,7 +1,7 @@
 ---
 title: Iterators and generators
 ---
-Every `for` loop that you have written has relied on a mechanism that you never saw. In this lesson you look inside it. Then you use the same mechanism to write functions that produce values **one at a time**, only when somebody asks for the next one. Such **lazy** sequences can be huge, or even infinite, and they use almost no memory. They also explain the objects that you met in module 12, such as `combinations` and `islice`, which printed as strange objects until you wrapped them in `list(...)`.
+Every `for` loop that you have written has relied on a mechanism that you never saw. In this lesson you look inside it. Then you use the same mechanism to write functions that produce values **one at a time**, only when somebody asks for the next one. Such **lazy** sequences can be huge, or even infinite, and they use almost no memory. Picture a ticket machine at a busy service desk. It gives you the next ticket when you press the button; it does not need to print every ticket for the whole day in advance. An iterator behaves in a similar way: it remembers where it has reached and gives you the next value when Python asks for it. A generator can produce those values one at a time, which is useful when the full sequence would be large. The machine is only an analogy; Python produces values, not physical tickets. They also explain the objects that you met in module 12, such as `combinations` and `islice`, which printed as strange objects until you wrapped them in `list(...)`.
 
 ## Iterables and iterators
 

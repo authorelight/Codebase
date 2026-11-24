@@ -2,7 +2,7 @@
 title: Decorators and types: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: closures, decorators, type hints and dataclasses, context managers and async code. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+A growing Python project needs functions that can remember settings, gain extra behaviour and communicate the kinds of values they expect. These questions check your understanding of closures, decorators, type hints, dataclasses, context managers and asynchronous code. Take time to follow each function call.
 
 %% question q1 | predict
 What does this program print?

@@ -1,6 +1,8 @@
 ---
 title: Special methods and properties
 ---
+Chidi has created a `Playlist` class, but it does not yet behave like the lists and strings he uses every day. He wants `len(playlist)`, comparisons and readable output to work naturally. Python gives classes special methods for connecting objects to those familiar operations.
+
 Think about how natural the built-in types feel. You write `len(items)`, `a + b`, `a < b`, `x in items` and `print(x)`, and they all work. These are not magic that belongs to Python alone. Each of them calls a **special method** with two underscores on each side, such as `__len__` or `__add__`, and your own classes can have the same methods. When they do, your objects feel like part of the language. This lesson also introduces **properties**, which let an attribute run code when it is read or changed, and two more kinds of method: class methods and static methods.
 
 ## Python calls special methods for you

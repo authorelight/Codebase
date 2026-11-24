@@ -1,7 +1,9 @@
 ---
 title: Scope and functions as values
 ---
-Two questions come up as soon as a program has several functions. **Where does a variable live**, and which parts of the program can see it? And since a function is a name for some code, **can a function itself be handed around like a number or a string**? This lesson answers both. The first answer keeps your functions from interfering with each other, and the second gives you a powerful way to build flexible programs.
+Zainab's event team has separate groups for catering, tickets and transport. Each group keeps its own working notes, while everyone can read the event's shared schedule. Python uses scope to decide which parts of a program can see a particular name.
+
+Two questions come up as soon as a program has several functions. **Where does a variable live**, and which parts of the program can see it? And since a function is a name for some code, **can a function itself be handed around like a number or a string**? This lesson answers both. The first answer keeps your functions from interfering with each other, and the second gives you a powerful way to build flexible programs. Imagine a school with separate classrooms. A name written on the whiteboard in one classroom is not automatically visible in every other classroom. In the same way, a local variable belongs to the function that creates it. A global name is more like a notice on the school entrance that different rooms can read. The comparison helps with visibility, but Python follows precise scope rules, which the examples below will show.
 
 ## Local variables
 

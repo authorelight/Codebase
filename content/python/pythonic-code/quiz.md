@@ -2,7 +2,7 @@
 title: Pythonic code: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: comprehensions, iterators and generators, the functional tools, pattern matching and clean style. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+You are reviewing a program that works but could be clearer and more expressive. These questions check whether you can recognise readable Python, use comprehensions and iterators, and choose functional tools and pattern matching appropriately. Focus on what each expression produces, not only how short it looks.
 
 %% question q1 | predict
 What does this program print?

@@ -1,6 +1,8 @@
 ---
 title: Searching and sorting
 ---
+Zainab has a spreadsheet of event registrations, and the team keeps asking her to find names, rank scores and arrange entries by date. She could handle each request by scanning the entire sheet, but a better search or sorting method will save time.
+
 Finding things and putting them in order are the two oldest jobs of computing. Your phone finds one contact among thousands, a shop lists its prices from cheap to dear, and a game sorts its scores. In this lesson you will write the classic algorithms for both jobs, count their steps, and see why one search can be a **million times** faster than another. You will meet linear and binary search, the `bisect` module, three simple sorts, two fast ones (merge sort and quicksort), and the sort that Python itself uses. In real programs you will almost always call `sorted`, but the **ideas** inside these algorithms, such as halving and divide and conquer, appear everywhere.
 
 ## Linear search

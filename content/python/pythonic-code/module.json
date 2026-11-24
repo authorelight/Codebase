@@ -1,6 +1,6 @@
 {
   "title": "Pythonic code",
-  "summary": "Write compact, idiomatic Python with comprehensions, generators, functional tools and clean style.",
+  "summary": "Write clearer Python with readable conventions, comprehensions and tools for working with functions and sequences.",
   "line": "pro",
   "level": "advanced",
   "outcomes": [

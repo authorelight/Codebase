@@ -1,6 +1,8 @@
 ---
 title: True or False
 ---
+Before Amara can reserve a study room, the booking program needs to check whether the requested time is available. That begins with questions whose answers are either true or false. Learning how to make those comparisons gives the program something solid to decide with.
+
 Programs decide by asking questions that have a yes-or-no answer. Is the password right? Is the player's score above the high score? Is it raining? Python answers every such question with one of two values you already know from module 2: `True` or `False`.
 
 In this lesson you learn to ask the questions. In the next lesson you will use the answers to choose what the program does. Getting comfortable with the questions first makes everything after it much smoother.

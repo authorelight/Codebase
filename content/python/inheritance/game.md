@@ -93,7 +93,7 @@ After the call to `super()`, overwrite the two numbers: `self.health = 80` and `
 %% end
 
 %% level l2 | Special moves
-Fighters get special moves. Write two children of `Fighter` that **override** `attack`, and reuse the normal attack with `super().attack(target)`:
+Fighters get special moves. Write two children of `Fighter` that **override** `attack`, and reuse the normal attack with `super().attack(target)`. Think of both fighters as starting with the same basic training, then adding a different special move. `super()` lets the child keep the normal attack before adding its own behaviour:
 
 - `Knight`: makes a normal attack, and then **heals itself by 5** health (never above 100).
 - `Mage`: attacks **twice** in one turn.
@@ -283,7 +283,7 @@ Keep a counter that starts at 0, add 1 for every attack, and return it after the
 %% end
 
 %% level l4 | Weapon rack
-The weapon rack needs a **contract**. Write these classes:
+The weapon rack needs a **contract**. Write these classes. Treat `Weapon` as a common specification: every real weapon must provide its own damage rule, while the shared description can use that rule without knowing which weapon it received:
 
 - The abstract class `Weapon(name)`. It has an **abstract** method `damage()`, and an ordinary method `describe()` that returns text such as `Longsword deals 15`.
 - `Sword(name, sharpness)` deals `sharpness * 3`.

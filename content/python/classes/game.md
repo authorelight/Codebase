@@ -11,7 +11,7 @@ How to play:
 - Fewer lines earn more stars. Stuck? Tap **Hint**, one hint at a time.
 
 %% level l1 | Meet Bolt
-Every robot in the league needs a record. Write a class `Robot`:
+Every robot in the league needs a record. Write a class `Robot`. Think of the class as a standard design for each robot: every robot gets the same starting rules, while its name belongs to the individual robot:
 
 - `__init__` takes a `name` and stores it as `self.name`.
 - Every new robot starts with `self.health` set to `100`.
@@ -123,7 +123,7 @@ Add `self.energy = 10` to `__init__`. Then write the two methods, each with `sel
 %% end
 
 %% level l3 | First strike
-Time to fight. Change `Robot` so that:
+Time to fight. Change `Robot` so that: A robot's health is like a strength meter. When it attacks, the target loses health; the robot making the attack does not lose that health merely because it attacked.
 
 - `Robot(name, power=10)` takes a `power`, the damage of one attack, and stores it as `self.power`.
 - `attack(target)` takes `power` health away from the **target** robot. Health never goes below `0`.
@@ -194,7 +194,7 @@ Use `max(0, ...)` to stop the health at zero: `target.health = max(0, target.hea
 %% end
 
 %% level l4 | Name tags
-The crowd wants to read the scoreboard, but `print(robot)` shows a memory address. Add the two special methods:
+The crowd wants to read the scoreboard, but `print(robot)` shows a memory address. Add the two special methods. The public scoreboard needs a short description, while a programmer may need a more detailed representation that shows how the object could be recreated:
 
 - `__str__` returns the text for people: `Bolt: 80 HP`
 - `__repr__` returns the text for programmers, which looks like the code that makes the robot: `Robot('Bolt', 80)`

@@ -1,6 +1,8 @@
 ---
 title: Python as a calculator
 ---
+Chidi is keeping the score for a friendly football match and wants the computer to calculate the goal difference and update the totals. The arithmetic is familiar, but the order of operations matters. Python can do the calculations reliably once the instructions are written clearly.
+
 Python is very good at arithmetic. You can type a sum straight into `print()` and Python works out the answer for you. In this lesson you will meet the symbols Python uses for maths, learn the order it works things out in, and find out why some answers have a decimal point and others do not.
 
 Programmers do not use a calculator app. They write the sum in their program, so the program can do it again and again, with no typing mistakes.

@@ -89,7 +89,7 @@ A variants file is a list of programs. Each starts with a line `#### <level id> 
 
 ## 3. Writing good levels
 
-**Briefing.** Open with the story in one sentence. Then say what to do. Then introduce **only the new thing** the level needs, with a tiny example. Keep it to about 60 to 120 words. Use `code` formatting for commands.
+**Briefing.** Open with the story in one sentence. Then say what to do. Then introduce **only the new thing** the level needs, with a tiny example. Use an everyday comparison when it makes an abstract idea clearer, and explain where the comparison stops being accurate. Keep the task and expected result precise. Keep the briefing to about 60 to 120 words. Use `code` formatting for commands.
 
 **Starter.** One or two comment lines saying what to do, or a few lines of code to complete. Never leave a starter that already half-solves the level.
 

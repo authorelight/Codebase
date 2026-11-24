@@ -2,7 +2,7 @@
 title: Text and files: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: string methods, files, CSV, JSON, regular expressions and the text recipes. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+Chidi's team needs to clean registration details, read stored records and investigate a log file. These questions check your understanding of string methods, files, CSV, JSON, regular expressions and text-processing patterns. Follow the data carefully as it moves through each program.
 
 %% question q1 | predict
 What does this program print?

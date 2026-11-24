@@ -1,7 +1,9 @@
 ---
 title: Comments and how Python reads code
 ---
-You can already print text and do sums. Before the programs get longer, it is worth learning how Python reads a program, and how to leave notes in your code for yourself and for other people. Both ideas will save you a lot of confusion later.
+Amara is helping to prepare a university event. The team must arrange the chairs before printing the programme and print the programme before guests arrive. Doing those jobs in the wrong order creates extra work, and Python also follows instructions in a defined order.
+
+You can already print text and do sums. Before the programs get longer, it is worth learning how Python reads a program, and how to leave notes in your code for yourself and for other people. Both ideas will save you a lot of confusion later. Think of following a cooking recipe: you read one step, do it, and then move to the next step. If you skip ahead or change the order, the result may be different. Python follows your program in a similarly careful order, from the first instruction to the last, unless a programming statement tells it to choose or repeat something.
 
 ## Python reads from the top, one line at a time
 

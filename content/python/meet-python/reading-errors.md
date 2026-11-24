@@ -1,6 +1,8 @@
 ---
 title: Reading error messages
 ---
+Amara's first greeting program refuses to run because one name is spelt differently on two lines. The message Python displays is not a judgement about her ability; it is a clue that helps her find the instruction that needs attention.
+
 Every programmer sees error messages, every single day, from the first week to the twentieth year. They are not a sign that you are bad at this. An error message is Python telling you what it could not do and where it got stuck. Once you can read one, most mistakes take seconds to fix.
 
 This lesson gives you a way to read errors calmly, introduces the five you will meet most often, and ends with a routine you can use whenever your code misbehaves.

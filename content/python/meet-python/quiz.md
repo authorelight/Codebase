@@ -2,7 +2,7 @@
 title: Meet Python: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module. You need 70 percent to pass, and you can try as many times as you like. Read each question carefully. Where there is code, work out the answer in your head before you choose.
+This is your first checkpoint in the Python journey. The questions revisit what programs do, how Python follows instructions, how arithmetic works and what an error message is trying to tell you. Take your time, and use the explanations to build confidence with the foundations.
 
 %% question q-program | choice
 What is a program?

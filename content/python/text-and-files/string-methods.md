@@ -1,6 +1,8 @@
 ---
 title: String methods
 ---
+Zainab receives event registrations with names typed in different ways: some have extra spaces, some are in capital letters and some contain details separated by commas. Before the team can use the records, the program needs to clean, search and reshape the text.
+
 Text is the most common kind of data in programs: names, messages, web pages, log files and every line that arrives from a keyboard or a file. Strings come with a large toolbox of methods for cleaning, searching, cutting and reshaping text. You already know a few of them, such as `upper`, `strip` and `split`. This lesson fills in the rest of the toolbox, shows the tools that make tidy tables, and finishes with a secret code, the Caesar cipher.
 
 Keep one fact in mind all the way through: a string **cannot be changed**. Every method returns a **new** string and leaves the old one as it was:

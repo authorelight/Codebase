@@ -1,6 +1,6 @@
 {
   "title": "Text and files",
-  "summary": "Process text like a pro, and read and write files, CSV and JSON data.",
+  "summary": "Clean and analyse text, store information in files, and exchange structured data with CSV and JSON.",
   "line": "functions",
   "level": "intermediate",
   "outcomes": [

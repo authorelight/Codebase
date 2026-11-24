@@ -21,7 +21,7 @@ south = make_ticket_machine("S")
 south() returns "S-1"
 ```
 
-Keep the count **inside a closure**. This order does not allow a class or a global variable.
+Keep the count **inside a closure**. This order does not allow a class or a global variable. Start a second machine and its first ticket must still be number 1; each machine needs to remember its own count separately.
 %% config
 mode: script
 function: make_ticket_machine
@@ -276,7 +276,7 @@ Print the `Stopped` line in a `finally:` block. It runs when the call works, and
 %% end
 
 %% level l5 | Wear and tear
-Machines wear out. Write a decorator **with an argument**, `limit_uses(max_uses)`. The decorated function works for `max_uses` calls. The next call raises `RuntimeError("worn out")` **without running the function**, and so does every call after it. Every decorated function counts its own uses, and keeps its name and docstring.
+Machines wear out. Write a decorator **with an argument**, `limit_uses(max_uses)`. The decorated function works for `max_uses` calls. The next call raises `RuntimeError("worn out")` **without running the function**, and so does every call after it. Every decorated function counts its own uses, and keeps its name and docstring. Think of a stamp machine with a limited supply: it completes each request while uses remain, then reports that it is worn out without carrying out another request.
 
 ```text
 @limit_uses(2)

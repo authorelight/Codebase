@@ -1,6 +1,8 @@
 ---
 title: Recursion
 ---
+Chidi is splitting a large tournament into smaller brackets, then each bracket into smaller groups until there is only one match to schedule. Some problems can be solved by applying the same process to a smaller version of themselves, then combining the results.
+
 A function can call other functions. It can also call **itself**. This sounds like a trick that must go on forever, but it is one of the most useful ideas in programming. A recursive function solves a problem by solving a **smaller version of the same problem**, and it stops when the problem is small enough to answer directly. Think of a set of nesting dolls: to count the dolls, you open the first one and count the dolls inside it, and you stop at the doll that is empty.
 
 ## A function that calls itself

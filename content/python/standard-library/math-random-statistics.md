@@ -1,6 +1,8 @@
 ---
 title: Numbers: math, random and statistics
 ---
+Chidi is reviewing his team's football statistics: average goals, the spread of scores and the chance of drawing a particular result in a practice game. Python's standard library has specialised tools for calculations, randomness and summarising data.
+
 Python's built-in arithmetic (`+`, `-`, `*`, `/`, `**`, `round`, `sum`, `min`, `max`) covers a lot, and then you need more: a square root, a random card, the average of a thousand measurements. Three modules of the standard library cover most of what comes next. `math` has the mathematical functions, `random` makes chance, and `statistics` summarises data. A fourth part of this lesson, `decimal` and `fractions`, is about numbers that must be **exact**.
 
 ## The math module

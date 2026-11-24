@@ -2,7 +2,7 @@
 title: Decisions: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: comparisons, if statements, logic and whole programs that decide. Work out each program in your head before you answer, and use the explanations to learn from any slip.
+A booking program must decide whether a request can go ahead, and the answer depends on several conditions. These questions take you from individual comparisons to complete programs that choose a sensible action. Work out each condition step by step before answering.
 
 %% question q1 | choice
 What does `3 + 4 == 7` give?

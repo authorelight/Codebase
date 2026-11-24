@@ -1,6 +1,8 @@
 ---
 title: Variables
 ---
+Tunde sells meat pies after lectures. The price can change, the number sold changes throughout the day, and he needs the computer to remember both while he works out the takings. Giving each value a meaningful name is the first step.
+
 A calculator forgets everything the moment it shows an answer. A program does not have to. It can remember your score, the price of a ticket or the name of a player, and use them again ten lines later.
 
 The tool for remembering is the **variable**: a name that you give to a value. Almost every program you will ever read or write is full of them, so this lesson is worth going slowly. By the end you will be able to store values, change them, choose good names, and watch Python keep track of everything one step at a time.

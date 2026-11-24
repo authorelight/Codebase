@@ -1,6 +1,6 @@
 {
   "title": "Decisions",
-  "summary": "Make programs choose what to do, using comparisons, if statements and logic.",
+  "summary": "Teach a program to compare values and choose what to do, as in a booking, quiz or checkout.",
   "line": "foundations",
   "level": "beginner",
   "outcomes": [

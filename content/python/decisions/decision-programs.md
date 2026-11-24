@@ -1,6 +1,8 @@
 ---
 title: Programs that decide
 ---
+Amara is helping a student society choose a scholarship shortlist. The decision depends on several facts: the applicant's results, the required subjects and whether the form is complete. A program can handle the cases consistently, provided the rules are planned before the code is written.
+
 You now own every tool for making decisions: comparisons, `if`, `elif`, `else`, `and`, `or` and `not`. This lesson puts them to work. You will build four complete programs, the kind you could show to a friend: a report card, a leap-year checker, a login screen and a small text adventure.
 
 Along the way you will pick up the habits that separate a program that works from one that only seems to: planning the cases before you type, ordering your questions with care, checking input before you trust it, and testing the edges where bugs like to hide.

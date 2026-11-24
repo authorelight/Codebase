@@ -1,7 +1,7 @@
 ---
 title: Dictionary patterns
 ---
-Once you know the basics, a handful of patterns cover most of what dictionaries are used for: counting things, grouping things, turning a dictionary around, finding the best entry and replacing long chains of `elif`. Each pattern is only a few lines long, and you will use them again and again.
+Once you know the basics, a handful of patterns cover most of what dictionaries are used for: counting things, grouping things, turning a dictionary around, finding the best entry and replacing long chains of `elif`. Each pattern is only a few lines long, and you will use them again and again. For example, imagine a shop owner keeping a running count of how many loaves, bottles and tins have been sold. Each time an item is sold, the owner updates the count beside that item's name. A dictionary can keep the same kind of tally: the item is the key, and the number sold is the value.
 
 ## Counting
 

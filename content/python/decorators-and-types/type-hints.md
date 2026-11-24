@@ -1,7 +1,7 @@
 ---
 title: Type hints and dataclasses
 ---
-Python does not ask you to declare the type of a variable. That keeps small programs short, but in a large program it gets harder and harder to remember what each function expects. Is `scores` a list or a dictionary? Can the function return `None`? **Type hints** let you write the answers down, right in the code. They are labels for people, editors and checking tools. They are not rules that Python enforces, and this lesson shows both sides of that sentence. Then it returns to **dataclasses**, from module 10, and adds the features that professionals use every day.
+Python does not ask you to declare the type of a variable. That keeps small programs short, but in a large program it gets harder and harder to remember what each function expects. Is `scores` a list or a dictionary? Can the function return `None`? **Type hints** let you write the answers down, right in the code. They are labels for people, editors and checking tools. They are not rules that Python enforces, and this lesson shows both sides of that sentence. Think of a label on a storage box that says **school books**. The label tells you what should be inside, and helps another person decide whether the box is the right one. But writing the label does not stop someone from putting shoes in the box. A type hint is similar: it describes the kind of value expected, but Python does not automatically enforce the label when the program runs. Then it returns to **dataclasses**, from module 10, and adds the features that professionals use every day.
 
 ## Writing a hint
 

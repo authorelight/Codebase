@@ -1,7 +1,7 @@
 ---
 title: Objects and classes
 ---
-Until now, you have kept data in variables and behaviour in functions, and the two lived apart: a list of students in one place, a function `average(students)` in another. A **class** lets you bundle the data and the behaviour that belong together into one thing, called an **object**. Programs that model the real world, such as a bank, a game or a school, become much easier to organise this way. You have been using objects from the first lesson, and this lesson shows you where they come from and how to build your own.
+Until now, you have kept data in variables and behaviour in functions, and the two lived apart: a list of students in one place, a function `average(students)` in another. A **class** lets you bundle the data and the behaviour that belong together into one thing, called an **object**. A useful analogy is a building plan. The plan describes how a building should be made; each actual building created from that plan is a separate example. In Python, the class is like the plan, and each object is one actual instance created from it. The analogy is not exact: a Python class can also contain methods, rules and inheritance, not only a drawing of a shape. Programs that model the real world, such as a bank, a game or a school, become much easier to organise this way. You have been using objects from the first lesson, and this lesson shows you where they come from and how to build your own.
 
 ## Everything is an object
 

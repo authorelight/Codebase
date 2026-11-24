@@ -1,6 +1,8 @@
 ---
 title: if, elif and else
 ---
+Tunde is arranging deliveries for his shop. Customers who live nearby can collect their orders, while customers farther away need a delivery fee. His program must choose which instruction to follow based on the details of each order.
+
 So far a program has run every line, once, from the top to the bottom. Real programs choose. A game shows "You win!" only when the score is high enough. A website shows a different page when you are logged in. A thermostat switches the heating on only when the room is cold.
 
 In this lesson you give your programs that power with the `if` statement. You will also learn the rule that makes it work: **indentation**, the spaces at the start of a line, tell Python which lines belong together.

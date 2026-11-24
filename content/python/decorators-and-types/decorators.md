@@ -1,7 +1,9 @@
 ---
 title: Decorators
 ---
-You have been using decorators already: `@property`, `@classmethod`, `@staticmethod` and `@dataclass` all are. A **decorator** wraps a function (or a class) with extra behaviour, without changing the code of the function itself. With one line above a `def`, you can add logging, timing, caching or checking to it. A decorator is built from exactly the two ideas of the last lesson: a function that **takes a function** and a closure that **remembers** it. By the end of this lesson you will write your own decorators, with and without arguments, and read the decorators in other people's code with confidence.
+Tunde wants every payment function in his shop's software to record when it starts and whether it succeeds, without copying the same logging code into every function. A decorator gives him a reusable way to add that extra behaviour around an existing function.
+
+You have been using decorators already: `@property`, `@classmethod`, `@staticmethod` and `@dataclass` all are. A **decorator** wraps a function (or a class) with extra behaviour, without changing the code of the function itself. With one line above a `def`, you can add logging, timing, caching or checking to it. Think of a visitor entering an office. A receptionist can check the visitor in before the meeting, and record that the meeting has ended afterwards. The meeting itself is still the same meeting, but an extra process happens around it. A decorator can work in a similar way: it returns a wrapper that does extra work before or after the original function runs. This analogy is not a rule that decorators must only add checks; a wrapper can also change inputs, results or whether the original function is called. A decorator is built from exactly the two ideas of the last lesson: a function that **takes a function** and a closure that **remembers** it. By the end of this lesson you will write your own decorators, with and without arguments, and read the decorators in other people's code with confidence.
 
 ## A function that wraps a function
 
@@ -492,7 +494,7 @@ The name `greet` now points at the function `wrapper` that `plain` returned, and
 ## Your turn
 
 %% exercise call-counter | Call counter
-Write a decorator `count_calls` that counts how many times the decorated function is called. The count is kept in an attribute `calls` of the decorated function, and it starts at 0. The decorated function must keep its own name (use `functools.wraps`). The program below must print:
+Tunde is testing a greeting tool used by his small business and wants to know how often it is called. Write a decorator `count_calls` that counts how many times the decorated function is called. The count is kept in an attribute `calls` of the decorated function, and it starts at 0. The decorated function must keep its own name (use `functools.wraps`). The program below must print:
 
 ```output
 0

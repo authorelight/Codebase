@@ -1,6 +1,8 @@
 ---
 title: Loops inside loops
 ---
+Zainab is planning a two-day event with several rooms and multiple sessions in each room. She needs to visit every room, then check every session inside it. That is a natural setting for one loop to run inside another.
+
 A clock is a loop inside a loop. For every hour that passes, the minute hand goes all the way round once. A calendar works in the same way: every week has seven days. Tables, grids, chessboards and pictures made of characters all have **rows** and **columns**, and a program that draws them needs one loop for the rows and another loop for the columns, placed inside the first.
 
 This lesson shows you how to put one loop inside another, how to work out how often the inner code runs, and how to draw patterns with `print(end="")`.

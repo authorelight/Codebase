@@ -1,7 +1,9 @@
 ---
 title: for loops and range()
 ---
-Imagine you have to print the message `Well done!` one thousand times. Without loops you would write one thousand lines, and changing the message later would mean editing all of them. Computers are very good at repeating work, and a **loop** is how you ask Python to do it. In this lesson you meet the `for` loop, which repeats a block of code a number of times that you know in advance.
+Imagine you are helping at a family meal. Tunde's aunt asks him to give a glass of water to each of the six guests. He could write six separate instructions, but in a Nigerian family the guest count may double when someone hears that food is ready. A better plan is to describe the job once and repeat it for each person. That is the everyday idea behind a **loop**: doing the same task more than once while the person or item changes.
+
+A loop is useful in programming for the same reason. Without one, printing `Well done!` one thousand times would mean writing one thousand lines. With a loop, you write the instruction once and tell Python how many times to repeat it. The analogy is about repeating a task; Python does not guess who to serve or when to stop. You must give it a count or something to work through. In this lesson you meet the `for` loop, which repeats a block of code a number of times that you know in advance.
 
 By the end you will be able to count, to add up numbers, to step through a piece of text one letter at a time, and to avoid the most famous loop mistake in programming: the off-by-one error.
 
@@ -209,7 +211,7 @@ print(i)
 ## Your turn
 
 %% exercise countdown | Countdown
-Read a whole number `n` that is at least 1. Print the numbers from `n` down to 1, each on its own line, and then print `Lift off!`. For the input `3` the program prints:
+Amara's football club wants a countdown before warm-up begins. Read a whole number `n` that is at least 1. Print the numbers from `n` down to 1, each on its own line, and then print `Lift off!`. For the input `3` the program prints:
 
 ```output
 3

@@ -11,6 +11,8 @@ title: Text recipes
 2026-03-04 08:20:44 INFO user ada logged out
 %% end
 
+Chidi is helping a small technology team investigate why a delivery app reported several failed payments. The log contains hundreds of lines, but only a few records matter. Text-processing recipes can help the program find patterns and turn a noisy file into useful information.
+
 You now have a full toolbox for text: string methods, files, CSV and JSON. This lesson turns the tools into **recipes**, small programs that solve problems that come up again and again: counting words, checking palindromes and anagrams, cleaning messy input, filling in templates, and finding patterns with **regular expressions**. It ends with a log file analyser, which is a real job for these tools.
 
 ## Word frequency

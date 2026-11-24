@@ -2,7 +2,7 @@
 title: Inheritance: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: subclasses and `super()`, polymorphism and abstract classes, composition and mixins, the MRO, custom exceptions and enums. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+A transport company has several kinds of vehicle, each with shared features and its own behaviour. These questions check how classes can inherit, compose and specialise behaviour, and how different objects can respond to the same operation. Pay attention to the relationship each question describes.
 
 %% question q1 | choice
 Which pair of classes fits **inheritance** (an is-a relationship)?

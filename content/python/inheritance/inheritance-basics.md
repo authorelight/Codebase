@@ -1,6 +1,8 @@
 ---
 title: Inheritance
 ---
+A transport company manages buses, keke vehicles and delivery vans. They share details such as registration numbers, but each type also has its own features. Inheritance lets a specialised class reuse shared behaviour while describing what makes it different.
+
 In module 10 you built classes from nothing. Real programs often need **families** of classes that are alike but not identical: dogs and cats are both animals, a circle and a rectangle are both shapes, and a manager is a kind of employee. Copying the shared code into every class works for a day, and then a change has to be made in five places. **Inheritance** lets a new class start from an existing one, take everything that it has, and add or change only what is different.
 
 ## The cost of copying

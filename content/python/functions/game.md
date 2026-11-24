@@ -21,7 +21,7 @@ The studio needs a test card. Read one character, the **paint**, and print a squ
 ###
 ```
 
-Typing the same line three times is tiring. The next levels fix that with functions.
+Typing the same line three times is tiring. The next levels fix that with functions. This first attempt makes the repeated work visible: you write each row yourself, then learn how to give those steps a name and reuse them.
 %% config
 mode: io
 par: 4
@@ -60,7 +60,7 @@ A square has three rows, so you need three `print` lines.
 %% end
 
 %% level l2 | A painter with a name
-Typing the same lines again and again is tiring, so give them a name. Define a function called `square()` that prints a 3 by 3 square of `#`, followed by an empty line (`print()` with nothing inside the brackets). Then read a number `n` and paint `n` squares by calling the function `n` times. You must use `def`.
+Typing the same lines again and again is tiring, so give them a name. Define a function called `square()` that prints a 3 by 3 square of `#`, followed by an empty line (`print()` with nothing inside the brackets). Then read a number `n` and paint `n` squares by calling the function `n` times. You must use `def`. The function definition keeps the drawing instructions in one place; each call asks Python to perform those instructions again.
 
 ```text
 2 gives
@@ -127,7 +127,7 @@ Read the number with `int(input())`, and loop with `for _ in range(n):` to call 
 %% end
 
 %% level l3 | Any size
-A function can take inputs. Define `square(size)` that prints a square with `size` rows of `size` characters `#`, followed by an empty line. Read one line of sizes separated by spaces, and paint one square for each size. You must use `def`.
+A function can take inputs. Define `square(size)` that prints a square with `size` rows of `size` characters `#`, followed by an empty line. Read one line of sizes separated by spaces, and paint one square for each size. You must use `def`. Think of `square(size)` as a reusable drawing instruction: once it is defined, the program can ask it to draw a small square or a larger one by supplying a different size. The function keeps the drawing steps in one place.
 
 ```text
 2 3 gives
@@ -200,7 +200,7 @@ Split the input with `input().split()`, and call `square(int(text))` for each pi
 %% end
 
 %% level l4 | Choose your paint
-Define `rectangle(width, height, paint="#")`. It prints `height` rows of `width` characters of `paint`, followed by an empty line. Every input line holds a width and a height, and **sometimes** a third word, the paint. When the paint is missing, the function uses `#`. The input ends with a line that says `end`. You must use `def`.
+Define `rectangle(width, height, paint="#")`. It prints `height` rows of `width` characters of `paint`, followed by an empty line. Every input line holds a width and a height, and **sometimes** a third word, the paint. When the paint is missing, the function uses `#`. The input ends with a line that says `end`. You must use `def`. This is useful when most requests use the standard paint but a particular request supplies a different character.
 
 ```text
 4 2, 3 1 * and end give

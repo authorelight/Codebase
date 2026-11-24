@@ -1,6 +1,6 @@
 {
   "title": "Decorators and types",
-  "summary": "Treat functions as values with closures and decorators, then describe your code with type hints.",
+  "summary": "Work with functions that remember context, add reusable behaviour and describe the data your code expects.",
   "line": "pro",
   "level": "advanced",
   "outcomes": [

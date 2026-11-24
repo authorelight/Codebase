@@ -13,7 +13,7 @@ How to play:
 - Fewer lines earn more stars. Stuck? Tap **Hint**, one hint at a time.
 
 %% level l1 | Morse look-up
-A letter arrives from the antenna. The dictionary `code` in your starter holds the Morse code of eight letters. Read one letter and print its code. A letter that is not in the table prints `?`.
+A letter arrives from the antenna. The dictionary `code` in your starter holds the Morse code of eight letters. Read one letter and print its code. A letter that is not in the table prints `?`. Treat the dictionary as a lookup table: the letter is the key, and the Morse pattern is its value. A missing letter needs a fallback rather than an error, because the table holds only eight letters.
 
 ```text
 S gives ...
@@ -55,7 +55,7 @@ Read the letter with `input()` and keep it in a variable.
 %% end
 
 %% level l2 | Decode a word
-Now the antenna sends a whole word, written as Morse codes separated by spaces. The dictionary `letters` in your starter turns a code into a letter. Decode the word. A code that is not in the table becomes `?`.
+Now the antenna sends a whole word, written as Morse codes separated by spaces. The dictionary `letters` in your starter turns a code into a letter. Decode the word. A code that is not in the table becomes `?`. This is the same lookup in the opposite direction. Each Morse pattern is now the key, and its matching letter is the value. Build the decoded word by handling each code in its original order.
 
 ```text
 ... --- ... gives SOS
@@ -98,7 +98,7 @@ Start with an empty text, `word = ""`, and add one letter in every round of the 
 %% end
 
 %% level l3 | Signal census
-Signals arrive one per line until a line says `end`. Count how often each signal appears. Then print the census in alphabetical order, one signal per line, in the form `alpha 3`.
+Signals arrive one per line until a line says `end`. Count how often each signal appears. Then print the census in alphabetical order, one signal per line, in the form `alpha 3`. Think of a signal operator's tally sheet. Each different signal gets its own entry, and every arrival increases that signal's count. Sorting the keys at the end makes the printed report predictable.
 
 ```text
 beta, alpha, beta, end give
@@ -156,7 +156,7 @@ After the loop, `for name in sorted(counts):` visits the keys in alphabetical or
 %% end
 
 %% level l4 | Channel groups
-Messages arrive as `channel word`, for example `3 hello`, until a line says `end`. Group the words by channel. Print one line for each channel, with the smallest channel number first, in the form `3: hello world`. The words of a channel keep the order in which they arrived. Remember that channel 2 comes before channel 10.
+Messages arrive as `channel word`, for example `3 hello`, until a line says `end`. Group the words by channel. Print one line for each channel, with the smallest channel number first, in the form `3: hello world`. The words of a channel keep the order in which they arrived. Remember that channel 2 comes before channel 10. Think of sorting incoming messages into labelled pigeonholes: each channel has its own group, and the channel number determines the order in which the groups are reported.
 
 ```text
 3 hello, 1 ping, 3 world, end give
@@ -216,7 +216,7 @@ After the loop, loop over `sorted(groups)` and join each list of words with `" "
 %% end
 
 %% level l5 | Reverse directory
-The station keeps a directory of `name code` lines, for example `alpha 17`, until a line says `end`. Every name has its own code, and no two names share a code. After that come lines that hold only a **code**, until a line says `stop`. For each code, print the name that owns it, or `unknown` if no name has that code.
+The station keeps a directory of `name code` lines, for example `alpha 17`, until a line says `end`. Every name has its own code, and no two names share a code. After that come lines that hold only a **code**, until a line says `stop`. For each code, print the name that owns it, or `unknown` if no name has that code. This is a reverse lookup: instead of asking for a person's code by name, you are using the code to find the person. Keep the code as the dictionary key so that the lookup matches the question.
 
 ```text
 alpha 17, beta 4, end, then 4, 17, 99, stop give

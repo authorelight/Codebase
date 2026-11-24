@@ -2,7 +2,7 @@
 title: Classes: module quiz
 pass: 70
 ---
-Twelve questions on everything in this module: classes and objects, state, special methods, properties and class design. Work out each program on paper before you answer, and read the explanations to see where a slip came from.
+The Robot League is adding new machines, each with its own data, actions and rules. These questions check whether you can design classes, understand objects and state, and make your own objects behave naturally in Python. Read each explanation to see why the design works.
 
 %% question q1 | choice
 In the statement `rex = Dog("Rex")`, what are `Dog` and `rex`?

@@ -1,6 +1,8 @@
 ---
 title: Stacks, queues, trees and graphs
 ---
+At the entrance to Zainab's campus technology event, volunteers need to manage a queue, keep a list of registered guests and find the next person to be served. One pile of information has several jobs, and the way it is arranged changes how quickly each job can be done.
+
 The best algorithm often starts with a good choice of **data structure**: a way of arranging data so that the questions you ask are cheap to answer. A stack gives you the last thing that you put in. A queue gives you the first. A heap hands you the smallest. A tree keeps data in order and finds it in a few steps, and a graph describes anything that is connected: roads, friends, web pages, game boards. In this lesson you will build all of them in Python, using the tools that you already know: lists, `deque`, `heapq`, classes and dictionaries. You will finish with **breadth-first search** and **Dijkstra's algorithm**, the two algorithms that find the shortest route.
 
 ## Stacks: last in, first out

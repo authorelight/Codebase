@@ -14,7 +14,7 @@ Sugar is sweet
 And so are you
 %% end
 
-Until now, everything that your programs knew disappeared when they ended. A variable lives only while the program runs. **Files** are how a program keeps information for later, reads information that someone else prepared, and hands its results to other programs. In this lesson you learn to read text files, to write them, and to avoid the usual mistakes.
+Until now, everything that your programs knew disappeared when they ended. A variable lives only while the program runs. **Files** are how a program keeps information for later, reads information that someone else prepared, and hands its results to other programs. In this lesson you learn to read text files, to write them, and to avoid the usual mistakes. Think of a notebook. You can write information in it today, close it, and open it tomorrow to read what you wrote. A file serves a similar purpose for a program: it can keep information after the program has finished. A variable is more like a note held while the program is running. The notebook comparison is about keeping information; a computer file also has a name, a location and rules for how a program opens it.
 
 %% note How files work on this site
 Each run on this site starts in a fresh, private, empty folder, and everything that your program writes there disappears when it ends. Lessons and exercises supply the files that they need, which is why `notes.txt` and `poem.txt` are available in the examples below. On your own computer the same code works with real files, which stay in the folder next to your program.

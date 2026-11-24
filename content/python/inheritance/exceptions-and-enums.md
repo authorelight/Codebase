@@ -1,6 +1,8 @@
 ---
 title: Custom exceptions and enums
 ---
+A delivery app needs clear names for order states such as `PENDING`, `PAID` and `SHIPPED`, and a clear error when someone tries to cancel an order that has already left the shop. Custom exceptions and enums give those situations precise, reusable names.
+
 Python's built-in exceptions describe general problems: a bad value, a missing key, a division by zero. Your own program has problems of its own: "the account has too little money", "the order was already shipped". In this lesson you give those problems **names**, by writing your own exception classes. You will see that this is inheritance at work, because every exception is a class in a family. In the second half you meet **enums**, which replace "magic" strings and numbers such as `"red"` or `3` with named constants that cannot be mistyped.
 
 ## Your own exception

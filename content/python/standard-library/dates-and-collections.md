@@ -1,6 +1,8 @@
 ---
 title: Dates and collections
 ---
+Amara is coordinating a student conference with deadlines, sessions, attendance counts and a waiting list. She needs to work with dates and choose containers that make counting, grouping and ordering records more convenient.
+
 This lesson has two halves. The first deals with **time**: what day it is, how many days remain until a deadline, and what 09:00 in London is in Lagos. The second is a set of **containers** that improve on the lists, dictionaries and tuples that you already know: a counter that counts for you, a dictionary that creates its own missing entries, a queue that is quick at both ends, and tuples whose items have names. They live in four modules: `datetime`, `collections`, `itertools` and `heapq`.
 
 ## Dates, times and differences
