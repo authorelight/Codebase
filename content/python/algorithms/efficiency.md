@@ -1,8 +1,6 @@
 ---
 title: Measuring efficiency
 ---
-Amara is checking a long registration list for one student's name. Reading every entry works, but an organised index could save her from checking hundreds of names one by one. The method matters as much as the answer.
-
 Two programs can give exactly the same answer, and yet one finishes in a blink while the other keeps you waiting for hours. The difference is the **algorithm**: the method that the program follows. Imagine finding a name in a paper directory. You could read every entry from the first page until you find it, or use the alphabetical guide to go straight to the right part. Both methods can find the same name, but one may require far fewer steps. An algorithm is like the method you choose for the job. In programming, we compare how the amount of work grows as the amount of data grows, rather than judging only by how fast one particular computer happens to be. In this lesson you will learn to tell a fast algorithm from a slow one without guessing. You will **count steps**, describe how the work **grows** as the input grows (the famous **Big-O** notation), and **measure** real programs with a clock. These tools stay useful for as long as you write code, and the next three lessons use them all the time.
 
 ## What is an algorithm?
