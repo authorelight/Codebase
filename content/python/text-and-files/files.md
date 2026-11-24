@@ -14,6 +14,8 @@ Sugar is sweet
 And so are you
 %% end
 
+Amara is keeping notes for a group project. She wants the information to remain available after she closes the program and returns tomorrow. A variable can hold information while a program runs, but a file gives the program a way to store and retrieve it later.
+
 Until now, everything that your programs knew disappeared when they ended. A variable lives only while the program runs. **Files** are how a program keeps information for later, reads information that someone else prepared, and hands its results to other programs. In this lesson you learn to read text files, to write them, and to avoid the usual mistakes. Think of a notebook. You can write information in it today, close it, and open it tomorrow to read what you wrote. A file serves a similar purpose for a program: it can keep information after the program has finished. A variable is more like a note held while the program is running. The notebook comparison is about keeping information; a computer file also has a name, a location and rules for how a program opens it.
 
 %% note How files work on this site
