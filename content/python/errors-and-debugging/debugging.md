@@ -1,6 +1,8 @@
 ---
 title: Debugging
 ---
+Amara notices that her shop's sales report is showing twice the expected total. Changing random lines would create more confusion, so she first needs a reliable way to reproduce the problem, narrow down its cause and check each possible fix.
+
 Every programmer writes bugs, beginners and experts alike. What separates them is how they **find** a bug. An expert does not stare at the code and hope. An expert follows a method, one calm step after another. This lesson teaches that method, the tools that go with it, and a field guide to the bugs that you will meet most often. Think of a plumber looking for a leak. The plumber does not replace every pipe in the building at once. They first make the leak happen, narrow down where the water is escaping, form a likely explanation, and test one repair. Debugging follows the same careful pattern: repeat the problem, narrow down the cause, make a testable guess, and check one change at a time. The analogy is about the method, not the tools.
 
 There are two kinds of bug. A **crash** stops the program and gives you a traceback, which names the line (you learned to read one in lesson 1). A **silent bug** runs to the end and gives a wrong answer, with no message at all. Silent bugs are harder, because you must first notice that something is wrong, and then discover where.
