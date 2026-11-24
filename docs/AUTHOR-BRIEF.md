@@ -77,3 +77,20 @@ Both finish with no problems and no warnings. For a module whose game another pe
 ## 7. Final report
 
 Reply with fewer than 150 words and no pasted content: the files you wrote, rough counts (words of prose, runnable examples, exercises, inline questions, quiz questions, game levels), anything unfinished, and any platform or validator problem you hit (file, line, what happened).
+
+
+## 8. Story-led teaching and learner engagement
+
+Use a short, specific situation to give the learner a reason to care about a concept. A strong opening usually introduces a person, a practical goal and a small obstacle, then connects that obstacle to the Python idea. Keep the scene to two to five sentences. Continue the same situation later in the lesson when it helps the learner see how the concept develops; do not add fictional details that have no teaching purpose.
+
+Use topic-specific settings rather than repeating one story for every subject. Suitable contexts include a small shop tracking stock, a student organising an assignment, an event team managing guests, a football team recording scores, a journey with changing fares, a food business preparing orders, or a service desk handling a queue. Nigerian details such as naira, POS payments, keke rides, family gatherings and campus life are welcome when they make the example more concrete. Explain an unfamiliar local reference briefly so international learners can follow it.
+
+A small recurring cast can make the course feel familiar: Tunde runs a small business; Amara is a university student; Chidi enjoys technology and problem-solving; Zainab organises events and projects. Bring them back occasionally, not in every lesson. Add other names and perspectives naturally.
+
+Use light, intelligent humour sparingly, usually no more than one or two moments in a lesson. Let the situation carry the joke. Never mock the learner, poverty, ethnicity, religion, disability or other sensitive characteristics; avoid stereotypes and excessive Pidgin. Keep the instructional language in clear, standard English.
+
+An analogy is a bridge, not a definition. State the correct Python term, show working code, explain the important lines and output, and say where the comparison stops matching Python. Preserve the curriculum order, learning objectives, runnable examples, tests and technical depth. Do not remove necessary detail to make a story shorter.
+
+Write for the existing Read Aloud player. Use natural spoken sentences, short paragraphs, clear speaker labels for dialogue and punctuation that gives the voice room to pause. Never make the explanation depend on a diagram, image or table alone. Keep code visible and explain what it does in words rather than reading punctuation aloud.
+
+Make the course engaging, not theatrical. Reference materials such as cheat sheets should stay direct. Exercises, questions, quizzes and games may use a short scenario when it clarifies the task, but the learner must still be told precisely what to write, predict, choose or achieve.
