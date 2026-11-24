@@ -211,7 +211,7 @@ print(i)
 ## Your turn
 
 %% exercise countdown | Countdown
-Read a whole number `n` that is at least 1. Print the numbers from `n` down to 1, each on its own line, and then print `Lift off!`. For the input `3` the program prints:
+Amara's football club wants a countdown before warm-up begins. Read a whole number `n` that is at least 1. Print the numbers from `n` down to 1, each on its own line, and then print `Lift off!`. For the input `3` the program prints:
 
 ```output
 3
