@@ -1,6 +1,6 @@
 {
   "title": "Functions",
-  "summary": "Package code into reusable functions with parameters and return values, and learn where names live.",
+  "summary": "Give useful jobs a name, accept the information they need, return results and keep each function's working data organised.",
   "line": "functions",
   "level": "intermediate",
   "outcomes": [
