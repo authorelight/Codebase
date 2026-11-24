@@ -1,6 +1,8 @@
 ---
 title: Working with text
 ---
+Amara is preparing certificates for a university event. Every certificate has the same wording, but each one needs a different name, department and date. She needs a reliable way to build and tidy those messages without rewriting the whole sentence each time.
+
 Text is everywhere in programs: the names on a badge, the messages on a screen, the lines in a file, the words in a chat. Almost every program you write will build, clean or pick apart some text, so a few good tools here pay off for the rest of the course.
 
 In this lesson you will build messages with **f-strings**, format numbers so they look neat, pick out single letters and slices of a string, and use string **methods** to clean and change text. At the end you will use all of it, together with `input()`, in one small program that prints a name badge. Imagine filling in a name badge: the printed layout stays the same, while the person's name, role and team change. An f-string works like that template. It keeps the fixed words and places the current values where you mark them. The analogy covers building a message; Python's format rules also let you control details such as decimal places and alignment.
